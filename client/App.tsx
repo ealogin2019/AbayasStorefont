@@ -22,9 +22,9 @@ const queryClient = new QueryClient();
 
 function Layout() {
   return (
-    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] bg-background text-foreground">
+    <div className="min-h-screen grid grid-rows-[1fr_auto] bg-background text-foreground">
       <Header />
-      <main>
+      <main className="pt-20">
         <Outlet />
       </main>
       <Footer />
