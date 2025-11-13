@@ -2,6 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 import { useState } from "react";
+import SearchBar from "@/components/SearchBar";
 
 const nav = [
   {
