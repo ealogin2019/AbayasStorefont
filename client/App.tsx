@@ -17,6 +17,7 @@ import Checkout from "./pages/Checkout";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import AnnouncementBar from "./components/AnnouncementBar";
+import CookieConsent from "./components/CookieConsent";
 import { CartProvider } from "@/hooks/useCart";
 
 const queryClient = new QueryClient();
