@@ -35,7 +35,7 @@ export default function Checkout() {
 
   return (
     <div className="container py-12">
-      <h1 className="font-display text-3xl">Checkout</h1>
+  <h1 className="font-display text-3xl md:text-4xl">Checkout</h1>
       <div className="mt-8 grid gap-8 md:grid-cols-3">
         <form className="md:col-span-2" onSubmit={submit}>
           <div className="grid gap-4 md:grid-cols-2">
@@ -70,11 +70,14 @@ export default function Checkout() {
             />
           </label>
 
+          <div className="mt-2 text-xs text-muted-foreground italic">
+            Complimentary shipping & signature gift wrap included
+          </div>
           <div className="mt-6">
             <button
               type="submit"
               disabled={loading}
-              className="rounded-md bg-primary px-6 py-3 text-primary-foreground"
+              className="rounded-md bg-primary px-6 py-3 text-primary-foreground shadow-lg hover:bg-primary/90"
             >
               {loading ? "Processing…" : `Pay AED ${total.toFixed(2)}`}
             </button>
@@ -82,7 +85,7 @@ export default function Checkout() {
         </form>
 
         <aside className="rounded-md border p-6">
-          <h2 className="text-lg font-medium">Order summary</h2>
+          <h2 className="text-lg font-medium">Order Summary</h2>
           <ul className="mt-4 space-y-3">
             {items.map((it) => (
               <li key={it.id} className="flex items-center justify-between">
@@ -99,6 +102,9 @@ export default function Checkout() {
           <div className="mt-6 flex items-center justify-between border-t pt-4">
             <div className="text-sm text-muted-foreground">Total</div>
             <div className="font-semibold">AED {total.toFixed(2)}</div>
+          </div>
+          <div className="mt-2 text-xs text-muted-foreground italic text-center">
+            Free worldwide shipping & luxury packaging
           </div>
         </aside>
       </div>

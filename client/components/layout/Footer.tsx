@@ -5,9 +5,9 @@ export default function Footer() {
     <footer className="border-t bg-secondary/40">
       <div className="container grid gap-8 py-10 md:grid-cols-3">
         <div>
-          <h3 className="font-display text-lg">Sable Abaya</h3>
+          <h3 className="font-display text-lg">Arab Abayas</h3>
           <p className="mt-2 text-sm text-muted-foreground max-w-sm">
-            Minimal, refined abayas designed for everyday elegance.
+            Elegant, modern abayas for every occasion.
           </p>
         </div>
         <form
@@ -45,7 +45,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Sable Abaya. All rights reserved.
+        © {new Date().getFullYear()} Arab Abayas. All rights reserved.
       </div>
     </footer>
   );

@@ -17,7 +17,7 @@ export default function Header() {
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="font-display text-xl tracking-tight">
           <span className="mr-2 inline-block h-2 w-2 rounded-full bg-accent align-middle" />
-          Sable Abaya
+          Arab Abayas
         </Link>
         <nav className="hidden gap-6 md:flex">
           {nav.map((item) => (

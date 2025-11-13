@@ -29,10 +29,9 @@ export default function Contact() {
     <div className="container py-16">
       <div className="grid gap-8 md:grid-cols-2">
         <div>
-          <h1 className="font-display text-3xl">Contact us</h1>
+          <h1 className="font-display text-3xl md:text-4xl">Contact Arab Abayas</h1>
           <p className="mt-4 text-muted-foreground">
-            Have a question about fit, fabric, or wholesale? Send us a message
-            and we'll reply within 1-2 business days.
+            For questions about our abayas, your order, or bespoke services, please send us a message. Our team will respond within 1-2 business days.
           </p>
 
           <form className="mt-8 max-w-md" onSubmit={submit}>
@@ -78,9 +77,9 @@ export default function Contact() {
         </div>
 
         <div>
-          <h2 className="font-display text-xl">Visit us</h2>
+          <h2 className="font-display text-xl">Contact Details</h2>
           <p className="mt-3 text-muted-foreground">
-            Email: hello@sableabaya.example
+            Email: hello@arababayas.example
           </p>
           <p className="mt-1 text-muted-foreground">Phone: +971 55 000 0000</p>
 

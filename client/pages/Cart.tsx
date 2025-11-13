@@ -8,9 +8,9 @@ export default function Cart() {
   if (!items.length)
     return (
       <div className="container py-20 text-center">
-        <h2 className="text-2xl font-display">Your cart is empty</h2>
+        <h2 className="text-2xl font-display">Your bag is empty</h2>
         <p className="mt-4 text-muted-foreground">
-          Add abayas to your cart from the shop.
+          Discover our collection and add your favorite abayas to your bag.
         </p>
         <div className="mt-6">
           <Link
@@ -25,7 +25,7 @@ export default function Cart() {
 
   return (
     <div className="container py-12">
-      <h1 className="font-display text-3xl">Cart</h1>
+  <h1 className="font-display text-3xl md:text-4xl">Your Bag</h1>
       <div className="mt-8 grid gap-8 md:grid-cols-3">
         <div className="md:col-span-2">
           <ul className="space-y-4">
@@ -78,12 +78,15 @@ export default function Cart() {
             <div className="text-sm text-muted-foreground">Subtotal</div>
             <div className="font-semibold">AED {total.toFixed(2)}</div>
           </div>
+          <div className="mt-2 text-xs text-muted-foreground italic">
+            Complimentary shipping & signature gift wrap included
+          </div>
           <div className="mt-6">
             <button
               onClick={() => navigate("/checkout")}
-              className="w-full rounded-md bg-primary px-4 py-3 text-primary-foreground"
+              className="w-full rounded-md bg-primary px-4 py-3 text-primary-foreground shadow-lg hover:bg-primary/90"
             >
-              Proceed to checkout
+              Proceed to Checkout
             </button>
           </div>
         </aside>

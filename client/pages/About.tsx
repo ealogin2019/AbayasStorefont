@@ -3,17 +3,12 @@ export default function About() {
     <div className="container py-16">
       <div className="grid gap-8 md:grid-cols-2">
         <div>
-          <h1 className="font-display text-3xl">About Sable Abaya</h1>
+          <h1 className="font-display text-3xl md:text-4xl">About Arab Abayas</h1>
           <p className="mt-4 text-muted-foreground">
-            Sable Abaya blends timeless modesty with contemporary tailoring. Our
-            pieces are crafted for comfort and elegance — minimal lines, premium
-            fabrics, and a neutral palette inspired by the sand and skyline of
-            the region.
+            Arab Abayas reimagines tradition with a modern sensibility. Our abayas are designed for women who value elegance, comfort, and timeless style. Each piece is a celebration of heritage, crafted with meticulous attention to detail and luxurious fabrics.
           </p>
           <p className="mt-4 text-muted-foreground">
-            We focus on quality and versatility: abayas that transition from
-            everyday wear to special occasions. Each design is thoughtfully
-            detailed and ethically made.
+            Inspired by the beauty of the Middle East, we blend classic silhouettes with contemporary touches. Our mission is to offer versatile abayas that transition seamlessly from day to night, always with a touch of sophistication.
           </p>
         </div>
         <div className="rounded-xl border overflow-hidden bg-card">
@@ -29,22 +24,21 @@ export default function About() {
         <h2 className="font-display text-2xl">Our Values</h2>
         <ul className="mt-4 grid gap-4 md:grid-cols-3">
           <li className="rounded-md border p-4">
-            <strong>Quality fabrics</strong>
+            <strong>Luxury Materials</strong>
             <p className="text-sm text-muted-foreground">
-              We source breathable, durable textiles suited for the Middle East
-              climate.
+              Only the finest, breathable fabrics—chosen for comfort and lasting beauty.
             </p>
           </li>
           <li className="rounded-md border p-4">
-            <strong>Timeless design</strong>
+            <strong>Timeless Craft</strong>
             <p className="text-sm text-muted-foreground">
-              Clean silhouettes that remain elegant season after season.
+              Classic silhouettes, modern details. Designed to be cherished for years.
             </p>
           </li>
           <li className="rounded-md border p-4">
-            <strong>Sustainable practices</strong>
+            <strong>Ethical Creation</strong>
             <p className="text-sm text-muted-foreground">
-              Thoughtful production and minimal waste.
+              Responsible production, fair labor, and a commitment to sustainability.
             </p>
           </li>
         </ul>

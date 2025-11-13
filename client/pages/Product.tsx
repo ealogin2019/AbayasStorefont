@@ -66,7 +66,12 @@ export default function Product() {
         <div className="mt-3 text-xl font-semibold">
           {product.currency} {product.price.toFixed(2)}
         </div>
-        <p className="mt-4 text-muted-foreground">{product.description}</p>
+        <p className="mt-4 text-muted-foreground">
+          {product.description}
+        </p>
+        <div className="mt-2 text-xs text-muted-foreground italic">
+          Crafted for elegance. Free shipping & signature gift wrap on all orders.
+        </div>
         <div className="mt-6 flex flex-wrap gap-2">
           {product.sizes.map((s) => (
             <button
@@ -85,19 +90,19 @@ export default function Product() {
         </div>
         <div className="mt-8 flex gap-3">
           <button
-            className="h-11 rounded-md bg-primary px-6 text-primary-foreground hover:bg-primary/90"
+            className="h-11 rounded-md bg-primary px-6 text-primary-foreground shadow-lg hover:bg-primary/90"
             onClick={() => {
               add(product, { size: selectedSize });
               toast.success("Added to cart");
             }}
           >
-            Add to cart
+            Add to Bag
           </button>
           <Link
             to="/shop"
             className="h-11 rounded-md border px-6 text-sm hover:bg-accent hover:text-accent-foreground"
           >
-            Continue shopping
+            Continue Shopping
           </Link>
         </div>
       </div>

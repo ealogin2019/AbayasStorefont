@@ -25,16 +25,16 @@ export default function Shop() {
     <div className="container py-12">
       <div className="mb-6 flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="font-display text-3xl">Shop</h1>
-          <p className="text-sm text-muted-foreground">
-            Browse our full collection of abayas.
+          <h1 className="font-display text-3xl md:text-4xl tracking-tight">Arab Abayas Collection</h1>
+          <p className="text-sm text-muted-foreground max-w-md">
+            Explore our curated range of modern abayas, crafted for elegance and comfort. Enjoy complimentary shipping and signature gift wrap on every order.
           </p>
         </div>
         <div className="w-full max-w-sm">
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search styles, colors..."
+            placeholder="Search abayas, colors, or details..."
             className="w-full rounded-md border bg-background px-3 py-2 text-sm outline-none"
           />
         </div>
