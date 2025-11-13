@@ -82,6 +82,9 @@ export default function Header() {
             ))}
           </nav>
 
+          {/* Search */}
+          <SearchBar />
+
           {/* Right Actions */}
           <div className="flex items-center gap-4">
             {/* Store Selector */}
