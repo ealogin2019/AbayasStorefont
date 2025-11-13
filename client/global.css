@@ -116,6 +116,19 @@
       Arial,
       Noto Sans,
       sans-serif;
+    line-height: 1.6;
+  }
+
+  p {
+    @apply text-foreground/90;
+  }
+
+  a {
+    @apply text-foreground transition-colors;
+  }
+
+  button {
+    @apply transition-colors;
   }
 
   h1,
