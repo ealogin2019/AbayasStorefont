@@ -131,77 +131,74 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="bg-foreground text-background py-16 md:py-24">
+      {/* Premium Services Section */}
+      <section className="py-16 md:py-24 border-t border-border/40">
         <div className="container">
-          <h2 className="font-display text-3xl md:text-4xl tracking-tight text-center mb-16">
-            Premium Services
-          </h2>
-          <div className="grid gap-12 md:grid-cols-3">
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-6 h-12 w-12 flex items-center justify-center border border-background/30 rounded-sm">
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M21 7.5V6a2.25 2.25 0 0 0-2.25-2.25h-13.5A2.25 2.25 0 0 0 3 6v1.5m18 0v9A2.25 2.25 0 0 1 18.75 19.5h-13.5A2.25 2.25 0 0 1 3 16.5v-9m18 0H3m18 0-9 7.5L3 7.5"
-                  />
-                </svg>
+          <div className="text-center mb-16">
+            <p className="uppercase tracking-widest text-xs text-muted-foreground mb-4">
+              Arab Abayas Concierge
+            </p>
+            <h2 className="font-display text-3xl md:text-4xl tracking-tight mb-4">
+              Premium Services
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Every order includes our signature services to ensure an exceptional experience.
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            {/* Service Card 1: Gift Wrap */}
+            <div className="flex flex-col">
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-secondary/30 border border-border/40 mb-6">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F81ce6da7ab2f4a539be7643f189385d0?format=webp&width=600"
+                  alt="Gift Wrap Service"
+                  className="h-full w-full object-cover"
+                />
               </div>
-              <h3 className="font-display text-xl mb-3">Complimentary Shipping</h3>
-              <p className="text-sm text-background/80 max-w-xs">
-                Enjoy free worldwide delivery on all orders, ensuring your pieces arrive safely and securely.
+              <h3 className="font-display text-xl tracking-tight mb-3">Signature Gift Wrap</h3>
+              <p className="text-sm text-muted-foreground mb-4 flex-1">
+                Every order arrives beautifully wrapped in our signature boxes, perfect for gifting or personal indulgence.
               </p>
+              <Link to="/shop" className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors">
+                Learn More →
+              </Link>
             </div>
 
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-6 h-12 w-12 flex items-center justify-center border border-background/30 rounded-sm">
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
+            {/* Service Card 2: Express Shipping */}
+            <div className="flex flex-col">
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-secondary/30 border border-border/40 mb-6">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fc2f5ee03e6da48eb9353b11f7bc7da48?format=webp&width=600"
+                  alt="Express Shipping"
+                  className="h-full w-full object-cover"
+                />
               </div>
-              <h3 className="font-display text-xl mb-3">Personalisation</h3>
-              <p className="text-sm text-background/80 max-w-xs">
-                Add a bespoke touch with custom monogramming or embroidery, hand-finished to perfection.
+              <h3 className="font-display text-xl tracking-tight mb-3">Complimentary Shipping</h3>
+              <p className="text-sm text-muted-foreground mb-4 flex-1">
+                Enjoy free worldwide delivery on all orders. We partner with premium couriers to ensure timely arrival.
               </p>
+              <Link to="/shop" className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors">
+                Learn More →
+              </Link>
             </div>
 
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-6 h-12 w-12 flex items-center justify-center border border-background/30 rounded-sm">
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M12 8c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm0 2c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 7c-3.314 0-6 1.686-6 4v3h12v-3c0-2.314-2.686-4-6-4z"
-                  />
-                </svg>
+            {/* Service Card 3: Personalisation */}
+            <div className="flex flex-col">
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-secondary/30 border border-border/40 mb-6">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=600"
+                  alt="Personalisation"
+                  className="h-full w-full object-cover"
+                />
               </div>
-              <h3 className="font-display text-xl mb-3">Expert Care</h3>
-              <p className="text-sm text-background/80 max-w-xs">
-                Our concierge team is available to assist with sizing, styling, and care recommendations.
+              <h3 className="font-display text-xl tracking-tight mb-3">Personalisation</h3>
+              <p className="text-sm text-muted-foreground mb-4 flex-1">
+                Add a bespoke touch with custom monogramming and hand-embroidery, finished in our atelier.
               </p>
+              <Link to="/shop" className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors">
+                Learn More →
+              </Link>
             </div>
           </div>
         </div>
