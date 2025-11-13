@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import HeroCarousel from "@/components/HeroCarousel";
 import ProductCarousel from "@/components/ProductCarousel";
+import PromotionalBanner from "@/components/PromotionalBanner";
+import DoublePromoBanner from "@/components/DoublePromoBanner";
 import { api } from "@/lib/api";
 
 export default function Index() {
