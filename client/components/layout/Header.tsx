@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 
 const nav = [
-  { to: "/", label: "Home" },
   { to: "/shop", label: "Shop" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
@@ -13,21 +12,23 @@ export default function Header() {
   const { count } = useCart();
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="font-display text-xl tracking-tight">
-          <span className="mr-2 inline-block h-2 w-2 rounded-full bg-accent align-middle" />
+    <header className="fixed top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
+      <div className="container flex h-20 items-center justify-between px-6">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2 font-display text-lg tracking-tight hover:opacity-80 transition-opacity">
           Arab Abayas
         </Link>
-        <nav className="hidden gap-6 md:flex">
+
+        {/* Centered Navigation */}
+        <nav className="hidden absolute left-1/2 -translate-x-1/2 gap-12 lg:flex">
           {nav.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
                 cn(
-                  "text-sm text-muted-foreground transition-colors hover:text-foreground",
-                  isActive && "text-foreground",
+                  "text-xs uppercase tracking-widest transition-colors hover:text-accent",
+                  isActive ? "text-foreground font-semibold" : "text-muted-foreground",
                 )
               }
               end
@@ -36,21 +37,19 @@ export default function Header() {
             </NavLink>
           ))}
         </nav>
-        <div className="flex items-center gap-2">
-          <Link
-            to="/shop"
-            className="hidden rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90 md:inline-flex"
-          >
-            Shop now
-          </Link>
 
+        {/* Right Actions */}
+        <div className="flex items-center gap-4">
+          <button className="text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors hidden sm:inline-flex">
+            Account
+          </button>
           <Link
             to="/cart"
-            className="relative inline-flex items-center rounded-md border bg-background px-3 py-2 text-sm hover:bg-accent/5"
+            className="relative inline-flex items-center gap-2 rounded-sm border border-border/60 bg-background/50 px-3 py-2 text-sm uppercase tracking-widest text-foreground hover:bg-secondary/30 transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-4 w-4"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -65,7 +64,7 @@ export default function Header() {
               <circle cx="18" cy="20" r="1" />
             </svg>
             {count > 0 && (
-              <span className="absolute -right-2 -top-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs text-destructive-foreground">
+              <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-accent text-xs font-semibold text-accent-foreground">
                 {count}
               </span>
             )}
