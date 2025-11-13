@@ -32,7 +32,6 @@ const heroes = [
 export default function HeroCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
-    autoplay: true,
   });
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
