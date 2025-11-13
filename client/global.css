@@ -12,35 +12,35 @@
    * A different format will require also updating the theme in tailwind.config.ts.
   */
   :root {
-    --background: 40 20% 98%; /* warm ivory */
-    --foreground: 230 10% 10%; /* near-black */
+    --background: 42 35% 97%; /* creamy off-white */
+    --foreground: 20 10% 12%; /* deep warm brown */
 
-    --card: 0 0% 100%;
-    --card-foreground: 230 10% 10%;
+    --card: 0 0% 100%; /* pure white */
+    --card-foreground: 20 10% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 230 10% 10%;
+    --popover-foreground: 20 10% 12%;
 
-    --primary: 30 6% 15%; /* sable */
-    --primary-foreground: 0 0% 98%;
+    --primary: 20 10% 12%; /* deep warm brown */
+    --primary-foreground: 42 35% 97%;
 
-    --secondary: 36 30% 94%; /* sand */
-    --secondary-foreground: 30 6% 15%;
+    --secondary: 38 45% 92%; /* warm beige/sand */
+    --secondary-foreground: 20 10% 12%;
 
-    --muted: 36 30% 94%;
-    --muted-foreground: 230 8% 36%;
+    --muted: 38 20% 88%;
+    --muted-foreground: 20 30% 40%;
 
-    --accent: 43 74% 49%; /* gold */
-    --accent-foreground: 26 15% 15%;
+    --accent: 36 85% 48%; /* warm gold */
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 36 20% 86%;
-    --input: 36 20% 86%;
-    --ring: 43 74% 49%;
+    --border: 38 30% 90%;
+    --input: 38 30% 90%;
+    --ring: 36 85% 48%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 100%;
 
@@ -60,41 +60,41 @@
   }
 
   .dark {
-    --background: 240 10% 6%;
-    --foreground: 0 0% 98%;
+    --background: 42 35% 97%;
+    --foreground: 20 10% 12%;
 
-    --card: 240 10% 8%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 10% 12%;
 
-    --popover: 240 10% 8%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 10% 12%;
 
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 10% 6%;
+    --primary: 20 10% 12%;
+    --primary-foreground: 42 35% 97%;
 
-    --secondary: 240 6% 16%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 38 45% 92%;
+    --secondary-foreground: 20 10% 12%;
 
-    --muted: 240 6% 16%;
-    --muted-foreground: 0 0% 80%;
+    --muted: 38 20% 88%;
+    --muted-foreground: 20 30% 40%;
 
-    --accent: 43 74% 49%;
-    --accent-foreground: 240 10% 6%;
+    --accent: 36 85% 48%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 6% 16%;
-    --input: 240 6% 16%;
-    --ring: 43 74% 49%;
-    --sidebar-background: 240 6% 12%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 0 0% 98%;
-    --sidebar-primary-foreground: 240 6% 12%;
-    --sidebar-accent: 240 6% 16%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 6% 16%;
-    --sidebar-ring: 43 74% 49%;
+    --border: 38 30% 90%;
+    --input: 38 30% 90%;
+    --ring: 36 85% 48%;
+    --sidebar-background: 42 35% 97%;
+    --sidebar-foreground: 20 10% 12%;
+    --sidebar-primary: 20 10% 12%;
+    --sidebar-primary-foreground: 42 35% 97%;
+    --sidebar-accent: 38 45% 92%;
+    --sidebar-accent-foreground: 20 10% 12%;
+    --sidebar-border: 38 30% 90%;
+    --sidebar-ring: 36 85% 48%;
   }
 }
 
@@ -116,6 +116,19 @@
       Arial,
       Noto Sans,
       sans-serif;
+    line-height: 1.6;
+  }
+
+  p {
+    @apply text-foreground/90;
+  }
+
+  a {
+    @apply text-foreground transition-colors;
+  }
+
+  button {
+    @apply transition-colors;
   }
 
   h1,
@@ -126,7 +139,54 @@
     font-family:
       "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times,
       serif;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 2rem;
+    letter-spacing: -0.015em;
+  }
+
+  h3 {
+    font-size: 1.5rem;
     letter-spacing: -0.01em;
+  }
+
+  .uppercase-heading {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+
+  /* Section spacing improvements */
+  section {
+    margin-bottom: 0;
+  }
+
+  /* Container padding refinement */
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1.875rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
+    h3 {
+      font-size: 1.25rem;
+    }
   }
 
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {

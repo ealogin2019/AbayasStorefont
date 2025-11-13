@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
 import ProductCard from "@/components/product/ProductCard";
 import { api } from "@/lib/api";
 
@@ -9,7 +10,15 @@ export default function Shop() {
     queryFn: api.listProducts,
   });
   const products = data?.products ?? [];
+  const [searchParams] = useSearchParams();
   const [q, setQ] = useState("");
+
+  useEffect(() => {
+    const query = searchParams.get("q");
+    if (query) {
+      setQ(query);
+    }
+  }, [searchParams]);
 
   const filtered = useMemo(() => {
     const term = q.trim().toLowerCase();

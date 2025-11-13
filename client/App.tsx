@@ -16,15 +16,18 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
+import AnnouncementBar from "./components/AnnouncementBar";
+import CookieConsent from "./components/CookieConsent";
 import { CartProvider } from "@/hooks/useCart";
 
 const queryClient = new QueryClient();
 
 function Layout() {
   return (
-    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] bg-background text-foreground">
+    <div className="min-h-screen grid grid-rows-[auto_auto_1fr_auto] bg-background text-foreground">
+      <AnnouncementBar />
       <Header />
-      <main>
+      <main className="pt-20">
         <Outlet />
       </main>
       <Footer />
@@ -38,6 +41,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <CookieConsent />
         <BrowserRouter>
           <Routes>
             <Route element={<Layout />}>
