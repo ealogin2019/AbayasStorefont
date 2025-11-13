@@ -20,12 +20,14 @@ export default function Index() {
 
       {/* Featured Collection Carousel */}
       {products.length > 0 && (
-        <ProductCarousel
-          title="Featured Collection"
-          description="Our curated selection of premium pieces"
-          products={products.slice(0, 6)}
-          itemsPerView={3}
-        />
+        <section className="py-20 md:py-32 border-t border-border/40">
+          <ProductCarousel
+            title="Featured Collection"
+            description="Our curated selection of premium pieces"
+            products={products.slice(0, 6)}
+            itemsPerView={3}
+          />
+        </section>
       )}
 
       {/* Promotional Banner */}
