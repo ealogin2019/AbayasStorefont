@@ -95,12 +95,14 @@ export default function Index() {
 
       {/* Best Sellers Carousel */}
       {products.length > 0 && (
-        <ProductCarousel
-          title="Best Sellers"
-          description="Our most-loved designs"
-          products={products}
-          itemsPerView={4}
-        />
+        <section className="py-20 md:py-32 border-t border-border/40">
+          <ProductCarousel
+            title="Best Sellers"
+            description="Our most-loved designs"
+            products={products}
+            itemsPerView={4}
+          />
+        </section>
       )}
 
       {/* Editorial Section 2 */}
