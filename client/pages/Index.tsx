@@ -209,7 +209,7 @@ export default function Index() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="border-t border-border/40 bg-secondary/30 py-16 md:py-24">
+      <section className="border-t border-border/40 bg-secondary/30 py-20 md:py-32">
         <div className="container max-w-2xl text-center">
           <p className="uppercase tracking-widest text-xs text-muted-foreground mb-4">
             Stay Connected
