@@ -126,7 +126,15 @@
     font-family:
       "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times,
       serif;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
+    font-weight: 500;
+  }
+
+  .uppercase-heading {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    font-size: 0.875rem;
   }
 
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
