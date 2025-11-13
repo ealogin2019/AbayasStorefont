@@ -139,15 +139,54 @@
     font-family:
       "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times,
       serif;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     font-weight: 500;
+    line-height: 1.2;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 2rem;
+    letter-spacing: -0.015em;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
   }
 
   .uppercase-heading {
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
+  }
+
+  /* Section spacing improvements */
+  section {
+    margin-bottom: 0;
+  }
+
+  /* Container padding refinement */
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1.875rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
+    h3 {
+      font-size: 1.25rem;
+    }
   }
 
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
