@@ -28,6 +28,39 @@ export default function Index() {
         />
       )}
 
+      {/* Promotional Banner */}
+      <PromotionalBanner
+        title="Summer Collection 2025"
+        subtitle="New Arrivals"
+        image="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200"
+        cta="Shop Now"
+        ctaLink="/shop"
+        alignment="center"
+        variant="dark"
+      />
+
+      {/* Double Promotional Banners */}
+      <section className="py-8">
+        <div className="container">
+          <DoublePromoBanner
+            items={[
+              {
+                title: "New In Abayas",
+                image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=1200",
+                cta: "Explore",
+                ctaLink: "/shop",
+              },
+              {
+                title: "Premium Fabrics",
+                image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fe98ea904eac24d2a837f6a410800c6d1?format=webp&width=1200",
+                cta: "Discover",
+                ctaLink: "/shop",
+              },
+            ]}
+          />
+        </div>
+      </section>
+
       {/* Editorial Section 1 */}
       <section className="border-t border-border/40 bg-secondary/20">
         <div className="container py-16 md:py-24 grid gap-8 md:grid-cols-2">
