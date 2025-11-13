@@ -1,0 +1,142 @@
+import { useState, useEffect, useCallback } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import ProductCard from "./product/ProductCard";
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  description?: string;
+}
+
+interface ProductCarouselProps {
+  title: string;
+  description?: string;
+  products: Product[];
+  itemsPerView?: number;
+}
+
+export default function ProductCarousel({
+  title,
+  description,
+  products,
+  itemsPerView = 3,
+}: ProductCarouselProps) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    loop: false,
+    skipSnaps: false,
+  });
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCanScrollPrev(emblaApi.canScrollPrev());
+    setCanScrollNext(emblaApi.canScrollNext());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  if (!products.length) return null;
+
+  return (
+    <section className="py-16 md:py-24">
+      <div className="container">
+        <div className="mb-12 flex items-end justify-between">
+          <div>
+            <h2 className="font-display text-3xl md:text-4xl tracking-tight mb-2">
+              {title}
+            </h2>
+            {description && (
+              <p className="text-muted-foreground text-sm">{description}</p>
+            )}
+          </div>
+          {(canScrollPrev || canScrollNext) && (
+            <div className="hidden md:flex gap-3">
+              <button
+                onClick={scrollPrev}
+                disabled={!canScrollPrev}
+                className="h-10 w-10 flex items-center justify-center border border-border/60 hover:bg-secondary/30 disabled:opacity-30 transition-colors"
+                aria-label="Previous products"
+              >
+                <svg
+                  className="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <button
+                onClick={scrollNext}
+                disabled={!canScrollNext}
+                className="h-10 w-10 flex items-center justify-center border border-border/60 hover:bg-secondary/30 disabled:opacity-30 transition-colors"
+                aria-label="Next products"
+              >
+                <svg
+                  className="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex gap-6 md:gap-8">
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="flex-[0_0_100%] sm:flex-[0_0_calc(50%-12px)] lg:flex-[0_0_calc(33.333%-16px)]"
+              >
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile scroll indicator */}
+        <div className="mt-8 md:hidden flex justify-center gap-1.5">
+          {Array.from({ length: Math.ceil(products.length / 2) }).map(
+            (_, i) => (
+              <div
+                key={i}
+                className="h-1 w-1.5 rounded-full bg-muted-foreground/30"
+              />
+            ),
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
