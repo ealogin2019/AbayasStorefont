@@ -113,11 +113,11 @@ export default function ProductCarousel({
         </div>
 
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-6 md:gap-8">
+          <div className="flex gap-4 md:gap-6 lg:gap-8">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex-[0_0_100%] sm:flex-[0_0_calc(50%-12px)] lg:flex-[0_0_calc(33.333%-16px)]"
+                className="flex-[0_0_100%] sm:flex-[0_0_calc(50%-8px)] md:flex-[0_0_calc(50%-12px)] lg:flex-[0_0_calc(33.333%-16px)] xl:flex-[0_0_calc(25%-18px)]"
               >
                 <ProductCard product={product} />
               </div>
