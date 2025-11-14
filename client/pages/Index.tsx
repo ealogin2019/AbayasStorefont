@@ -106,8 +106,8 @@ export default function Index() {
       )}
 
       {/* Editorial Section 2 */}
-      <section className="py-16 md:py-24 border-t border-border/40">
-        <div className="container grid gap-8 md:grid-cols-2">
+      <section className="py-12 md:py-16 lg:py-24 border-t border-border/40">
+        <div className="container grid gap-6 md:gap-8 md:grid-cols-2">
           <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-secondary border border-border/40 order-2 md:order-1">
             <img
               src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=800"
