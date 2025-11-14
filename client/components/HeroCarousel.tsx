@@ -75,16 +75,16 @@ export default function HeroCarousel() {
               />
               <div className="relative flex h-[350px] flex-col items-center justify-center px-4 py-12 text-center sm:h-[450px] md:h-[600px] lg:h-[700px]">
                 <div className="absolute inset-0 bg-black/20" />
-                <div className="relative z-10 max-w-2xl">
-                  <p className="uppercase tracking-widest text-sm text-white/80 mb-4">
+                <div className="relative z-10 max-w-2xl px-2">
+                  <p className="uppercase tracking-widest text-xs sm:text-sm text-white/80 mb-2 sm:mb-4">
                     {hero.subtitle}
                   </p>
-                  <h1 className="font-display text-5xl md:text-7xl leading-tight tracking-tight text-white mb-8">
+                  <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-7xl leading-tight tracking-tight text-white mb-4 sm:mb-8">
                     {hero.title}
                   </h1>
                   <Link
                     to={hero.ctaLink}
-                    className="inline-block uppercase tracking-widest text-sm font-semibold bg-white text-foreground px-8 py-4 hover:bg-white/90 transition-colors"
+                    className="inline-block uppercase tracking-widest text-xs sm:text-sm font-semibold bg-white text-foreground px-4 sm:px-8 py-2 sm:py-4 hover:bg-white/90 transition-colors"
                   >
                     {hero.cta}
                   </Link>
