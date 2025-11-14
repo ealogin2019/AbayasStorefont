@@ -34,9 +34,13 @@ export default function Shop() {
     <div className="container py-8 md:py-12 px-4 md:px-6">
       <div className="mb-6 flex flex-col items-start gap-4">
         <div>
-          <h1 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight">Arab Abayas Collection</h1>
+          <h1 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight">
+            Arab Abayas Collection
+          </h1>
           <p className="text-xs md:text-sm text-muted-foreground max-w-md mt-2">
-            Explore our curated range of modern abayas, crafted for elegance and comfort. Enjoy complimentary shipping and signature gift wrap on every order.
+            Explore our curated range of modern abayas, crafted for elegance and
+            comfort. Enjoy complimentary shipping and signature gift wrap on
+            every order.
           </p>
         </div>
         <div className="w-full">

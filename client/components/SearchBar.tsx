@@ -24,7 +24,12 @@ export default function SearchBar() {
         aria-label="Search"
         title="Search"
       >
-        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -38,7 +43,10 @@ export default function SearchBar() {
       {isOpen && (
         <div className="fixed inset-0 top-10 z-50 bg-background border-b border-border/40 p-4 md:p-6 block">
           <div className="flex items-center gap-4 mb-4 md:mb-0">
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto flex-1 w-full">
+            <form
+              onSubmit={handleSearch}
+              className="max-w-2xl mx-auto flex-1 w-full"
+            >
               <div className="relative">
                 <input
                   type="text"
@@ -52,7 +60,12 @@ export default function SearchBar() {
                   type="submit"
                   className="absolute right-0 bottom-3 text-foreground hover:opacity-70 transition-opacity"
                 >
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -68,7 +81,12 @@ export default function SearchBar() {
               className="text-muted-foreground hover:text-foreground transition-colors md:hidden"
               aria-label="Close search"
             >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

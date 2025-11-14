@@ -25,7 +25,9 @@ export default function Cart() {
 
   return (
     <div className="container py-8 md:py-12 px-4 md:px-6">
-      <h1 className="font-display text-2xl md:text-3xl lg:text-4xl">Your Bag</h1>
+      <h1 className="font-display text-2xl md:text-3xl lg:text-4xl">
+        Your Bag
+      </h1>
       <div className="mt-6 md:mt-8 grid gap-6 md:gap-8 md:grid-cols-3">
         <div className="md:col-span-2">
           <ul className="space-y-3 md:space-y-4">
@@ -42,7 +44,9 @@ export default function Cart() {
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                     <div className="min-w-0">
-                      <div className="font-medium text-sm md:text-base truncate">{it.name}</div>
+                      <div className="font-medium text-sm md:text-base truncate">
+                        {it.name}
+                      </div>
                       <div className="text-xs md:text-sm text-muted-foreground">
                         {it.size ?? "-"}
                       </div>

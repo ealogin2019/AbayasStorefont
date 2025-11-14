@@ -9,7 +9,8 @@ const heroes = [
     subtitle: "Modern Luxury, Timeless Elegance",
     cta: "Explore Collection",
     ctaLink: "#featured",
-    image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200",
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200",
   },
   {
     id: 2,
@@ -17,7 +18,8 @@ const heroes = [
     subtitle: "Discover Our Latest Designs",
     cta: "Shop Now",
     ctaLink: "/shop",
-    image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200",
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200",
   },
   {
     id: 3,
@@ -25,7 +27,8 @@ const heroes = [
     subtitle: "Luxury Crafted for You",
     cta: "View Collection",
     ctaLink: "/shop",
-    image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200",
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200",
   },
 ];
 

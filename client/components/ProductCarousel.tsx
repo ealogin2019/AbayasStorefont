@@ -63,7 +63,9 @@ export default function ProductCarousel({
               {title}
             </h2>
             {description && (
-              <p className="text-muted-foreground text-xs md:text-sm">{description}</p>
+              <p className="text-muted-foreground text-xs md:text-sm">
+                {description}
+              </p>
             )}
           </div>
           {(canScrollPrev || canScrollNext) && (

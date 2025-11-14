@@ -48,13 +48,15 @@ export default function Index() {
             items={[
               {
                 title: "New In Abayas",
-                image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=1200",
+                image:
+                  "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=1200",
                 cta: "Explore",
                 ctaLink: "/shop",
               },
               {
                 title: "Premium Fabrics",
-                image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fe98ea904eac24d2a837f6a410800c6d1?format=webp&width=1200",
+                image:
+                  "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fe98ea904eac24d2a837f6a410800c6d1?format=webp&width=1200",
                 cta: "Discover",
                 ctaLink: "/shop",
               },
@@ -74,7 +76,9 @@ export default function Index() {
               Signature Abayas
             </h2>
             <p className="text-foreground/80 leading-relaxed mb-8 max-w-md">
-              Discover our signature collection of abayas, meticulously crafted from the finest materials. Each piece combines traditional elegance with contemporary design, perfect for any occasion.
+              Discover our signature collection of abayas, meticulously crafted
+              from the finest materials. Each piece combines traditional
+              elegance with contemporary design, perfect for any occasion.
             </p>
             <Link
               to="/shop"
@@ -123,7 +127,9 @@ export default function Index() {
               Premium Quality, Luxe Comfort
             </h2>
             <p className="text-foreground/80 leading-relaxed mb-8 max-w-md">
-              Every abaya is carefully crafted with attention to detail. We use only the finest fabrics and employ traditional techniques combined with modern design sensibilities.
+              Every abaya is carefully crafted with attention to detail. We use
+              only the finest fabrics and employ traditional techniques combined
+              with modern design sensibilities.
             </p>
             <Link
               to="/about"
@@ -146,7 +152,8 @@ export default function Index() {
               Premium Services
             </h2>
             <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
-              Every order includes our signature services to ensure an exceptional experience.
+              Every order includes our signature services to ensure an
+              exceptional experience.
             </p>
           </div>
 
@@ -160,11 +167,17 @@ export default function Index() {
                   className="h-full w-full object-cover"
                 />
               </div>
-              <h3 className="font-display text-xl tracking-tight mb-3">Signature Gift Wrap</h3>
+              <h3 className="font-display text-xl tracking-tight mb-3">
+                Signature Gift Wrap
+              </h3>
               <p className="text-sm text-muted-foreground mb-4 flex-1">
-                Every order arrives beautifully wrapped in our signature boxes, perfect for gifting or personal indulgence.
+                Every order arrives beautifully wrapped in our signature boxes,
+                perfect for gifting or personal indulgence.
               </p>
-              <Link to="/shop" className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors">
+              <Link
+                to="/shop"
+                className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors"
+              >
                 Learn More →
               </Link>
             </div>
@@ -178,11 +191,17 @@ export default function Index() {
                   className="h-full w-full object-cover"
                 />
               </div>
-              <h3 className="font-display text-xl tracking-tight mb-3">Complimentary Shipping</h3>
+              <h3 className="font-display text-xl tracking-tight mb-3">
+                Complimentary Shipping
+              </h3>
               <p className="text-sm text-muted-foreground mb-4 flex-1">
-                Enjoy free worldwide delivery on all orders. We partner with premium couriers to ensure timely arrival.
+                Enjoy free worldwide delivery on all orders. We partner with
+                premium couriers to ensure timely arrival.
               </p>
-              <Link to="/shop" className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors">
+              <Link
+                to="/shop"
+                className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors"
+              >
                 Learn More →
               </Link>
             </div>
@@ -196,11 +215,17 @@ export default function Index() {
                   className="h-full w-full object-cover"
                 />
               </div>
-              <h3 className="font-display text-xl tracking-tight mb-3">Personalisation</h3>
+              <h3 className="font-display text-xl tracking-tight mb-3">
+                Personalisation
+              </h3>
               <p className="text-sm text-muted-foreground mb-4 flex-1">
-                Add a bespoke touch with custom monogramming and hand-embroidery, finished in our atelier.
+                Add a bespoke touch with custom monogramming and
+                hand-embroidery, finished in our atelier.
               </p>
-              <Link to="/shop" className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors">
+              <Link
+                to="/shop"
+                className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors"
+              >
                 Learn More →
               </Link>
             </div>
@@ -218,7 +243,8 @@ export default function Index() {
             Subscribe to Our Newsletter
           </h2>
           <p className="text-sm md:text-base text-foreground/80 mb-6 md:mb-8 max-w-lg mx-auto">
-            Be the first to know about new collections, exclusive offers, and styling tips from our team.
+            Be the first to know about new collections, exclusive offers, and
+            styling tips from our team.
           </p>
           <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input
