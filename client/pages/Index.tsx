@@ -65,7 +65,7 @@ export default function Index() {
 
       {/* Editorial Section 1 */}
       <section className="border-t border-border/40 bg-secondary/20">
-        <div className="container py-16 md:py-24 grid gap-8 md:grid-cols-2">
+        <div className="container py-12 md:py-16 lg:py-24 grid gap-6 md:gap-8 md:grid-cols-2">
           <div className="flex flex-col justify-center">
             <p className="uppercase tracking-widest text-xs text-muted-foreground mb-4">
               Timeless Collection
