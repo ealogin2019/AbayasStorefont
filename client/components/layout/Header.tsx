@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const nav = [
   {
@@ -28,6 +29,7 @@ export default function Header() {
   const { count } = useCart();
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [showStoreSelector, setShowStoreSelector] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-10 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
