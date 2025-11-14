@@ -92,18 +92,18 @@ export default function ProductCard({ product }: { product: Product }) {
       </Link>
 
       {/* Product Info */}
-      <Link to={`/product/${product.id}`} className="block pt-5 pb-3">
-        <h3 className="font-display text-sm leading-snug tracking-tight mb-2 line-clamp-2 group-hover:text-accent transition-colors">
+      <Link to={`/product/${product.id}`} className="block pt-3 pb-2">
+        <h3 className="font-display text-xs sm:text-sm leading-snug tracking-tight mb-1 sm:mb-2 line-clamp-2 group-hover:text-accent transition-colors">
           {product.name}
         </h3>
-        <p className="text-xs text-muted-foreground line-clamp-2 mb-4">
+        <p className="text-xs text-muted-foreground line-clamp-2 mb-2 sm:mb-4 hidden sm:block">
           {product.description}
         </p>
       </Link>
 
       {/* Price and Quick Add Footer */}
-      <div className="flex items-end justify-between">
-        <span className="text-sm font-semibold tracking-tight uppercase">
+      <div className="flex items-end justify-between gap-2">
+        <span className="text-xs sm:text-sm font-semibold tracking-tight uppercase">
           {product.currency} {product.price.toFixed(2)}
         </span>
         <button
