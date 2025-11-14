@@ -136,21 +136,21 @@ export default function Index() {
       </section>
 
       {/* Premium Services Section */}
-      <section className="py-16 md:py-24 border-t border-border/40">
+      <section className="py-12 md:py-16 lg:py-24 border-t border-border/40">
         <div className="container">
-          <div className="text-center mb-16">
-            <p className="uppercase tracking-widest text-xs text-muted-foreground mb-4">
+          <div className="text-center mb-12 md:mb-16">
+            <p className="uppercase tracking-widest text-xs text-muted-foreground mb-2 md:mb-4">
               Arab Abayas Concierge
             </p>
-            <h2 className="font-display text-3xl md:text-4xl tracking-tight mb-4">
+            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight mb-3 md:mb-4">
               Premium Services
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
               Every order includes our signature services to ensure an exceptional experience.
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-6 md:gap-8 md:grid-cols-3">
             {/* Service Card 1: Gift Wrap */}
             <div className="flex flex-col">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-secondary/30 border border-border/40 mb-6">
