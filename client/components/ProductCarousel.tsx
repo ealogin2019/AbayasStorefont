@@ -126,16 +126,18 @@ export default function ProductCarousel({
         </div>
 
         {/* Mobile scroll indicator */}
-        <div className="mt-8 md:hidden flex justify-center gap-1.5">
-          {Array.from({ length: Math.ceil(products.length / 2) }).map(
-            (_, i) => (
-              <div
-                key={i}
-                className="h-1 w-1.5 rounded-full bg-muted-foreground/30"
-              />
-            ),
-          )}
-        </div>
+        {products.length > 1 && (
+          <div className="mt-6 md:hidden flex justify-center gap-1.5">
+            {Array.from({ length: Math.ceil(products.length / 1) }).map(
+              (_, i) => (
+                <div
+                  key={i}
+                  className="h-1 w-1.5 rounded-full bg-muted-foreground/30"
+                />
+              ),
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
