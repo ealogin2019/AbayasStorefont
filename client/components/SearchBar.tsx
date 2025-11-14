@@ -35,7 +35,7 @@ export default function SearchBar() {
 
       {/* Search Panel */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 bg-background border-b border-border/40 p-6 hidden lg:block">
+        <div className="fixed inset-0 top-10 z-50 bg-background border-b border-border/40 p-6 hidden lg:block">
           <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
             <div className="relative">
               <input
