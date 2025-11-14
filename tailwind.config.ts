@@ -2,7 +2,13 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./client/**/*.{ts,tsx}"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+    "./client/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -13,11 +19,17 @@ export default {
       },
     },
     extend: {
-      spacing: {
-        "128": "32rem",
-        "144": "36rem",
-      },
       colors: {
+        // Luxury color palette
+        luxury: {
+          cream: '#F8F8F8',
+          'cream-dark': '#F0F0F0',
+          gold: '#D4AF37',
+          'gold-light': '#E5C158',
+          charcoal: '#1A1A1A',
+          stone: '#E5E5E5',
+          'stone-dark': '#CCCCCC',
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -51,16 +63,15 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
+      },
+      fontFamily: {
+        serif: ['Playfair Display', 'Georgia', 'serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      letterSpacing: {
+        'luxury': '0.05em',
+        'ultra-wide': '0.15em',
+        'wide': '0.1em',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -69,48 +80,37 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-      },
-      fontFamily: {
-        sans: [
-          "Inter",
-          "ui-sans-serif",
-          "system-ui",
-          "-apple-system",
-          "Segoe UI",
-          "Roboto",
-          "Helvetica Neue",
-          "Arial",
-          "Noto Sans",
-          "sans-serif",
-        ],
-        display: [
-          '"Playfair Display"',
-          "ui-serif",
-          "Georgia",
-          "Cambria",
-          "Times New Roman",
-          "Times",
-          "serif",
-        ],
+        'fade-in': 'fadeIn 0.6s ease-in-out',
+        'slide-up': 'slideUp 0.6s ease-out',
+        'scale-in': 'scaleIn 0.3s ease-out',
+        'shimmer': 'shimmer 2s infinite',
       },
     },
   },
