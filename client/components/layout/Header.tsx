@@ -110,6 +110,9 @@ export default function Header() {
               )}
             </div>
 
+            {/* Search */}
+            <SearchBar />
+
             {/* Wishlist */}
             <button className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors hidden sm:inline-flex items-center gap-1.5">
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
