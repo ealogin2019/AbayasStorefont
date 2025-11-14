@@ -24,30 +24,34 @@ export default function Cart() {
     );
 
   return (
-    <div className="container py-12">
-  <h1 className="font-display text-3xl md:text-4xl">Your Bag</h1>
-      <div className="mt-8 grid gap-8 md:grid-cols-3">
+    <div className="container py-8 md:py-12 px-4 md:px-6">
+      <h1 className="font-display text-2xl md:text-3xl lg:text-4xl">
+        Your Bag
+      </h1>
+      <div className="mt-6 md:mt-8 grid gap-6 md:gap-8 md:grid-cols-3">
         <div className="md:col-span-2">
-          <ul className="space-y-4">
+          <ul className="space-y-3 md:space-y-4">
             {items.map((it) => (
               <li
                 key={it.id}
-                className="flex items-center gap-4 rounded-md border p-4"
+                className="flex items-start gap-3 md:gap-4 rounded-md border p-3 md:p-4"
               >
                 <img
                   src={it.image}
                   alt={it.name}
-                  className="h-20 w-20 rounded-md object-cover"
+                  className="h-16 w-16 md:h-20 md:w-20 rounded-md object-cover flex-shrink-0"
                 />
-                <div className="flex-1">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="font-medium">{it.name}</div>
-                      <div className="text-sm text-muted-foreground">
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="font-medium text-sm md:text-base truncate">
+                        {it.name}
+                      </div>
+                      <div className="text-xs md:text-sm text-muted-foreground">
                         {it.size ?? "-"}
                       </div>
                     </div>
-                    <div className="font-semibold">
+                    <div className="font-semibold text-sm md:text-base">
                       {it.currency} {it.price.toFixed(2)}
                     </div>
                   </div>

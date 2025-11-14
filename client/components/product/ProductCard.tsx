@@ -5,7 +5,9 @@ import { useCart } from "@/hooks/useCart";
 import { toast } from "sonner";
 
 export default function ProductCard({ product }: { product: Product }) {
-  const [selectedSize, setSelectedSize] = useState<string | undefined>(product.sizes?.[0]);
+  const [selectedSize, setSelectedSize] = useState<string | undefined>(
+    product.sizes?.[0],
+  );
   const [showSizeMenu, setShowSizeMenu] = useState(false);
   const { add } = useCart();
 
@@ -16,7 +18,8 @@ export default function ProductCard({ product }: { product: Product }) {
   };
 
   // Mark as "New" if it's in the first 2 products (demo logic)
-  const isNew = product.id === "sable-classic-black" || product.id === "noor-sand-kimono";
+  const isNew =
+    product.id === "sable-classic-black" || product.id === "noor-sand-kimono";
 
   return (
     <div className="group relative overflow-hidden">
@@ -42,7 +45,9 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* Overlay with Size Options */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="bg-background/95 backdrop-blur p-6 rounded-sm text-center transform scale-95 group-hover:scale-100 transition-transform">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">Select Size</p>
+            <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+              Select Size
+            </p>
             <div className="flex gap-2 mb-4 flex-wrap justify-center">
               {product.sizes.map((size) => (
                 <button
@@ -92,18 +97,18 @@ export default function ProductCard({ product }: { product: Product }) {
       </Link>
 
       {/* Product Info */}
-      <Link to={`/product/${product.id}`} className="block pt-5 pb-3">
-        <h3 className="font-display text-sm leading-snug tracking-tight mb-2 line-clamp-2 group-hover:text-accent transition-colors">
+      <Link to={`/product/${product.id}`} className="block pt-3 pb-2">
+        <h3 className="font-display text-xs sm:text-sm leading-snug tracking-tight mb-1 sm:mb-2 line-clamp-2 group-hover:text-accent transition-colors">
           {product.name}
         </h3>
-        <p className="text-xs text-muted-foreground line-clamp-2 mb-4">
+        <p className="text-xs text-muted-foreground line-clamp-2 mb-2 sm:mb-4 hidden sm:block">
           {product.description}
         </p>
       </Link>
 
       {/* Price and Quick Add Footer */}
-      <div className="flex items-end justify-between">
-        <span className="text-sm font-semibold tracking-tight uppercase">
+      <div className="flex items-end justify-between gap-2">
+        <span className="text-xs sm:text-sm font-semibold tracking-tight uppercase">
           {product.currency} {product.price.toFixed(2)}
         </span>
         <button

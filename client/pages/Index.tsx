@@ -20,7 +20,7 @@ export default function Index() {
 
       {/* Featured Collection Carousel */}
       {products.length > 0 && (
-        <section className="py-20 md:py-32 border-t border-border/40">
+        <section className="py-12 md:py-20 lg:py-32 border-t border-border/40">
           <ProductCarousel
             title="Featured Collection"
             description="Our curated selection of premium pieces"
@@ -48,13 +48,15 @@ export default function Index() {
             items={[
               {
                 title: "New In Abayas",
-                image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=1200",
+                image:
+                  "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=1200",
                 cta: "Explore",
                 ctaLink: "/shop",
               },
               {
                 title: "Premium Fabrics",
-                image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fe98ea904eac24d2a837f6a410800c6d1?format=webp&width=1200",
+                image:
+                  "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fe98ea904eac24d2a837f6a410800c6d1?format=webp&width=1200",
                 cta: "Discover",
                 ctaLink: "/shop",
               },
@@ -65,7 +67,7 @@ export default function Index() {
 
       {/* Editorial Section 1 */}
       <section className="border-t border-border/40 bg-secondary/20">
-        <div className="container py-16 md:py-24 grid gap-8 md:grid-cols-2">
+        <div className="container py-12 md:py-16 lg:py-24 grid gap-6 md:gap-8 md:grid-cols-2">
           <div className="flex flex-col justify-center">
             <p className="uppercase tracking-widest text-xs text-muted-foreground mb-4">
               Timeless Collection
@@ -74,7 +76,9 @@ export default function Index() {
               Signature Abayas
             </h2>
             <p className="text-foreground/80 leading-relaxed mb-8 max-w-md">
-              Discover our signature collection of abayas, meticulously crafted from the finest materials. Each piece combines traditional elegance with contemporary design, perfect for any occasion.
+              Discover our signature collection of abayas, meticulously crafted
+              from the finest materials. Each piece combines traditional
+              elegance with contemporary design, perfect for any occasion.
             </p>
             <Link
               to="/shop"
@@ -95,7 +99,7 @@ export default function Index() {
 
       {/* Best Sellers Carousel */}
       {products.length > 0 && (
-        <section className="py-20 md:py-32 border-t border-border/40">
+        <section className="py-12 md:py-20 lg:py-32 border-t border-border/40">
           <ProductCarousel
             title="Best Sellers"
             description="Our most-loved designs"
@@ -106,8 +110,8 @@ export default function Index() {
       )}
 
       {/* Editorial Section 2 */}
-      <section className="py-16 md:py-24 border-t border-border/40">
-        <div className="container grid gap-8 md:grid-cols-2">
+      <section className="py-12 md:py-16 lg:py-24 border-t border-border/40">
+        <div className="container grid gap-6 md:gap-8 md:grid-cols-2">
           <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-secondary border border-border/40 order-2 md:order-1">
             <img
               src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=800"
@@ -123,7 +127,9 @@ export default function Index() {
               Premium Quality, Luxe Comfort
             </h2>
             <p className="text-foreground/80 leading-relaxed mb-8 max-w-md">
-              Every abaya is carefully crafted with attention to detail. We use only the finest fabrics and employ traditional techniques combined with modern design sensibilities.
+              Every abaya is carefully crafted with attention to detail. We use
+              only the finest fabrics and employ traditional techniques combined
+              with modern design sensibilities.
             </p>
             <Link
               to="/about"
@@ -136,21 +142,22 @@ export default function Index() {
       </section>
 
       {/* Premium Services Section */}
-      <section className="py-16 md:py-24 border-t border-border/40">
+      <section className="py-12 md:py-16 lg:py-24 border-t border-border/40">
         <div className="container">
-          <div className="text-center mb-16">
-            <p className="uppercase tracking-widest text-xs text-muted-foreground mb-4">
+          <div className="text-center mb-12 md:mb-16">
+            <p className="uppercase tracking-widest text-xs text-muted-foreground mb-2 md:mb-4">
               Arab Abayas Concierge
             </p>
-            <h2 className="font-display text-3xl md:text-4xl tracking-tight mb-4">
+            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight mb-3 md:mb-4">
               Premium Services
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Every order includes our signature services to ensure an exceptional experience.
+            <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
+              Every order includes our signature services to ensure an
+              exceptional experience.
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-6 md:gap-8 md:grid-cols-3">
             {/* Service Card 1: Gift Wrap */}
             <div className="flex flex-col">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-secondary/30 border border-border/40 mb-6">
@@ -160,11 +167,17 @@ export default function Index() {
                   className="h-full w-full object-cover"
                 />
               </div>
-              <h3 className="font-display text-xl tracking-tight mb-3">Signature Gift Wrap</h3>
+              <h3 className="font-display text-xl tracking-tight mb-3">
+                Signature Gift Wrap
+              </h3>
               <p className="text-sm text-muted-foreground mb-4 flex-1">
-                Every order arrives beautifully wrapped in our signature boxes, perfect for gifting or personal indulgence.
+                Every order arrives beautifully wrapped in our signature boxes,
+                perfect for gifting or personal indulgence.
               </p>
-              <Link to="/shop" className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors">
+              <Link
+                to="/shop"
+                className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors"
+              >
                 Learn More →
               </Link>
             </div>
@@ -178,11 +191,17 @@ export default function Index() {
                   className="h-full w-full object-cover"
                 />
               </div>
-              <h3 className="font-display text-xl tracking-tight mb-3">Complimentary Shipping</h3>
+              <h3 className="font-display text-xl tracking-tight mb-3">
+                Complimentary Shipping
+              </h3>
               <p className="text-sm text-muted-foreground mb-4 flex-1">
-                Enjoy free worldwide delivery on all orders. We partner with premium couriers to ensure timely arrival.
+                Enjoy free worldwide delivery on all orders. We partner with
+                premium couriers to ensure timely arrival.
               </p>
-              <Link to="/shop" className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors">
+              <Link
+                to="/shop"
+                className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors"
+              >
                 Learn More →
               </Link>
             </div>
@@ -196,11 +215,17 @@ export default function Index() {
                   className="h-full w-full object-cover"
                 />
               </div>
-              <h3 className="font-display text-xl tracking-tight mb-3">Personalisation</h3>
+              <h3 className="font-display text-xl tracking-tight mb-3">
+                Personalisation
+              </h3>
               <p className="text-sm text-muted-foreground mb-4 flex-1">
-                Add a bespoke touch with custom monogramming and hand-embroidery, finished in our atelier.
+                Add a bespoke touch with custom monogramming and
+                hand-embroidery, finished in our atelier.
               </p>
-              <Link to="/shop" className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors">
+              <Link
+                to="/shop"
+                className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors"
+              >
                 Learn More →
               </Link>
             </div>
@@ -209,16 +234,17 @@ export default function Index() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="border-t border-border/40 bg-secondary/30 py-20 md:py-32">
-        <div className="container max-w-2xl text-center">
-          <p className="uppercase tracking-widest text-xs text-muted-foreground mb-4">
+      <section className="border-t border-border/40 bg-secondary/30 py-12 md:py-20 lg:py-32">
+        <div className="container max-w-2xl text-center px-4">
+          <p className="uppercase tracking-widest text-xs text-muted-foreground mb-2 md:mb-4">
             Stay Connected
           </p>
-          <h2 className="font-display text-3xl md:text-4xl tracking-tight mb-6">
+          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight mb-4 md:mb-6">
             Subscribe to Our Newsletter
           </h2>
-          <p className="text-foreground/80 mb-8 max-w-lg mx-auto">
-            Be the first to know about new collections, exclusive offers, and styling tips from our team.
+          <p className="text-sm md:text-base text-foreground/80 mb-6 md:mb-8 max-w-lg mx-auto">
+            Be the first to know about new collections, exclusive offers, and
+            styling tips from our team.
           </p>
           <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input

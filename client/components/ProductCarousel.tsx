@@ -55,15 +55,17 @@ export default function ProductCarousel({
   if (!products.length) return null;
 
   return (
-    <section className="py-16 md:py-24">
-      <div className="container">
-        <div className="mb-12 flex items-end justify-between">
+    <section className="py-12 md:py-16 lg:py-24">
+      <div className="container px-4 md:px-6">
+        <div className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
-            <h2 className="font-display text-3xl md:text-4xl tracking-tight mb-2">
+            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight mb-1 md:mb-2">
               {title}
             </h2>
             {description && (
-              <p className="text-muted-foreground text-sm">{description}</p>
+              <p className="text-muted-foreground text-xs md:text-sm">
+                {description}
+              </p>
             )}
           </div>
           {(canScrollPrev || canScrollNext) && (
@@ -113,11 +115,11 @@ export default function ProductCarousel({
         </div>
 
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-6 md:gap-8">
+          <div className="flex gap-4 md:gap-6 lg:gap-8">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex-[0_0_100%] sm:flex-[0_0_calc(50%-12px)] lg:flex-[0_0_calc(33.333%-16px)]"
+                className="flex-[0_0_100%] sm:flex-[0_0_calc(50%-8px)] md:flex-[0_0_calc(50%-12px)] lg:flex-[0_0_calc(33.333%-16px)] xl:flex-[0_0_calc(25%-18px)]"
               >
                 <ProductCard product={product} />
               </div>
@@ -126,16 +128,18 @@ export default function ProductCarousel({
         </div>
 
         {/* Mobile scroll indicator */}
-        <div className="mt-8 md:hidden flex justify-center gap-1.5">
-          {Array.from({ length: Math.ceil(products.length / 2) }).map(
-            (_, i) => (
-              <div
-                key={i}
-                className="h-1 w-1.5 rounded-full bg-muted-foreground/30"
-              />
-            ),
-          )}
-        </div>
+        {products.length > 1 && (
+          <div className="mt-6 md:hidden flex justify-center gap-1.5">
+            {Array.from({ length: Math.ceil(products.length / 1) }).map(
+              (_, i) => (
+                <div
+                  key={i}
+                  className="h-1 w-1.5 rounded-full bg-muted-foreground/30"
+                />
+              ),
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
