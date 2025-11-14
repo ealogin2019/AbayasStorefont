@@ -55,15 +55,15 @@ export default function ProductCarousel({
   if (!products.length) return null;
 
   return (
-    <section className="py-16 md:py-24">
-      <div className="container">
-        <div className="mb-12 flex items-end justify-between">
+    <section className="py-12 md:py-16 lg:py-24">
+      <div className="container px-4 md:px-6">
+        <div className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
-            <h2 className="font-display text-3xl md:text-4xl tracking-tight mb-2">
+            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight mb-1 md:mb-2">
               {title}
             </h2>
             {description && (
-              <p className="text-muted-foreground text-sm">{description}</p>
+              <p className="text-muted-foreground text-xs md:text-sm">{description}</p>
             )}
           </div>
           {(canScrollPrev || canScrollNext) && (
