@@ -139,8 +139,8 @@ export default function Header() {
 
           {/* Right Actions */}
           <div className="flex items-center gap-3 lg:gap-4 ml-auto">
-            {/* Store Selector */}
-            <div className="relative hidden sm:block">
+            {/* Store Selector - Desktop Only */}
+            <div className="relative hidden md:block">
               <button
                 onClick={() => setShowStoreSelector(!showStoreSelector)}
                 className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
@@ -168,15 +168,15 @@ export default function Header() {
             {/* Search */}
             <SearchBar />
 
-            {/* Wishlist */}
-            <button className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors hidden sm:inline-flex items-center gap-1.5">
+            {/* Wishlist - Desktop Only */}
+            <button className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors hidden md:inline-flex items-center gap-1.5">
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 8.25c0-1.085-.667-2.025-1.587-2.431a2.25 2.25 0 00-2.331-.873c-.464.15-.909.576-1.348.576-.46 0-.891-.423-1.348-.576a2.25 2.25 0 00-2.331.873c-.92.406-1.587 1.346-1.587 2.431M9 12c0-1.657.895-3.095 2.225-3.863m5.55 0c1.33.768 2.225 2.206 2.225 3.863m-12 0a8.25 8.25 0 1116.5 0m-1.5 0c0 .937-.118 1.846-.338 2.729M15 12a3 3 0 11-6 0m6 0a3 3 0 1-6 0m6 0h.008v.008h-.008V12z" />
               </svg>
             </button>
 
-            {/* Account */}
-            <button className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors hidden sm:inline-flex items-center gap-1.5">
+            {/* Account - Desktop Only */}
+            <button className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors hidden md:inline-flex items-center gap-1.5">
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
               </svg>
@@ -185,7 +185,7 @@ export default function Header() {
             {/* Cart */}
             <Link
               to="/cart"
-              className="relative inline-flex items-center gap-2 rounded-sm border border-border/60 bg-background/50 px-3 py-2 text-xs uppercase tracking-widest text-foreground hover:bg-secondary/30 transition-colors"
+              className="relative inline-flex items-center gap-1 rounded-sm border border-border/60 bg-background/50 px-2 lg:px-3 py-2 text-xs uppercase tracking-widest text-foreground hover:bg-secondary/30 transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
