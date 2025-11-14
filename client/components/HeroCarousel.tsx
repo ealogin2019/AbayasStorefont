@@ -73,7 +73,7 @@ export default function HeroCarousel() {
                 alt={hero.title}
                 className="absolute inset-0 h-full w-full object-cover"
               />
-              <div className="relative flex h-[600px] flex-col items-center justify-center px-6 py-20 text-center md:h-[700px]">
+              <div className="relative flex h-[350px] flex-col items-center justify-center px-4 py-12 text-center sm:h-[450px] md:h-[600px] lg:h-[700px]">
                 <div className="absolute inset-0 bg-black/20" />
                 <div className="relative z-10 max-w-2xl">
                   <p className="uppercase tracking-widest text-sm text-white/80 mb-4">
