@@ -20,8 +20,9 @@ export default function SearchBar() {
       {/* Search Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors hidden lg:inline-flex items-center gap-1.5"
+        className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5"
         aria-label="Search"
+        title="Search"
       >
         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -35,7 +36,7 @@ export default function SearchBar() {
 
       {/* Search Panel */}
       {isOpen && (
-        <div className="fixed inset-0 top-10 z-50 bg-background border-b border-border/40 p-6 hidden lg:block">
+        <div className="fixed inset-0 top-10 z-50 bg-background border-b border-border/40 p-4 md:p-6 block">
           <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
             <div className="relative">
               <input
