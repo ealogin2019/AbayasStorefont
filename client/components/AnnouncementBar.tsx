@@ -24,8 +24,8 @@ export default function AnnouncementBar() {
 
   return (
     <div className="bg-secondary/50 border-b border-border/40">
-      <div className="container h-10 flex items-center justify-between px-6">
-        <p className="text-xs uppercase tracking-widest text-foreground/80 flex-1 text-center">
+      <div className="container h-auto md:h-10 flex items-center justify-between px-4 md:px-6 py-2 md:py-0">
+        <p className="text-[10px] md:text-xs uppercase tracking-widest text-foreground/80 flex-1 text-center">
           {announcements[current]}
         </p>
         <button
