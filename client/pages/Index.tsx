@@ -20,7 +20,7 @@ export default function Index() {
 
       {/* Featured Collection Carousel */}
       {products.length > 0 && (
-        <section className="py-20 md:py-32 border-t border-border/40">
+        <section className="py-12 md:py-20 lg:py-32 border-t border-border/40">
           <ProductCarousel
             title="Featured Collection"
             description="Our curated selection of premium pieces"
