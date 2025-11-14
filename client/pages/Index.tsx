@@ -209,15 +209,15 @@ export default function Index() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="border-t border-border/40 bg-secondary/30 py-20 md:py-32">
-        <div className="container max-w-2xl text-center">
-          <p className="uppercase tracking-widest text-xs text-muted-foreground mb-4">
+      <section className="border-t border-border/40 bg-secondary/30 py-12 md:py-20 lg:py-32">
+        <div className="container max-w-2xl text-center px-4">
+          <p className="uppercase tracking-widest text-xs text-muted-foreground mb-2 md:mb-4">
             Stay Connected
           </p>
-          <h2 className="font-display text-3xl md:text-4xl tracking-tight mb-6">
+          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight mb-4 md:mb-6">
             Subscribe to Our Newsletter
           </h2>
-          <p className="text-foreground/80 mb-8 max-w-lg mx-auto">
+          <p className="text-sm md:text-base text-foreground/80 mb-6 md:mb-8 max-w-lg mx-auto">
             Be the first to know about new collections, exclusive offers, and styling tips from our team.
           </p>
           <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
