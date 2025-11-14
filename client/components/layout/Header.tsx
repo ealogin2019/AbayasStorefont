@@ -35,7 +35,60 @@ export default function Header() {
     <header className="sticky top-10 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
       <div className="container px-6">
         {/* Top row: Logo, centered nav, right actions */}
-        <div className="flex h-20 items-center justify-between">
+        <div className="flex h-20 items-center justify-between gap-4">
+          {/* Mobile Menu Trigger */}
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <button
+                className="lg:hidden flex items-center justify-center h-6 w-6 text-foreground hover:opacity-70 transition-opacity"
+                aria-label="Open menu"
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-80">
+              <nav className="mt-8 space-y-6">
+                {nav.map((item) => (
+                  <div key={item.to}>
+                    <Link
+                      to={item.to}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="text-sm uppercase tracking-widest font-semibold text-foreground hover:text-accent transition-colors block mb-3"
+                    >
+                      {item.label}
+                    </Link>
+                    {item.submenu && (
+                      <div className="space-y-2 pl-4 border-l border-border/40">
+                        {item.submenu.map((subitem) => (
+                          <Link
+                            key={subitem.to}
+                            to={subitem.to}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors block"
+                          >
+                            {subitem.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
+
           {/* Logo */}
           <Link
             to="/"
@@ -44,7 +97,7 @@ export default function Header() {
             Arab Abayas
           </Link>
 
-          {/* Centered Navigation */}
+          {/* Centered Navigation - Desktop Only */}
           <nav className="hidden absolute left-1/2 -translate-x-1/2 gap-12 lg:flex">
             {nav.map((item, idx) => (
               <div
@@ -85,7 +138,7 @@ export default function Header() {
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 lg:gap-4 ml-auto">
             {/* Store Selector */}
             <div className="relative hidden sm:block">
               <button
