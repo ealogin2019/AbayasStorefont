@@ -1,14 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import ProductCard from "./product/ProductCard";
-
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  description?: string;
-}
+import type { Product } from "@shared/api";
 
 interface ProductCarouselProps {
   title: string;

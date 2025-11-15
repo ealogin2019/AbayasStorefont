@@ -1,0 +1,153 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Customer model for user accounts
+model Customer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  firstName String?
+  lastName  String?
+  phone     String?
+  address   String?
+  city      String?
+  country   String?
+  zipCode   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cart   CartItem[]
+  orders Order[]
+
+  @@index([email])
+}
+
+// Product model
+model Product {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String
+  price       Float
+  currency    String   @default("AED")
+  image       String
+  thumbnail   String
+  gallery     Json?    // Array of image URLs
+  colors      Json     // Array of color options
+  sizes       Json     // Array of size options
+  tags        Json?    // Array of tags
+  inStock     Boolean  @default(true)
+  quantity    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  cartItems CartItem[]
+  orderItems OrderItem[]
+
+  @@index([name])
+}
+
+// Shopping cart
+model CartItem {
+  id        String   @id @default(cuid())
+  customerId String?
+  productId String
+  quantity  Int
+  size      String?
+  color     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  product  Product   @relation(fields: [productId], references: [id])
+
+  @@unique([customerId, productId, size, color])
+  @@index([customerId])
+  @@index([productId])
+}
+
+// Order model
+model Order {
+  id           String      @id @default(cuid())
+  customerId   String?
+  orderNumber  String      @unique
+  status       String      @default("pending") // pending, processing, shipped, delivered, cancelled
+  subtotal     Float
+  tax          Float       @default(0)
+  shippingCost Float       @default(0)
+  total        Float
+  notes        String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  customer Customer?   @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  items    OrderItem[]
+
+  @@index([customerId])
+  @@index([orderNumber])
+}
+
+// Order items
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float   // Price at time of purchase
+  size      String?
+  color     String?
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+// Admin users for CMS
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed with bcrypt
+  firstName String?
+  lastName  String?
+  role      String   @default("editor") // admin, editor, manager
+  active    Boolean  @default(true)
+  lastLogin DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+}
+
+// Plugin configurations
+model PluginConfig {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  enabled   Boolean  @default(true)
+  settings  Json?    // Stores plugin-specific settings
+  version   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Audit log for tracking admin actions
+model AuditLog {
+  id        String   @id @default(cuid())
+  adminId   String?
+  action    String   // "create", "update", "delete"
+  entity    String   // "product", "order", "customer"
+  entityId  String
+  changes   Json?    // Tracks what changed
+  createdAt DateTime @default(now())
+
+  @@index([adminId])
+  @@index([entity])
+  @@index([createdAt])
+}

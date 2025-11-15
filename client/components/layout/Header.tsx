@@ -32,7 +32,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-10 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
+    <header className="fixed top-0 left-0 right-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
       <div className="container px-6">
         {/* Top row: Logo, centered nav, right actions */}
         <div className="flex h-20 items-center justify-between gap-4">

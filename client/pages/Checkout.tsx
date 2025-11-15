@@ -17,12 +17,22 @@ export default function Checkout() {
     if (!items.length) return toast.error("Cart is empty");
     setLoading(true);
     try {
-      const payload = {
-        items: items.map((i) => ({ id: i.id, qty: i.qty })),
-        contact: { name, email, address },
-      };
-      const res = await api.createCheckout(payload);
-      toast.success("Order created: " + res.orderId);
+      const [firstName, ...lastNameParts] = name.split(" ");
+      const lastName = lastNameParts.join(" ") || "Customer";
+      
+      const res = await api.createCheckout({
+        email,
+        firstName,
+        lastName,
+        address,
+        city: "Dubai",
+        country: "UAE",
+        zipCode: "00000",
+        phone: "+971",
+        shippingCost: 0,
+        tax: 0,
+      });
+      toast.success("Order created: " + res.order.orderNumber);
       clear();
       navigate(`/`);
     } catch (err: any) {

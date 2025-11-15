@@ -20,6 +20,11 @@ import AnnouncementBar from "./components/AnnouncementBar";
 import CookieConsent from "./components/CookieConsent";
 import { CartProvider } from "@/hooks/useCart";
 
+// Admin imports
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminLayout from "./components/admin/AdminLayout";
+
 const queryClient = new QueryClient();
 
 function Layout() {
@@ -44,6 +49,7 @@ const App = () => (
         <CookieConsent />
         <BrowserRouter>
           <Routes>
+            {/* Public Store Routes */}
             <Route element={<Layout />}>
               <Route path="/" element={<Index />} />
               <Route path="/product/:id" element={<Product />} />
@@ -54,6 +60,13 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
+            </Route>
+
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/*" element={<AdminLayout />}>
+              <Route path="" element={<AdminDashboard />} />
+              {/* More admin pages will be added here */}
             </Route>
           </Routes>
         </BrowserRouter>

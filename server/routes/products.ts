@@ -1,102 +1,135 @@
 import { RequestHandler } from "express";
-import { Product } from "@shared/api";
+import { prisma } from "../db";
+import { ListProductsResponse, GetProductResponse, Product } from "@shared/api";
 
-const products: Product[] = [
-  {
-    id: "sable-classic-black",
-    name: "Sable Classic Abaya",
-    price: 475.0,
-    currency: "AED",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200",
-    thumbnail:
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=800",
-    gallery: [
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200",
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F81ce6da7ab2f4a539be7643f189385d0?format=webp&width=1200",
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fe98ea904eac24d2a837f6a410800c6d1?format=webp&width=1200",
-    ],
-    colors: ["Black"],
-    sizes: ["S", "M", "L", "XL"],
-    description:
-      "A timeless black abaya crafted in premium crepe with a flowing silhouette and subtle satin piping.",
-    tags: ["classic", "black", "modest"],
-    inStock: true,
-  },
-  {
-    id: "noor-sand-kimono",
-    name: "Noor Sand Kimono Abaya",
-    price: 585.0,
-    currency: "AED",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=1200",
-    thumbnail:
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=800",
-    gallery: [
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=1200",
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fc2f5ee03e6da48eb9353b11f7bc7da48?format=webp&width=1200",
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fe98ea904eac24d2a837f6a410800c6d1?format=webp&width=1200",
-    ],
-    colors: ["Sand", "Beige"],
-    sizes: ["S", "M", "L"],
-    description:
-      "Lightweight kimono-style abaya in warm sand tone, perfect for layering and all-day comfort.",
-    tags: ["kimono", "sand", "lightweight"],
-    inStock: true,
-  },
-  {
-    id: "almond-embroidered-edge",
-    name: "Almond Embroidered Edge",
-    price: 695.0,
-    currency: "AED",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fe98ea904eac24d2a837f6a410800c6d1?format=webp&width=1200",
-    thumbnail:
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fe98ea904eac24d2a837f6a410800c6d1?format=webp&width=800",
-    gallery: [
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fe98ea904eac24d2a837f6a410800c6d1?format=webp&width=1200",
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F81ce6da7ab2f4a539be7643f189385d0?format=webp&width=1200",
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200",
-    ],
-    colors: ["Almond", "Ivory"],
-    sizes: ["M", "L", "XL"],
-    description:
-      "Elegant almond abaya with hand-embroidered edges and tailored drape.",
-    tags: ["embroidered", "almond", "elegant"],
-    inStock: true,
-  },
-  {
-    id: "gold-trim-eid",
-    name: "Eid Gold Trim Abaya",
-    price: 805.0,
-    currency: "AED",
-    image:
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fc2f5ee03e6da48eb9353b11f7bc7da48?format=webp&width=1200",
-    thumbnail:
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fc2f5ee03e6da48eb9353b11f7bc7da48?format=webp&width=800",
-    gallery: [
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fc2f5ee03e6da48eb9353b11f7bc7da48?format=webp&width=1200",
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200",
-      "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=1200",
-    ],
-    colors: ["Black", "Gold"],
-    sizes: ["S", "M", "L", "XL"],
-    description:
-      "Occasion abaya in deep black with refined gold trim accents for a luxe finish.",
-    tags: ["occasion", "gold", "luxe"],
-    inStock: true,
-  },
-];
+// Convert DB product to API product format
+function formatProduct(product: any): Product {
+  return {
+    id: product.id,
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    currency: product.currency,
+    image: product.image,
+    thumbnail: product.thumbnail,
+    gallery: product.gallery ? (product.gallery as string[]) : undefined,
+    colors: product.colors as string[],
+    sizes: product.sizes as string[],
+    tags: product.tags ? (product.tags as string[]) : [],
+    inStock: product.inStock,
+    quantity: product.quantity,
+    createdAt: product.createdAt.toISOString(),
+    updatedAt: product.updatedAt.toISOString(),
+  };
+}
 
-export const listProducts: RequestHandler = (_req, res) => {
-  res.json({ products });
+export const listProducts: RequestHandler = async (_req, res) => {
+  try {
+    const products = await prisma.product.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    const formatted = products.map(formatProduct);
+    res.json({ products: formatted } as ListProductsResponse);
+  } catch (error) {
+    console.error("Error listing products:", error);
+    res.status(500).json({ error: "Failed to list products" });
+  }
 };
 
-export const getProduct: RequestHandler = (req, res) => {
-  const id = String(req.params.id);
-  const product = products.find((p) => p.id === id);
-  if (!product) return res.status(404).json({ error: "Not found" });
-  res.json({ product });
+export const getProduct: RequestHandler = async (req, res) => {
+  try {
+    const id = String(req.params.id);
+    const product = await prisma.product.findUnique({
+      where: { id },
+    });
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.json({ product: formatProduct(product) } as GetProductResponse);
+  } catch (error) {
+    console.error("Error getting product:", error);
+    res.status(500).json({ error: "Failed to get product" });
+  }
 };
 
-export const featuredProducts = products.slice(0, 3);
+export const createProduct: RequestHandler = async (req, res) => {
+  try {
+    const {
+      name,
+      description,
+      price,
+      currency = "AED",
+      image,
+      thumbnail,
+      gallery,
+      colors,
+      sizes,
+      tags,
+      inStock = true,
+      quantity = 0,
+    } = req.body;
+
+    if (!name || !description || price === undefined || !image || !thumbnail) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const product = await prisma.product.create({
+      data: {
+        name,
+        description,
+        price,
+        currency,
+        image,
+        thumbnail,
+        gallery,
+        colors,
+        sizes,
+        tags,
+        inStock,
+        quantity,
+      },
+    });
+
+    res.status(201).json({ product: formatProduct(product) });
+  } catch (error) {
+    console.error("Error creating product:", error);
+    res.status(500).json({ error: "Failed to create product" });
+  }
+};
+
+export const updateProduct: RequestHandler = async (req, res) => {
+  try {
+    const id = String(req.params.id);
+    const updates = req.body;
+
+    const product = await prisma.product.update({
+      where: { id },
+      data: updates,
+    });
+
+    res.json({ product: formatProduct(product) });
+  } catch (error: any) {
+    console.error("Error updating product:", error);
+    if (error.code === "P2025") {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.status(500).json({ error: "Failed to update product" });
+  }
+};
+
+export const deleteProduct: RequestHandler = async (req, res) => {
+  try {
+    const id = String(req.params.id);
+    await prisma.product.delete({
+      where: { id },
+    });
+    res.json({ message: "Product deleted successfully" });
+  } catch (error: any) {
+    console.error("Error deleting product:", error);
+    if (error.code === "P2025") {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.status(500).json({ error: "Failed to delete product" });
+  }
+};
+
