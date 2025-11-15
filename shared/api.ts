@@ -53,6 +53,26 @@ export interface CreateProductRequest {
   quantity?: number;
 }
 
+export interface UpdateProductRequest extends Partial<CreateProductRequest> {}
+
+export interface AdminProductListResponse {
+  success: boolean;
+  data: {
+    items: Product[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  };
+}
+
+export interface AdminProductResponse {
+  success: boolean;
+  message?: string;
+  data?: Product;
+  error?: string;
+}
+
 // ============ CUSTOMER TYPES ============
 export interface Customer {
   id: string;

@@ -23,6 +23,8 @@ import { CartProvider } from "@/hooks/useCart";
 // Admin imports
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminProducts from "./pages/AdminProducts";
+import AdminProductForm from "./pages/AdminProductForm";
 import AdminLayout from "./components/admin/AdminLayout";
 
 const queryClient = new QueryClient();
@@ -66,6 +68,9 @@ const App = () => (
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/*" element={<AdminLayout />}>
               <Route path="" element={<AdminDashboard />} />
+              <Route path="products" element={<AdminProducts />} />
+              <Route path="products/new" element={<AdminProductForm />} />
+              <Route path="products/:id" element={<AdminProductForm />} />
               {/* More admin pages will be added here */}
             </Route>
           </Routes>
