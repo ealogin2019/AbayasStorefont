@@ -1,11 +1,16 @@
+
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
 import { handleDemo } from "./routes/demo.js";
 import { listProducts, getProduct, createProduct, updateProduct, deleteProduct } from "./routes/products.js";
 import { getCart, addToCart, updateCartItem, removeFromCart, clearCart } from "./routes/cart.js";
 import { handleContact } from "./routes/contact.js";
-import { handleCheckout } from "./routes/checkout.js";
+// Import the new Stripe checkout router
+import checkoutRouter from "./routes/checkout.js";
 
 // Admin routes
 import { handleAdminLogin, handleCreateAdmin, handleGetProfile } from "./routes/admin/auth.js";
@@ -28,12 +33,32 @@ import {
   handleCustomerStats,
 } from "./routes/admin/customers.js";
 import { handleDashboardStats } from "./routes/admin/dashboard.js";
+import { handleUploadImage, handleDeleteImage } from "./routes/admin/upload.js";
 
 // Auth middleware
 import { authenticateAdmin, requireRole } from "./auth/middleware.js";
 
 // Plugin system
 import { pluginManager } from "./plugins/manager.js";
+
+// Setup file upload middleware
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB max
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedMimes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    if (allowedMimes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Invalid file type"));
+    }
+  },
+});
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export async function createServer() {
   const app = express();
@@ -42,6 +67,12 @@ export async function createServer() {
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  // Special middleware for Stripe webhook (before JSON parsing)
+  app.use("/api/checkout/webhook", express.raw({ type: "application/json" }));
+
+  // Serve static files from public folder (including uploads)
+  app.use(express.static(path.join(__dirname, "..", "public")));
 
   // Initialize plugin system
   await pluginManager.initializeAll();
@@ -68,9 +99,11 @@ export async function createServer() {
   app.delete("/api/cart/:id", removeFromCart);
   app.post("/api/cart/clear", clearCart);
 
-  // Contact & Checkout
+  // Contact
   app.post("/api/contact", handleContact);
-  app.post("/api/checkout", handleCheckout);
+
+  // Stripe Checkout API (replaces the old handleCheckout)
+  app.use("/api/checkout", checkoutRouter);
 
   // ============================================
   // ADMIN API ROUTES (Protected)
@@ -91,6 +124,10 @@ export async function createServer() {
   app.put("/api/admin/products/:id", authenticateAdmin, requireRole("admin", "editor"), handleUpdateProduct);
   app.delete("/api/admin/products/:id", authenticateAdmin, requireRole("admin"), handleDeleteProduct);
 
+  // Admin Image Upload (protected)
+  app.post("/api/admin/upload", authenticateAdmin, upload.single("file"), handleUploadImage);
+  app.delete("/api/admin/upload/:filename", authenticateAdmin, handleDeleteImage);
+
   // Admin Orders (protected)
   app.get("/api/admin/orders", authenticateAdmin, handleListOrders);
   app.get("/api/admin/orders/stats/summary", authenticateAdmin, handleOrderStats);
@@ -104,4 +141,3 @@ export async function createServer() {
 
   return app;
 }
-

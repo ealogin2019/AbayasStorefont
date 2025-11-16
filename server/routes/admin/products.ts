@@ -17,9 +17,20 @@ const productSchema = z.object({
   description: z.string().min(1, "Description is required"),
   price: z.number().positive("Price must be positive"),
   currency: z.string().default("AED"),
-  image: z.string().url("Image must be a valid URL"),
-  thumbnail: z.string().url("Thumbnail must be a valid URL"),
-  gallery: z.array(z.string().url()).optional(),
+  image: z.string().min(1, "Image is required").refine(
+    (val) => val.startsWith("/uploads/") || val.startsWith("http"),
+    "Image must be a valid URL or local upload path"
+  ),
+  thumbnail: z.string().min(1, "Thumbnail is required").refine(
+    (val) => val.startsWith("/uploads/") || val.startsWith("http"),
+    "Thumbnail must be a valid URL or local upload path"
+  ),
+  gallery: z.array(
+    z.string().refine(
+      (val) => val.startsWith("/uploads/") || val.startsWith("http"),
+      "Gallery images must be valid URLs or local upload paths"
+    )
+  ).optional(),
   colors: z.array(z.string()),
   sizes: z.array(z.string()),
   tags: z.array(z.string()).optional(),

@@ -40,22 +40,59 @@ export default function ImageUploader({
     setError("");
 
     try {
-      // For now, we'll just create object URLs for local preview
-      // In production, this would upload to Cloudinary or your server
-      
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        setError("Authentication required. Please log in again.");
+        setUploading(false);
+        return;
+      }
+
+      // Process each file
+      const uploadedUrls = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        
+        // Create FormData for multipart upload
+        const formData = new FormData();
+        formData.append("file", file);
+        
+        // Convert "main" to "product" for server API
+        const uploadType = type === "main" ? "product" : type;
+
+        // Upload to server - send type as query parameter
+        const uploadResponse = await fetch(`/api/admin/upload?type=${uploadType}`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+
+        const uploadData = await uploadResponse.json();
+
+        if (!uploadResponse.ok || !uploadData.success) {
+          throw new Error(uploadData.error || "Upload failed");
+        }
+
+        uploadedUrls.push(uploadData.data.url);
+      }
+
+      // Update component state with uploaded URLs
       if (type === "main") {
-        const url = URL.createObjectURL(files[0]);
-        onImageChange(url);
+        onImageChange(uploadedUrls[0]);
       } else if (type === "thumbnail") {
-        const url = URL.createObjectURL(files[0]);
-        onThumbnailChange(url);
+        onThumbnailChange(uploadedUrls[0]);
       } else if (type === "gallery") {
-        const urls = Array.from(files).map(file => URL.createObjectURL(file));
-        onGalleryChange([...gallery, ...urls]);
+        onGalleryChange([...gallery, ...uploadedUrls]);
       }
     } catch (err) {
-      setError("Failed to process image. Please try again.");
-      console.error("Image processing error:", err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to upload image. Please try again."
+      );
+      console.error("Image upload error:", err);
     } finally {
       setUploading(false);
     }
