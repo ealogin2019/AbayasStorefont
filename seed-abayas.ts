@@ -1,0 +1,453 @@
+import "dotenv/config";
+import { prisma } from "./server/db.js";
+
+const abayaProducts = [
+  {
+    name: "Classic Black Abaya",
+    description: "Timeless elegance with a flowing silhouette. Perfect for everyday wear with premium fabric quality.",
+    price: 299,
+    colors: ["Black"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["classic", "everyday", "modest"],
+    image: "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400&q=80",
+  },
+  {
+    name: "Embroidered Navy Abaya",
+    description: "Elegant navy abaya with intricate gold embroidery on sleeves and neckline. A statement piece for special occasions.",
+    price: 449,
+    colors: ["Navy", "Black"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["embroidered", "formal", "special-occasion"],
+    image: "https://images.unsplash.com/photo-1617019114583-affb34d1b3cd?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1617019114583-affb34d1b3cd?w=400&q=80",
+  },
+  {
+    name: "Butterfly Sleeve Abaya",
+    description: "Modern design with butterfly sleeves and front zip closure. Comfortable and stylish for daily activities.",
+    price: 349,
+    colors: ["Black", "Brown", "Gray"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["modern", "comfortable", "casual"],
+    image: "https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=400&q=80",
+  },
+  {
+    name: "Silk Blend Luxury Abaya",
+    description: "Premium silk blend fabric with a luxurious drape. Features subtle sheen and exceptional comfort.",
+    price: 599,
+    colors: ["Black", "Beige", "Navy"],
+    sizes: ["M", "L", "XL"],
+    tags: ["luxury", "silk", "premium"],
+    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80",
+  },
+  {
+    name: "Pleated Front Abaya",
+    description: "Contemporary style with pleated front detail. Adds dimension and modern flair to traditional design.",
+    price: 379,
+    colors: ["Black", "Gray", "Brown"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["contemporary", "pleated", "stylish"],
+    image: "https://images.unsplash.com/photo-1617127365778-043464fe5887?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1617127365778-043464fe5887?w=400&q=80",
+  },
+  {
+    name: "Kimono Style Abaya",
+    description: "Fusion design with kimono-inspired sleeves and wrap-around style. Perfect blend of cultures.",
+    price: 429,
+    colors: ["Black", "Navy", "Green"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["fusion", "kimono", "unique"],
+    image: "https://images.unsplash.com/photo-1610487769050-f30a49ee2e57?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1610487769050-f30a49ee2e57?w=400&q=80",
+  },
+  {
+    name: "Belted Waist Abaya",
+    description: "Flattering silhouette with coordinating belt. Accentuates the waistline while maintaining modesty.",
+    price: 389,
+    colors: ["Black", "Brown", "Beige"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["belted", "flattering", "elegant"],
+    image: "https://images.unsplash.com/photo-1578932750294-f5075e85f44a?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1578932750294-f5075e85f44a?w=400&q=80",
+  },
+  {
+    name: "Lace Trim Abaya",
+    description: "Delicate lace trim on sleeves and hem adds a feminine touch. Perfect for evening events.",
+    price: 459,
+    colors: ["Black", "Navy", "White"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["lace", "feminine", "evening"],
+    image: "https://images.unsplash.com/photo-1596783074918-c84cb06531ca?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1596783074918-c84cb06531ca?w=400&q=80",
+  },
+  {
+    name: "Open Front Cardigan Abaya",
+    description: "Versatile open front design works as abaya or cardigan. Layer over any outfit for instant modesty.",
+    price: 329,
+    colors: ["Black", "Gray", "Beige", "Brown"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["versatile", "cardigan", "layering"],
+    image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&q=80",
+  },
+  {
+    name: "Cape Style Abaya",
+    description: "Dramatic cape overlay creates stunning visual impact. Makes a bold fashion statement.",
+    price: 549,
+    colors: ["Black", "Navy"],
+    sizes: ["M", "L", "XL"],
+    tags: ["cape", "dramatic", "statement"],
+    image: "https://images.unsplash.com/photo-1502163140606-888448ae8cfe?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1502163140606-888448ae8cfe?w=400&q=80",
+  },
+  {
+    name: "Minimalist Abaya",
+    description: "Clean lines and simple elegance. No-fuss design for the modern woman who values simplicity.",
+    price: 279,
+    colors: ["Black", "Gray", "White"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["minimalist", "simple", "modern"],
+    image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80",
+  },
+  {
+    name: "Pearl Button Abaya",
+    description: "Elegant pearl buttons down the front add sophistication. Practical and beautiful.",
+    price: 419,
+    colors: ["Black", "Navy", "Brown"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["pearl", "sophisticated", "buttons"],
+    image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=400&q=80",
+  },
+  {
+    name: "Summer Cotton Abaya",
+    description: "Breathable cotton fabric perfect for warm weather. Lightweight and comfortable all day long.",
+    price: 259,
+    colors: ["Black", "Beige", "White", "Gray"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["cotton", "summer", "breathable"],
+    image: "https://images.unsplash.com/photo-1558769132-cb1aea9ce29c?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1558769132-cb1aea9ce29c?w=400&q=80",
+  },
+  {
+    name: "Sequin Detail Abaya",
+    description: "Subtle sequin embellishments catch the light beautifully. Perfect for weddings and celebrations.",
+    price: 529,
+    colors: ["Black", "Navy", "Green"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["sequin", "party", "celebration"],
+    image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&q=80",
+  },
+  {
+    name: "Hooded Abaya",
+    description: "Built-in hood for extra coverage and style. Practical design meets fashion-forward thinking.",
+    price: 369,
+    colors: ["Black", "Gray", "Navy"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["hooded", "practical", "coverage"],
+    image: "https://images.unsplash.com/photo-1544441893-675973e31985?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1544441893-675973e31985?w=400&q=80",
+  },
+  {
+    name: "Two-Piece Set Abaya",
+    description: "Matching top and skirt set offers versatility. Mix and match with other pieces in your wardrobe.",
+    price: 449,
+    colors: ["Black", "Brown", "Navy"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["two-piece", "versatile", "set"],
+    image: "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=400&q=80",
+  },
+  {
+    name: "Floral Embroidered Abaya",
+    description: "Beautiful floral embroidery in contrasting thread. Artistic and feminine design.",
+    price: 489,
+    colors: ["Black", "Navy", "Green"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["floral", "embroidered", "artistic"],
+    image: "https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?w=400&q=80",
+  },
+  {
+    name: "Sport Abaya",
+    description: "Performance fabric designed for active lifestyle. Moisture-wicking and comfortable for workouts.",
+    price: 339,
+    colors: ["Black", "Gray", "Navy"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["sport", "active", "performance"],
+    image: "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=400&q=80",
+  },
+  {
+    name: "Velvet Luxe Abaya",
+    description: "Rich velvet fabric with luxurious feel. Perfect for special occasions and winter months.",
+    price: 629,
+    colors: ["Black", "Navy", "Green", "Brown"],
+    sizes: ["M", "L", "XL"],
+    tags: ["velvet", "luxury", "winter"],
+    image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80",
+  },
+  {
+    name: "Asymmetric Hem Abaya",
+    description: "Modern asymmetric hemline creates visual interest. Contemporary twist on traditional wear.",
+    price: 399,
+    colors: ["Black", "Gray", "Navy"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["asymmetric", "modern", "contemporary"],
+    image: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=400&q=80",
+  },
+  {
+    name: "Contrast Trim Abaya",
+    description: "Bold contrast trim along edges makes a statement. Available in striking color combinations.",
+    price: 359,
+    colors: ["Black", "Navy", "Brown"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["contrast", "bold", "statement"],
+    image: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=400&q=80",
+  },
+  {
+    name: "Printed Abaya",
+    description: "Subtle geometric print adds visual texture. Break away from solid colors with style.",
+    price: 379,
+    colors: ["Black", "Navy", "Gray"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["printed", "geometric", "textured"],
+    image: "https://images.unsplash.com/photo-1558769132-cb1aea9ce29c?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1558769132-cb1aea9ce29c?w=400&q=80",
+  },
+  {
+    name: "Maxi Dress Abaya",
+    description: "Flowy maxi dress style with modest coverage. Perfect for casual outings and gatherings.",
+    price: 319,
+    colors: ["Black", "Beige", "Brown", "Gray"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["maxi", "casual", "flowy"],
+    image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&q=80",
+  },
+  {
+    name: "Bell Sleeve Abaya",
+    description: "Dramatic bell sleeves create graceful movement. Fashion-forward design with timeless appeal.",
+    price: 409,
+    colors: ["Black", "Navy", "Green"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["bell-sleeve", "dramatic", "graceful"],
+    image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80",
+  },
+  {
+    name: "Denim Abaya",
+    description: "Casual denim fabric with classic abaya cut. Perfect for weekend wear and casual events.",
+    price: 349,
+    colors: ["Black", "Navy", "Gray"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["denim", "casual", "weekend"],
+    image: "https://images.unsplash.com/photo-1525562723836-dca67a71d5f1?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1525562723836-dca67a71d5f1?w=400&q=80",
+  },
+  {
+    name: "Crystal Embellished Abaya",
+    description: "Sparkling crystal embellishments create glamorous look. Red carpet ready for special events.",
+    price: 699,
+    colors: ["Black", "Navy"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["crystal", "glamorous", "formal"],
+    image: "https://images.unsplash.com/photo-1544441893-675973e31985?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1544441893-675973e31985?w=400&q=80",
+  },
+  {
+    name: "Wrap Front Abaya",
+    description: "Adjustable wrap front for customizable fit. Flattering on all body types.",
+    price: 369,
+    colors: ["Black", "Brown", "Beige", "Gray"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["wrap", "adjustable", "flattering"],
+    image: "https://images.unsplash.com/photo-1467043237213-65f2da53396f?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1467043237213-65f2da53396f?w=400&q=80",
+  },
+  {
+    name: "Pocket Detail Abaya",
+    description: "Practical side pockets add functionality. Style meets practicality in everyday design.",
+    price: 299,
+    colors: ["Black", "Gray", "Navy", "Brown"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["pockets", "practical", "functional"],
+    image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=400&q=80",
+  },
+  {
+    name: "Chiffon Overlay Abaya",
+    description: "Delicate chiffon overlay adds ethereal quality. Light and airy for summer elegance.",
+    price: 469,
+    colors: ["Black", "Navy", "Beige"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["chiffon", "ethereal", "summer"],
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80",
+  },
+  {
+    name: "Reversible Abaya",
+    description: "Two abayas in one! Reversible design offers versatility. Get two looks from one piece.",
+    price: 429,
+    colors: ["Black", "Gray"],
+    sizes: ["M", "L", "XL"],
+    tags: ["reversible", "versatile", "two-in-one"],
+    image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80",
+  },
+  {
+    name: "Tiered Ruffle Abaya",
+    description: "Playful tiered ruffles add dimension. Fun and feminine take on modest fashion.",
+    price: 439,
+    colors: ["Black", "Navy", "Green"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["ruffles", "tiered", "playful"],
+    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80",
+  },
+  {
+    name: "Satin Finish Abaya",
+    description: "Lustrous satin finish fabric with elegant drape. Sophisticated sheen for evening wear.",
+    price: 479,
+    colors: ["Black", "Navy", "Brown"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["satin", "lustrous", "evening"],
+    image: "https://images.unsplash.com/photo-1502163140606-888448ae8cfe?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1502163140606-888448ae8cfe?w=400&q=80",
+  },
+  {
+    name: "Color Block Abaya",
+    description: "Modern color blocking creates visual impact. Contemporary design for fashion-forward women.",
+    price: 399,
+    colors: ["Black", "Gray", "Navy"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["colorblock", "modern", "contemporary"],
+    image: "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=400&q=80",
+  },
+  {
+    name: "Turtleneck Abaya",
+    description: "Modest turtleneck design with streamlined silhouette. Perfect for winter months.",
+    price: 359,
+    colors: ["Black", "Gray", "Brown", "Navy"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["turtleneck", "winter", "modest"],
+    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80",
+  },
+  {
+    name: "A-Line Abaya",
+    description: "Classic A-line silhouette flatters every body type. Timeless design that never goes out of style.",
+    price: 329,
+    colors: ["Black", "Navy", "Brown", "Beige"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["a-line", "classic", "timeless"],
+    image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80",
+  },
+  {
+    name: "Sheer Panel Abaya",
+    description: "Strategic sheer panels add modern edge. Modest yet fashion-forward styling.",
+    price: 419,
+    colors: ["Black", "Navy"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["sheer", "modern", "edgy"],
+    image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&q=80",
+  },
+  {
+    name: "Travel Abaya",
+    description: "Wrinkle-resistant fabric perfect for travel. Pack light without sacrificing style.",
+    price: 309,
+    colors: ["Black", "Gray", "Navy"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["travel", "wrinkle-free", "practical"],
+    image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=400&q=80",
+  },
+  {
+    name: "Modest Jumpsuit Abaya",
+    description: "Innovative jumpsuit design with abaya overlay. Modern alternative to traditional style.",
+    price: 459,
+    colors: ["Black", "Navy", "Brown"],
+    sizes: ["S", "M", "L", "XL"],
+    tags: ["jumpsuit", "innovative", "modern"],
+    image: "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=400&q=80",
+  },
+  {
+    name: "Everyday Essential Abaya",
+    description: "Your go-to daily abaya. Comfortable, durable, and affordable without compromising on quality.",
+    price: 249,
+    colors: ["Black", "Navy", "Brown", "Gray"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    tags: ["essential", "everyday", "affordable"],
+    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80",
+  },
+  {
+    name: "Premium Bisht Abaya",
+    description: "Luxurious bisht-style abaya with gold trim. Traditional elegance meets modern luxury.",
+    price: 799,
+    colors: ["Black", "Navy", "Brown"],
+    sizes: ["M", "L", "XL"],
+    tags: ["bisht", "premium", "traditional"],
+    image: "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&q=80",
+    thumbnail: "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400&q=80",
+  },
+];
+
+async function seedAbayas() {
+  console.log("🌱 Starting to seed abaya products...");
+
+  try {
+    // Clear existing data in correct order (foreign key constraints)
+    console.log("Clearing existing data...");
+    await prisma.orderItem.deleteMany({});
+    await prisma.order.deleteMany({});
+    await prisma.cartItem.deleteMany({});
+    const deleteResult = await prisma.product.deleteMany({});
+    console.log(`✅ Cleared ${deleteResult.count} existing products`);
+
+    // Insert new products
+    let successCount = 0;
+    for (const product of abayaProducts) {
+      try {
+        await prisma.product.create({
+          data: {
+            ...product,
+            currency: "AED",
+            inStock: true,
+            quantity: Math.floor(Math.random() * 50) + 10, // Random quantity between 10-60
+          },
+        });
+        successCount++;
+        console.log(`✓ Added: ${product.name}`);
+      } catch (error) {
+        console.error(`✗ Failed to add ${product.name}:`, error);
+      }
+    }
+
+    console.log(`\n✅ Successfully seeded ${successCount} abaya products!`);
+    console.log(`💰 Price range: AED ${Math.min(...abayaProducts.map(p => p.price))} - AED ${Math.max(...abayaProducts.map(p => p.price))}`);
+    console.log(`🎨 Total unique styles: ${successCount}`);
+  } catch (error) {
+    console.error("❌ Error seeding database:", error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+seedAbayas()
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
