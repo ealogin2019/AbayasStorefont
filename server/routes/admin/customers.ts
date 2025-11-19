@@ -147,7 +147,7 @@ export const handleCustomerStats: RequestHandler = async (req, res) => {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-    const newCustomers = await prisma.customer.count({
+    const newCustomersThisMonth = await prisma.customer.count({
       where: {
         createdAt: {
           gte: thirtyDaysAgo,
@@ -155,25 +155,29 @@ export const handleCustomerStats: RequestHandler = async (req, res) => {
       },
     });
 
-    // Get repeat customers
-    const customersWithOrders = await prisma.customer.count({
-      where: {
-        orders: {
-          some: {},
-        },
+    // Get total orders across all customers
+    const totalOrders = await prisma.order.count();
+
+    // Calculate average orders per customer
+    const averageOrdersPerCustomer = totalCustomers > 0 ? totalOrders / totalCustomers : 0;
+
+    // Calculate average lifetime value (total revenue / total customers)
+    const orderTotals = await prisma.order.aggregate({
+      _sum: {
+        total: true,
       },
     });
 
-    // Get inactive customers (no orders)
-    const inactiveCustomers = totalCustomers - customersWithOrders;
+    const totalRevenue = orderTotals._sum.total || 0;
+    const averageLifetimeValue = totalCustomers > 0 ? totalRevenue / totalCustomers : 0;
 
     return res.json({
       success: true,
       data: {
         totalCustomers,
-        newCustomers,
-        repeatCustomers: customersWithOrders,
-        inactiveCustomers,
+        newCustomersThisMonth,
+        averageOrdersPerCustomer,
+        averageLifetimeValue,
       },
     });
   } catch (error) {
