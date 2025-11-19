@@ -23,11 +23,71 @@ function formatProduct(product: any): Product {
   };
 }
 
-export const listProducts: RequestHandler = async (_req, res) => {
+export const listProducts: RequestHandler = async (req, res) => {
   try {
+    // Query parameters for filtering and sorting
+    const search = (req.query.search as string) || "";
+    const minPrice = req.query.minPrice ? parseFloat(req.query.minPrice as string) : undefined;
+    const maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice as string) : undefined;
+    const inStock = req.query.inStock === "true" ? true : req.query.inStock === "false" ? false : undefined;
+    const colors = req.query.colors ? (req.query.colors as string).split(",") : undefined;
+    const sizes = req.query.sizes ? (req.query.sizes as string).split(",") : undefined;
+    const tags = req.query.tags ? (req.query.tags as string).split(",") : undefined;
+    const sortBy = (req.query.sortBy as string) || "createdAt";
+    const sortOrder = (req.query.sortOrder as "asc" | "desc") || "desc";
+
+    // Build where clause
+    const where: any = {};
+
+    // Search in name, description, and tags
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
+        { tags: { hasSome: [search] } },
+      ];
+    }
+
+    // Price range filter
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      where.price = {};
+      if (minPrice !== undefined) where.price.gte = minPrice;
+      if (maxPrice !== undefined) where.price.lte = maxPrice;
+    }
+
+    // Stock filter
+    if (inStock !== undefined) {
+      where.inStock = inStock;
+    }
+
+    // Color filter (any of the selected colors)
+    if (colors && colors.length > 0) {
+      where.colors = { hasSome: colors };
+    }
+
+    // Size filter (any of the selected sizes)
+    if (sizes && sizes.length > 0) {
+      where.sizes = { hasSome: sizes };
+    }
+
+    // Tags filter (any of the selected tags)
+    if (tags && tags.length > 0) {
+      where.tags = { hasSome: tags };
+    }
+
+    // Build orderBy clause
+    const orderBy: any = {};
+    if (sortBy === "price" || sortBy === "name" || sortBy === "createdAt") {
+      orderBy[sortBy] = sortOrder;
+    } else {
+      orderBy.createdAt = "desc";
+    }
+
     const products = await prisma.product.findMany({
-      orderBy: { createdAt: "desc" },
+      where,
+      orderBy,
     });
+
     const formatted = products.map(formatProduct);
     res.json({ products: formatted } as ListProductsResponse);
   } catch (error) {
