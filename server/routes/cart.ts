@@ -47,14 +47,14 @@ export const addToCart: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    const existingItem = await prisma.cartItem.findUnique({
+    // Use findFirst and pass `undefined` for optional fields so Prisma treats them as absent
+    // (passing `null` caused PrismaClientValidationError when the generated client expected non-null)
+    const existingItem = await prisma.cartItem.findFirst({
       where: {
-        customerId_productId_size_color: {
-          customerId,
-          productId,
-          size: size || null,
-          color: color || null,
-        },
+        customerId,
+        productId,
+        size: size ?? undefined,
+        color: color ?? undefined,
       },
     });
 

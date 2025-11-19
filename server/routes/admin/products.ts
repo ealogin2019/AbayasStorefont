@@ -8,6 +8,7 @@ import { z } from "zod";
 import { prisma } from "../../db.js";
 import { pluginManager } from "../../plugins/manager.js";
 import { AdminResponse, PaginatedResponse } from "@shared/plugins";
+import { createAuditLog } from "./audit-logs.js";
 
 /**
  * Product validation schema
@@ -158,6 +159,9 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
     // Trigger plugin hooks
     await pluginManager.triggerHook("onProductCreate", product);
 
+    // Create audit log
+    await createAuditLog(req.admin?.adminId, "create", "product", product.id, { name: product.name });
+
     return res.status(201).json({
       success: true,
       message: "Product created successfully",
@@ -271,6 +275,9 @@ export const handleDeleteProduct: RequestHandler = async (req, res) => {
 
     // Trigger plugin hooks
     await pluginManager.triggerHook("onProductDelete", productId);
+
+    // Create audit log
+    await createAuditLog(req.admin?.adminId, "delete", "product", productId, { name: product.name });
 
     return res.json({
       success: true,

@@ -72,15 +72,43 @@ router.post('/webhook', async (req: Request, res: Response) => {
   // Handle the event
   switch (event.type) {
     case 'payment_intent.succeeded':
-      const paymentIntentSucceeded = event.data.object
+      const paymentIntentSucceeded = event.data.object as stripe.PaymentIntent
       console.log('Payment succeeded:', paymentIntentSucceeded.id)
-      // Update order status in database
+      
+      // TODO: Create order in database
+      // This would typically involve:
+      // 1. Getting cart items for the customer
+      // 2. Creating an Order record
+      // 3. Creating OrderItem records
+      // 4. Clearing the cart
+      // 5. Sending confirmation email
+      // 6. Triggering onOrderCreate plugin hook
+      
+      // Example metadata structure:
+      // {
+      //   orderId: string (if pre-created)
+      //   customerId: string
+      //   cartId: string
+      // }
+      
+      if (paymentIntentSucceeded.metadata?.orderId) {
+        console.log('Order ID from metadata:', paymentIntentSucceeded.metadata.orderId)
+        // Update existing order status to 'paid'
+      }
+      
       break
+      
     case 'payment_intent.payment_failed':
       const paymentIntentFailed = event.data.object
       console.log('Payment failed:', paymentIntentFailed.id)
-      // Update order status in database
+      
+      // Update order status to 'failed' if order exists
+      if (paymentIntentFailed.metadata?.orderId) {
+        console.log('Failed order ID:', paymentIntentFailed.metadata.orderId)
+        // Update order status to 'cancelled' or 'failed'
+      }
       break
+      
     default:
       console.log(`Unhandled event type ${event.type}`)
   }
