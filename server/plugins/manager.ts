@@ -122,3 +122,8 @@ export class PluginManager {
 
 // Singleton instance
 export const pluginManager = new PluginManager();
+
+// Import and register plugins
+import { inventoryPlugin } from "./inventory-management.js";
+
+pluginManager.registerPlugin(inventoryPlugin);

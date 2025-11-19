@@ -12,6 +12,17 @@ import { handleContact } from "./routes/contact.js";
 // Import the new Stripe checkout router
 import checkoutRouter from "./routes/checkout.js";
 
+// Customer auth routes
+import {
+  handleCustomerSignup,
+  handleCustomerLogin,
+  handleGetProfile as handleGetCustomerProfile,
+  handleUpdateProfile,
+  handleChangePassword,
+  handleGetCustomerOrders,
+} from "./routes/customer/auth.js";
+import { handleCreateOrderFromCart } from "./routes/customer/orders.js";
+
 // Admin routes
 import { handleAdminLogin, handleCreateAdmin, handleGetProfile } from "./routes/admin/auth.js";
 import {
@@ -24,7 +35,9 @@ import {
 import {
   handleListOrders,
   handleGetOrder,
+  handleCreateOrder,
   handleUpdateOrderStatus,
+  handleUpdateOrderTracking,
   handleOrderStats,
 } from "./routes/admin/orders.js";
 import {
@@ -40,11 +53,39 @@ import {
   handleDeleteSetting,
   handleSettingsStats,
 } from "./routes/admin/settings.js";
+import {
+  handleGetLowStock,
+  handleGetOutOfStock,
+  handleCheckStock,
+  handleAdjustStock,
+  handleInventoryStats,
+} from "./routes/admin/inventory.js";
+import {
+  handleBulkDeleteProducts,
+  handleBulkUpdatePrice,
+  handleBulkUpdateStock,
+  handleBulkAddTags,
+  handleExportProducts,
+} from "./routes/admin/bulk-operations.js";
+import {
+  handleListAdmins,
+  handleGetAdmin,
+  handleCreateAdminUser,
+  handleUpdateAdmin,
+  handleDeleteAdmin,
+  handleAdminStats,
+} from "./routes/admin/admins.js";
+import {
+  handleListAuditLogs,
+  handleAuditLogStats,
+  handleRecentActivity,
+} from "./routes/admin/audit-logs.js";
 import { handleDashboardStats } from "./routes/admin/dashboard.js";
 import { handleUploadImage, handleDeleteImage } from "./routes/admin/upload.js";
 
 // Auth middleware
 import { authenticateAdmin, requireRole } from "./auth/middleware.js";
+import { authenticateCustomer } from "./auth/customer-middleware.js";
 
 // Plugin system
 import { pluginManager } from "./plugins/manager.js";
@@ -114,6 +155,23 @@ export async function createServer() {
   app.use("/api/checkout", checkoutRouter);
 
   // ============================================
+  // CUSTOMER API ROUTES
+  // ============================================
+
+  // Customer Authentication (public endpoints)
+  app.post("/api/customer/auth/signup", handleCustomerSignup);
+  app.post("/api/customer/auth/login", handleCustomerLogin);
+
+  // Customer Profile (protected)
+  app.get("/api/customer/profile", authenticateCustomer, handleGetCustomerProfile);
+  app.put("/api/customer/profile", authenticateCustomer, handleUpdateProfile);
+  app.post("/api/customer/change-password", authenticateCustomer, handleChangePassword);
+
+  // Customer Orders (protected)
+  app.get("/api/customer/orders", authenticateCustomer, handleGetCustomerOrders);
+  app.post("/api/customer/orders/create", handleCreateOrderFromCart);
+
+  // ============================================
   // ADMIN API ROUTES (Protected)
   // ============================================
 
@@ -131,16 +189,26 @@ export async function createServer() {
   app.post("/api/admin/products", authenticateAdmin, requireRole("admin", "editor"), handleCreateAdminProduct);
   app.put("/api/admin/products/:id", authenticateAdmin, requireRole("admin", "editor"), handleUpdateProduct);
   app.delete("/api/admin/products/:id", authenticateAdmin, requireRole("admin"), handleDeleteProduct);
+  
+  // Bulk operations
+  app.post("/api/admin/products/bulk/delete", authenticateAdmin, requireRole("admin"), handleBulkDeleteProducts);
+  app.post("/api/admin/products/bulk/update-price", authenticateAdmin, requireRole("admin", "manager"), handleBulkUpdatePrice);
+  app.post("/api/admin/products/bulk/update-stock", authenticateAdmin, requireRole("admin", "manager"), handleBulkUpdateStock);
+  app.post("/api/admin/products/bulk/add-tags", authenticateAdmin, requireRole("admin", "manager"), handleBulkAddTags);
+  app.get("/api/admin/products/export", authenticateAdmin, handleExportProducts);
 
   // Admin Image Upload (protected)
   app.post("/api/admin/upload", authenticateAdmin, upload.single("file"), handleUploadImage);
   app.delete("/api/admin/upload/:filename", authenticateAdmin, handleDeleteImage);
 
   // Admin Orders (protected)
+  // NOTE: Stats route MUST come before :id route to avoid collision
   app.get("/api/admin/orders", authenticateAdmin, handleListOrders);
   app.get("/api/admin/orders/stats/summary", authenticateAdmin, handleOrderStats);
+  app.post("/api/admin/orders", authenticateAdmin, requireRole("admin", "manager"), handleCreateOrder);
   app.get("/api/admin/orders/:id", authenticateAdmin, handleGetOrder);
   app.put("/api/admin/orders/:id/status", authenticateAdmin, requireRole("admin", "manager"), handleUpdateOrderStatus);
+  app.put("/api/admin/orders/:id/tracking", authenticateAdmin, requireRole("admin", "manager"), handleUpdateOrderTracking);
 
   // Admin Customers (protected)
   app.get("/api/admin/customers", authenticateAdmin, handleListCustomers);
@@ -154,6 +222,26 @@ export async function createServer() {
   app.post("/api/admin/settings", authenticateAdmin, requireRole("admin", "manager"), handleCreateSetting);
   app.put("/api/admin/settings/:id", authenticateAdmin, requireRole("admin", "manager"), handleUpdateSetting);
   app.delete("/api/admin/settings/:id", authenticateAdmin, requireRole("admin"), handleDeleteSetting);
+
+  // Admin Inventory (protected)
+  app.get("/api/admin/inventory/stats", authenticateAdmin, handleInventoryStats);
+  app.get("/api/admin/inventory/low-stock", authenticateAdmin, handleGetLowStock);
+  app.get("/api/admin/inventory/out-of-stock", authenticateAdmin, handleGetOutOfStock);
+  app.get("/api/admin/inventory/check/:productId", authenticateAdmin, handleCheckStock);
+  app.post("/api/admin/inventory/adjust", authenticateAdmin, requireRole("admin", "manager"), handleAdjustStock);
+
+  // Admin User Management (protected - admin only)
+  app.get("/api/admin/admins", authenticateAdmin, requireRole("admin"), handleListAdmins);
+  app.get("/api/admin/admins/stats/summary", authenticateAdmin, requireRole("admin"), handleAdminStats);
+  app.get("/api/admin/admins/:id", authenticateAdmin, requireRole("admin"), handleGetAdmin);
+  app.post("/api/admin/admins", authenticateAdmin, requireRole("admin"), handleCreateAdminUser);
+  app.put("/api/admin/admins/:id", authenticateAdmin, requireRole("admin"), handleUpdateAdmin);
+  app.delete("/api/admin/admins/:id", authenticateAdmin, requireRole("admin"), handleDeleteAdmin);
+
+  // Audit Logs (protected)
+  app.get("/api/admin/audit-logs", authenticateAdmin, handleListAuditLogs);
+  app.get("/api/admin/audit-logs/stats", authenticateAdmin, handleAuditLogStats);
+  app.get("/api/admin/audit-logs/recent", authenticateAdmin, handleRecentActivity);
 
   return app;
 }

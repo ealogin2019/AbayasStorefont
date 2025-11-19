@@ -14,11 +14,19 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import PaymentSuccess from "./pages/PaymentSuccess";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import AnnouncementBar from "./components/AnnouncementBar";
 import CookieConsent from "./components/CookieConsent";
 import { CartProvider } from "@/hooks/useCart";
+import { CustomerAuthProvider } from "@/hooks/useCustomerAuth";
+
+// Customer pages
+import CustomerLogin from "./pages/CustomerLogin";
+import CustomerSignup from "./pages/CustomerSignup";
+import CustomerProfile from "./pages/CustomerProfile";
+import OrderTracking from "./pages/OrderTracking";
 
 // Admin imports
 import AdminLogin from "./pages/AdminLogin";
@@ -26,6 +34,13 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminProducts from "./pages/AdminProducts";
 import AdminProductForm from "./pages/AdminProductForm";
 import AdminLayout from "./components/admin/AdminLayout";
+import AdminOrders from "./pages/AdminOrders";
+import AdminOrderCreate from "./pages/AdminOrderCreate";
+import AdminOrderDetails from "./pages/AdminOrderDetails";
+import AdminCustomers from "./pages/AdminCustomers";
+import AdminSettings from "./pages/AdminSettings";
+import AdminInventory from "./pages/AdminInventory";
+import AdminUsers from "./pages/AdminUsers";
 
 const queryClient = new QueryClient();
 
@@ -44,22 +59,31 @@ function Layout() {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <CartProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <CookieConsent />
-        <BrowserRouter>
-          <Routes>
-            {/* Public Store Routes */}
-            <Route element={<Layout />}>
+    <CustomerAuthProvider>
+      <CartProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <CookieConsent />
+          <BrowserRouter>
+            <Routes>
+              {/* Public Store Routes */}
+              <Route element={<Layout />}>
               <Route path="/" element={<Index />} />
               <Route path="/product/:id" element={<Product />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              
+              {/* Customer Auth Routes */}
+              <Route path="/login" element={<CustomerLogin />} />
+              <Route path="/signup" element={<CustomerSignup />} />
+              <Route path="/profile" element={<CustomerProfile />} />
+              <Route path="/orders/:id" element={<OrderTracking />} />
+              
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Route>
@@ -71,12 +95,20 @@ const App = () => (
               <Route path="products" element={<AdminProducts />} />
               <Route path="products/new" element={<AdminProductForm />} />
               <Route path="products/:id" element={<AdminProductForm />} />
+              <Route path="orders" element={<AdminOrders />} />
+              <Route path="orders/new" element={<AdminOrderCreate />} />
+              <Route path="orders/:id" element={<AdminOrderDetails />} />
+              <Route path="customers" element={<AdminCustomers />} />
+              <Route path="inventory" element={<AdminInventory />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="settings" element={<AdminSettings />} />
               {/* More admin pages will be added here */}
             </Route>
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
     </CartProvider>
+    </CustomerAuthProvider>
   </QueryClientProvider>
 );
 
