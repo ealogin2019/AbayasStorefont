@@ -74,7 +74,14 @@ export const handleCreateSetting: RequestHandler = async (req, res) => {
       return res.status(400).json({ success: false, error: "Setting key already exists" });
     }
 
-    const created = await prisma.setting.create({ data: payload });
+    const created = await prisma.setting.create({
+      data: {
+        key: payload.key,
+        value: payload.value,
+        group: payload.group,
+        description: payload.description,
+      },
+    });
     return res.status(201).json({ success: true, data: created });
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -96,7 +103,14 @@ export const handleUpdateSetting: RequestHandler = async (req, res) => {
     const setting = await prisma.setting.findUnique({ where: { id: req.params.id } });
     if (!setting) return res.status(404).json({ success: false, error: "Setting not found" });
 
-    const updated = await prisma.setting.update({ where: { id: req.params.id }, data: payload });
+    const updated = await prisma.setting.update({
+      where: { id: req.params.id },
+      data: {
+        ...(payload.value !== undefined ? { value: payload.value } : {}),
+        ...(payload.group !== undefined ? { group: payload.group } : {}),
+        ...(payload.description !== undefined ? { description: payload.description } : {}),
+      },
+    });
     return res.json({ success: true, data: updated });
   } catch (error) {
     if (error instanceof z.ZodError) {
