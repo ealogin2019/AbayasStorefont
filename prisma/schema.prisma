@@ -74,17 +74,20 @@ model CartItem {
 
 // Order model
 model Order {
-  id           String      @id @default(cuid())
-  customerId   String?
-  orderNumber  String      @unique
-  status       String      @default("pending") // pending, processing, shipped, delivered, cancelled
-  subtotal     Float
-  tax          Float       @default(0)
-  shippingCost Float       @default(0)
-  total        Float
-  notes        String?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  id             String      @id @default(cuid())
+  customerId     String?
+  orderNumber    String      @unique
+  status         String      @default("pending") // pending, processing, shipped, delivered, cancelled
+  subtotal       Float
+  tax            Float       @default(0)
+  shippingCost   Float       @default(0)
+  total          Float
+  notes          String?
+  trackingNumber String?
+  trackingUrl    String?
+  estimatedDelivery DateTime?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 
   customer Customer?   @relation(fields: [customerId], references: [id], onDelete: SetNull)
   items    OrderItem[]
