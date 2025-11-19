@@ -32,6 +32,14 @@ import {
   handleGetCustomer,
   handleCustomerStats,
 } from "./routes/admin/customers.js";
+import {
+  handleListSettings,
+  handleGetSetting,
+  handleCreateSetting,
+  handleUpdateSetting,
+  handleDeleteSetting,
+  handleSettingsStats,
+} from "./routes/admin/settings.js";
 import { handleDashboardStats } from "./routes/admin/dashboard.js";
 import { handleUploadImage, handleDeleteImage } from "./routes/admin/upload.js";
 
@@ -138,6 +146,14 @@ export async function createServer() {
   app.get("/api/admin/customers", authenticateAdmin, handleListCustomers);
   app.get("/api/admin/customers/stats/summary", authenticateAdmin, handleCustomerStats);
   app.get("/api/admin/customers/:id", authenticateAdmin, handleGetCustomer);
+
+  // Admin Settings (protected)
+  app.get("/api/admin/settings", authenticateAdmin, handleListSettings);
+  app.get("/api/admin/settings/stats/summary", authenticateAdmin, handleSettingsStats);
+  app.get("/api/admin/settings/:id", authenticateAdmin, handleGetSetting);
+  app.post("/api/admin/settings", authenticateAdmin, requireRole("admin", "manager"), handleCreateSetting);
+  app.put("/api/admin/settings/:id", authenticateAdmin, requireRole("admin", "manager"), handleUpdateSetting);
+  app.delete("/api/admin/settings/:id", authenticateAdmin, requireRole("admin"), handleDeleteSetting);
 
   return app;
 }

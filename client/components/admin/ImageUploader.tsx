@@ -146,20 +146,21 @@ export default function ImageUploader({
             <ImagePlus className="h-8 w-8 text-muted-foreground" />
           </div>
         )}
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Input
             ref={mainInputRef}
             type="file"
             accept="image/*"
             onChange={(e) => handleFileSelect(e.target.files, "main")}
             disabled={disabled || uploading}
-            className="cursor-pointer"
+            className="cursor-pointer flex-1"
           />
           <Button
             type="button"
             variant="outline"
             onClick={() => mainInputRef.current?.click()}
             disabled={disabled || uploading}
+            className="sm:w-auto w-full"
           >
             <Upload className="h-4 w-4 mr-2" />
             Browse
@@ -196,20 +197,21 @@ export default function ImageUploader({
             <ImagePlus className="h-6 w-6 text-muted-foreground" />
           </div>
         )}
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Input
             ref={thumbInputRef}
             type="file"
             accept="image/*"
             onChange={(e) => handleFileSelect(e.target.files, "thumbnail")}
             disabled={disabled || uploading}
-            className="cursor-pointer"
+            className="cursor-pointer flex-1"
           />
           <Button
             type="button"
             variant="outline"
             onClick={() => thumbInputRef.current?.click()}
             disabled={disabled || uploading}
+            className="sm:w-auto w-full"
           >
             <Upload className="h-4 w-4 mr-2" />
             Browse
@@ -226,7 +228,7 @@ export default function ImageUploader({
           Gallery Images
         </Label>
         {gallery.length > 0 && (
-          <div className="grid grid-cols-4 gap-3 mb-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-3">
             {gallery.map((url, idx) => (
               <div key={idx} className="relative">
                 <img
@@ -246,7 +248,7 @@ export default function ImageUploader({
             ))}
           </div>
         )}
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Input
             ref={galleryInputRef}
             type="file"
@@ -254,13 +256,14 @@ export default function ImageUploader({
             multiple
             onChange={(e) => handleFileSelect(e.target.files, "gallery")}
             disabled={disabled || uploading}
-            className="cursor-pointer"
+            className="cursor-pointer flex-1"
           />
           <Button
             type="button"
             variant="outline"
             onClick={() => galleryInputRef.current?.click()}
             disabled={disabled || uploading}
+            className="sm:w-auto w-full"
           >
             <Upload className="h-4 w-4 mr-2" />
             Browse

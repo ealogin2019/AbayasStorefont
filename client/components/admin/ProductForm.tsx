@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import ImageUploader from "./ImageUploader";
 
 // Validation schema (matches backend)
@@ -58,6 +59,7 @@ export default function ProductForm({
   onCancel,
 }: ProductFormProps) {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState<ProductFormData>(
     product || {
       name: "",
@@ -93,6 +95,11 @@ export default function ProductForm({
           newErrors[path] = err.message;
         });
         setErrors(newErrors);
+        toast({
+          title: "Validation Error",
+          description: error.errors[0].message,
+          variant: "destructive",
+        });
       }
       return false;
     }
@@ -160,6 +167,11 @@ export default function ProductForm({
     try {
       const token = localStorage.getItem("adminToken");
       if (!token) {
+        toast({
+          title: "Authentication Required",
+          description: "Please login to continue",
+          variant: "destructive",
+        });
         navigate("/admin/login");
         return;
       }
@@ -168,6 +180,8 @@ export default function ProductForm({
       const url = product?.id
         ? `/api/admin/products/${product.id}`
         : "/api/admin/products";
+
+      console.log("Submitting product:", { method, url, formData });
 
       const response = await fetch(url, {
         method,
@@ -179,17 +193,36 @@ export default function ProductForm({
       });
 
       const data = await response.json();
+      console.log("Response:", data);
 
       if (!data.success) {
-        setErrors({ submit: data.error || "Failed to save product" });
+        const errorMsg = data.error || "Failed to save product";
+        setErrors({ submit: errorMsg });
+        toast({
+          title: "Error",
+          description: errorMsg,
+          variant: "destructive",
+        });
         return;
       }
 
       // Success
+      toast({
+        title: "Success",
+        description: product?.id 
+          ? "Product updated successfully" 
+          : "Product created successfully",
+      });
       onSuccess?.();
     } catch (error) {
       console.error("Form submission error:", error);
-      setErrors({ submit: "An error occurred while saving" });
+      const errorMsg = "An error occurred while saving";
+      setErrors({ submit: errorMsg });
+      toast({
+        title: "Error",
+        description: errorMsg,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -208,20 +241,36 @@ export default function ProductForm({
       });
 
       if (response.ok) {
+        toast({
+          title: "Success",
+          description: "Product deleted successfully",
+        });
         onSuccess?.();
       } else {
-        setErrors({ submit: "Failed to delete product" });
+        const errorMsg = "Failed to delete product";
+        setErrors({ submit: errorMsg });
+        toast({
+          title: "Error",
+          description: errorMsg,
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error("Delete error:", error);
-      setErrors({ submit: "An error occurred while deleting" });
+      const errorMsg = "An error occurred while deleting";
+      setErrors({ submit: errorMsg });
+      toast({
+        title: "Error",
+        description: errorMsg,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Card className="p-6">
+    <Card className="p-4 sm:p-6">
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Product Name */}
         <div className="space-y-2">
@@ -259,7 +308,7 @@ export default function ProductForm({
         </div>
 
         {/* Price & Currency */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="price">Price *</Label>
             <Input
@@ -328,7 +377,7 @@ export default function ProductForm({
         {/* Colors */}
         <div className="space-y-2">
           <Label>Available Colors *</Label>
-          <div className="flex gap-2 mb-3">
+          <div className="flex flex-col sm:flex-row gap-2 mb-3">
             <Input
               value={colorInput}
               onChange={(e) => setColorInput(e.target.value)}
@@ -340,12 +389,14 @@ export default function ProductForm({
                 }
               }}
               disabled={loading}
+              className="flex-1"
             />
             <Button
               type="button"
               onClick={handleAddColor}
               variant="outline"
               disabled={loading}
+              className="sm:w-auto w-full"
             >
               Add
             </Button>
@@ -380,7 +431,7 @@ export default function ProductForm({
         {/* Sizes */}
         <div className="space-y-2">
           <Label>Available Sizes *</Label>
-          <div className="flex gap-2 mb-3">
+          <div className="flex flex-col sm:flex-row gap-2 mb-3">
             <Input
               value={sizeInput}
               onChange={(e) => setSizeInput(e.target.value)}
@@ -392,12 +443,14 @@ export default function ProductForm({
                 }
               }}
               disabled={loading}
+              className="flex-1"
             />
             <Button
               type="button"
               onClick={handleAddSize}
               variant="outline"
               disabled={loading}
+              className="sm:w-auto w-full"
             >
               Add
             </Button>
@@ -432,7 +485,7 @@ export default function ProductForm({
         {/* Tags */}
         <div className="space-y-2">
           <Label>Tags (for search)</Label>
-          <div className="flex gap-2 mb-3">
+          <div className="flex flex-col sm:flex-row gap-2 mb-3">
             <Input
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
@@ -444,12 +497,14 @@ export default function ProductForm({
                 }
               }}
               disabled={loading}
+              className="flex-1"
             />
             <Button
               type="button"
               onClick={handleAddTag}
               variant="outline"
               disabled={loading}
+              className="sm:w-auto w-full"
             >
               Add
             </Button>
@@ -474,7 +529,7 @@ export default function ProductForm({
         </div>
 
         {/* Stock */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="quantity">Stock Quantity</Label>
             <Input
@@ -520,13 +575,14 @@ export default function ProductForm({
         )}
 
         {/* Actions */}
-        <div className="flex gap-3 justify-between pt-6 border-t">
-          <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3 justify-between pt-6 border-t">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Button
               type="button"
               variant="outline"
               onClick={onCancel}
               disabled={loading}
+              className="w-full sm:w-auto"
             >
               Cancel
             </Button>
@@ -536,13 +592,14 @@ export default function ProductForm({
                 variant="destructive"
                 onClick={handleDelete}
                 disabled={loading}
+                className="w-full sm:w-auto"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete Product
               </Button>
             )}
           </div>
-          <Button type="submit" disabled={loading} size="lg">
+          <Button type="submit" disabled={loading} size="lg" className="w-full sm:w-auto">
             {loading ? "Saving..." : product?.id ? "Update Product" : "Create Product"}
           </Button>
         </div>

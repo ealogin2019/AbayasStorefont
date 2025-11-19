@@ -137,6 +137,20 @@ model PluginConfig {
   updatedAt DateTime @updatedAt
 }
 
+// Simple key/value site settings for admin-managed configuration
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Json
+  group     String?  // e.g., "site", "checkout", "shipping"
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([key])
+  @@index([group])
+}
+
 // Audit log for tracking admin actions
 model AuditLog {
   id        String   @id @default(cuid())
