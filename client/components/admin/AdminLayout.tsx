@@ -9,6 +9,8 @@ const adminNav = [
   { label: "Products", path: "/admin/products" },
   { label: "Orders", path: "/admin/orders" },
   { label: "Customers", path: "/admin/customers" },
+  { label: "Inventory", path: "/admin/inventory" },
+  { label: "Users", path: "/admin/users" },
   { label: "Settings", path: "/admin/settings" },
 ];
 
@@ -23,20 +25,20 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-gradient-to-br from-[#faf8f3] to-[#f5f1e8]">
       {/* Sidebar */}
       <aside
         className={cn(
-          "transition-all duration-300 border-r border-border/40",
+          "transition-all duration-300 border-r border-amber-200/50 bg-gradient-to-b from-[#fff9f0] to-[#fef6ed] shadow-lg",
           sidebarOpen ? "w-64" : "w-20"
         )}
       >
-        <div className="p-6 border-b border-border/40">
+        <div className="p-6 border-b border-amber-200/50 bg-gradient-to-r from-amber-50/50 to-orange-50/30">
           <Link
             to="/admin"
-            className="font-display text-xl font-bold text-foreground"
+            className="font-display text-xl font-bold bg-gradient-to-r from-amber-700 to-orange-600 bg-clip-text text-transparent"
           >
-            {sidebarOpen && "Admin"}
+            {sidebarOpen && "Abaya Admin"}
             {!sidebarOpen && "A"}
           </Link>
         </div>
@@ -47,7 +49,7 @@ export default function AdminLayout() {
               key={item.path}
               to={item.path}
               className={cn(
-                "block px-4 py-2 rounded-lg transition-colors hover:bg-secondary",
+                "block px-4 py-2.5 rounded-lg transition-all duration-200 text-amber-900/80 hover:bg-gradient-to-r hover:from-amber-100/70 hover:to-orange-100/60 hover:text-amber-900 hover:shadow-sm font-medium",
                 sidebarOpen ? "" : "text-center"
               )}
             >
@@ -60,7 +62,7 @@ export default function AdminLayout() {
           <Button
             variant="ghost"
             size="sm"
-            className="w-full"
+            className="w-full text-amber-900/70 hover:text-amber-900 hover:bg-amber-100/50"
             onClick={handleLogout}
           >
             {sidebarOpen && (
@@ -77,10 +79,10 @@ export default function AdminLayout() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <header className="border-b border-border/40 bg-background/95 backdrop-blur px-6 py-4 flex items-center justify-between">
+        <header className="border-b border-amber-200/50 bg-gradient-to-r from-[#fffbf5]/95 to-[#fff9f0]/95 backdrop-blur px-6 py-4 flex items-center justify-between shadow-sm">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="hover:bg-secondary/30 p-2 rounded-lg transition-colors"
+            className="hover:bg-amber-100/50 p-2 rounded-lg transition-colors text-amber-900/70 hover:text-amber-900"
           >
             {sidebarOpen ? (
               <X className="h-6 w-6" />
@@ -88,11 +90,13 @@ export default function AdminLayout() {
               <Menu className="h-6 w-6" />
             )}
           </button>
-          <div className="text-sm text-muted-foreground">Admin Panel</div>
+          <div className="text-sm font-medium bg-gradient-to-r from-amber-700 to-orange-600 bg-clip-text text-transparent">
+            Admin Panel
+          </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto bg-gradient-to-br from-[#faf8f3] to-[#f5f1e8]">
           <div className="p-6 max-w-7xl mx-auto">
             <Outlet />
           </div>

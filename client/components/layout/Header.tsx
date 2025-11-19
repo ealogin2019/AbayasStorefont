@@ -1,9 +1,11 @@
 import { Link, NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
+import { useCustomerAuth } from "@/hooks/useCustomerAuth";
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { User, LogOut } from "lucide-react";
 
 const nav = [
   {
@@ -27,8 +29,10 @@ const nav = [
 
 export default function Header() {
   const { count } = useCart();
+  const { isAuthenticated, customer, logout } = useCustomerAuth();
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [showStoreSelector, setShowStoreSelector] = useState(false);
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -73,7 +77,7 @@ export default function Header() {
                       <div className="space-y-2 pl-4 border-l border-border/40">
                         {item.submenu.map((subitem) => (
                           <Link
-                            key={subitem.to}
+                            key={`${item.to}-${subitem.label}`}
                             to={subitem.to}
                             onClick={() => setMobileMenuOpen(false)}
                             className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors block"
@@ -126,7 +130,7 @@ export default function Header() {
                   <div className="absolute top-full left-0 w-48 bg-background border border-border/40 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-0">
                     {item.submenu.map((subitem) => (
                       <Link
-                        key={subitem.to}
+                        key={`${item.to}-${subitem.label}`}
                         to={subitem.to}
                         className="block px-4 py-3 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/30 transition-colors border-b border-border/20 last:border-b-0"
                       >
@@ -192,27 +196,66 @@ export default function Header() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={1.5}
-                  d="M21 8.25c0-1.085-.667-2.025-1.587-2.431a2.25 2.25 0 00-2.331-.873c-.464.15-.909.576-1.348.576-.46 0-.891-.423-1.348-.576a2.25 2.25 0 00-2.331.873c-.92.406-1.587 1.346-1.587 2.431M9 12c0-1.657.895-3.095 2.225-3.863m5.55 0c1.33.768 2.225 2.206 2.225 3.863m-12 0a8.25 8.25 0 1116.5 0m-1.5 0c0 .937-.118 1.846-.338 2.729M15 12a3 3 0 11-6 0m6 0a3 3 0 1-6 0m6 0h.008v.008h-.008V12z"
+                  d="M21 8.25c0-1.085-.667-2.025-1.587-2.431a2.25 2.25 0 0 0-2.331-.873c-.464.15-.909.576-1.348.576-.46 0-.891-.423-1.348-.576a2.25 2.25 0 0 0-2.331.873c-.92.406-1.587 1.346-1.587 2.431M9 12c0-1.657.895-3.095 2.225-3.863m5.55 0c1.33.768 2.225 2.206 2.225 3.863m-12 0a8.25 8.25 0 1 1 16.5 0m-1.5 0c0 .937-.118 1.846-.338 2.729M15 12a3 3 0 1 1-6 0m6 0a3 3 0 1-6 0m6 0h.008v.008h-.008V12z"
                 />
               </svg>
             </button>
 
             {/* Account - Desktop Only */}
-            <button className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors hidden md:inline-flex items-center gap-1.5">
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div className="relative hidden md:block">
+              <button 
+                onClick={() => setShowAccountMenu(!showAccountMenu)}
+                className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                />
-              </svg>
-            </button>
+                <User className="h-5 w-5" />
+                {isAuthenticated && customer?.firstName && (
+                  <span className="hidden lg:inline">{customer.firstName}</span>
+                )}
+              </button>
+              {showAccountMenu && (
+                <div className="absolute right-0 mt-2 w-48 bg-background border border-border/40 shadow-lg z-50">
+                  {isAuthenticated ? (
+                    <>
+                      <Link
+                        to="/profile"
+                        onClick={() => setShowAccountMenu(false)}
+                        className="w-full text-left px-4 py-2 text-xs uppercase tracking-widest text-foreground hover:bg-secondary/30 transition-colors border-b border-border/20 flex items-center gap-2"
+                      >
+                        <User className="h-4 w-4" />
+                        My Account
+                      </Link>
+                      <button
+                        onClick={() => {
+                          logout();
+                          setShowAccountMenu(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground hover:bg-secondary/30 transition-colors flex items-center gap-2"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/login"
+                        onClick={() => setShowAccountMenu(false)}
+                        className="w-full text-left px-4 py-2 text-xs uppercase tracking-widest text-foreground hover:bg-secondary/30 transition-colors border-b border-border/20"
+                      >
+                        Sign In
+                      </Link>
+                      <Link
+                        to="/signup"
+                        onClick={() => setShowAccountMenu(false)}
+                        className="w-full text-left px-4 py-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground hover:bg-secondary/30 transition-colors"
+                      >
+                        Create Account
+                      </Link>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* Cart */}
             <Link
