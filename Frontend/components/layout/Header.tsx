@@ -172,7 +172,7 @@ export default function Header() {
 
                   {/* Enhanced Dropdown Menu */}
                   {item.dropdown && openDropdown === item.label && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-8 animate-fade-in-up">
+                    <div className="absolute top-full right-0 pt-8 animate-slide-in-right">
                       <div className="relative group/menu">
                         {/* Premium container with refined borders */}
                         <div className="relative bg-white/95 backdrop-blur-xl min-w-[280px] shadow-2xl border border-black/5">
