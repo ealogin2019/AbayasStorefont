@@ -187,7 +187,7 @@ export default function Header() {
                     <div className="absolute top-full left-1/2 -translate-x-1/2 pt-8 animate-slide-in-right">
                       <div className="relative group/menu">
                         {/* Premium container with refined borders */}
-                        <div className="relative bg-white/95 backdrop-blur-xl w-max px-8 py-8 shadow-2xl border border-black/5" style={{ minWidth: '200px' }}>
+                        <div className="relative bg-white/95 backdrop-blur-xl min-w-[280px] shadow-2xl border border-black/5">
                           {/* Elegant top border accent */}
                           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-black/20 to-transparent" />
 
