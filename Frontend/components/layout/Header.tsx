@@ -146,7 +146,12 @@ export default function Header() {
           {/* Logo */}
           <Link
             to="/"
-            className="font-serif text-lg sm:text-xl md:text-2xl tracking-luxury-tight transition-all duration-500 flex-shrink-0 font-light text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] hover:text-white"
+            className={cn(
+              "font-serif text-lg sm:text-xl md:text-2xl tracking-luxury-tight transition-all duration-500 flex-shrink-0 font-light hover:opacity-80",
+              isIndexPage && isOverHero
+                ? "text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+                : "text-black"
+            )}
           >
             Arab Abayas
           </Link>
@@ -165,7 +170,12 @@ export default function Header() {
               >
                 <NavLink
                   to={item.to}
-                  className="nav-link py-3 relative inline-block font-light transition-colors duration-300 text-white hover:text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+                  className={cn(
+                    "nav-link py-3 relative inline-block font-light transition-colors duration-300",
+                    isIndexPage && isOverHero
+                      ? "text-white hover:text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+                      : "text-black hover:text-black"
+                  )}
                   style={{ transitionDelay: `${idx * 75}ms` }}
                   end
                 >
@@ -220,7 +230,12 @@ export default function Header() {
           {/* Right Actions */}
           <div className="flex items-center gap-6 lg:gap-8 ml-auto">
             {/* Search */}
-            <div className="transition-all duration-500 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            <div className={cn(
+              "transition-all duration-500",
+              isIndexPage && isOverHero
+                ? "text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+                : "text-black"
+            )}>
               <SearchBar />
             </div>
 
@@ -228,7 +243,12 @@ export default function Header() {
             <div className="relative hidden md:block">
               <button
                 onClick={() => setShowAccountMenu(!showAccountMenu)}
-                className="transition-all duration-300 inline-flex items-center gap-2 text-white hover:text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+                className={cn(
+                  "transition-all duration-300 inline-flex items-center gap-2",
+                  isIndexPage && isOverHero
+                    ? "text-white hover:text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+                    : "text-black hover:text-black/90"
+                )}
               >
                 <User className="h-5 w-5 transition-transform duration-300 hover:scale-105" />
                 {isAuthenticated && customer?.firstName && (
@@ -308,7 +328,12 @@ export default function Header() {
             {/* Cart */}
             <Link
               to="/cart"
-              className="relative inline-flex items-center gap-2 transition-all duration-500 group text-white hover:text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+              className={cn(
+                "relative inline-flex items-center gap-2 transition-all duration-500 group",
+                isIndexPage && isOverHero
+                  ? "text-white hover:text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+                  : "text-black hover:text-black/90"
+              )}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
