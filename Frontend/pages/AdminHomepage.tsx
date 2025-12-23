@@ -71,7 +71,10 @@ export default function AdminHomepage() {
   const fetchContent = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/admin/homepage");
+      const token = localStorage.getItem("adminToken");
+      const response = await fetch("/api/admin/homepage", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!response.ok) throw new Error("Failed to fetch homepage content");
       const data = await response.json();
       setContent(data.data || []);
