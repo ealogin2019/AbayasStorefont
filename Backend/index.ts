@@ -2,6 +2,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -82,6 +83,15 @@ import {
 } from "./routes/admin/audit-logs.js";
 import { handleDashboardStats } from "./routes/admin/dashboard.js";
 import { handleUploadImage, handleDeleteImage } from "./routes/admin/upload.js";
+import {
+  handleListHomepageContent,
+  handleCreateHomepageContent,
+  handleUpdateHomepageContent,
+  handleDeleteHomepageContent,
+} from "./routes/admin/homepage";
+
+// Public routes
+import homepageRouter from "./routes/homepage.js";
 
 // Auth middleware
 import { authenticateAdmin, requireRole } from "./auth/middleware.js";
@@ -117,6 +127,7 @@ export async function createServer() {
 
   // Middleware
   app.use(cors());
+  app.use(cookieParser());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
@@ -127,7 +138,7 @@ export async function createServer() {
   app.use(express.static(path.join(__dirname, "..", "public")));
 
   // Initialize plugin system
-  await pluginManager.initializeAll();
+  // await pluginManager.initializeAll();
 
   // Example API routes
   app.get("/api/ping", (_req, res) => {
@@ -245,6 +256,15 @@ export async function createServer() {
   app.get("/api/admin/audit-logs", authenticateAdmin, handleListAuditLogs);
   app.get("/api/admin/audit-logs/stats", authenticateAdmin, handleAuditLogStats);
   app.get("/api/admin/audit-logs/recent", authenticateAdmin, handleRecentActivity);
+
+  // Admin Homepage Content (protected)
+  app.get("/api/admin/homepage", authenticateAdmin, handleListHomepageContent);
+  app.post("/api/admin/homepage", authenticateAdmin, requireRole("admin", "editor"), handleCreateHomepageContent);
+  app.put("/api/admin/homepage/:id", authenticateAdmin, requireRole("admin", "editor"), handleUpdateHomepageContent);
+  app.delete("/api/admin/homepage/:id", authenticateAdmin, requireRole("admin"), handleDeleteHomepageContent);
+
+  // Public Homepage Content
+  app.use("/api/homepage", homepageRouter);
 
   return app;
 }

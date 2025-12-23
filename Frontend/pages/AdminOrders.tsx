@@ -64,6 +64,7 @@ interface PaginatedResponse {
 }
 
 const ORDER_STATUSES = [
+  { value: "all", label: "All Statuses" },
   { value: "pending", label: "Pending" },
   { value: "processing", label: "Processing" },
   { value: "shipped", label: "Shipped" },
@@ -86,7 +87,7 @@ export default function AdminOrders() {
 
   // Filter states
   const [search, setSearch] = useState(searchParams.get("search") || "");
-  const [status, setStatus] = useState(searchParams.get("status") || "");
+  const [status, setStatus] = useState(searchParams.get("status") || "all");
   const [page, setPage] = useState(parseInt(searchParams.get("page") || "1"));
   const [dateFrom, setDateFrom] = useState(searchParams.get("dateFrom") || "");
   const [dateTo, setDateTo] = useState(searchParams.get("dateTo") || "");
@@ -114,7 +115,7 @@ export default function AdminOrders() {
       const query = new URLSearchParams({
         page: page.toString(),
         limit: "10",
-        ...(status && { status }),
+        ...(status && status !== "all" && { status }),
         ...(search && { search }),
         ...(dateFrom && { dateFrom }),
         ...(dateTo && { dateTo }),

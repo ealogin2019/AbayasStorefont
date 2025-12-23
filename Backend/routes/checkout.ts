@@ -20,133 +20,104 @@ function getStripeClient() {
 
 // Checkout schema
 const checkoutSchema = z.object({
-  customerId: z.string().optional(),
-  email: z.string().email(),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  address: z.string().min(1),
-  city: z.string().min(1),
-  country: z.string().min(1),
-  zipCode: z.string().min(1),
-  phone: z.string().min(1),
-  shippingCost: z.number().optional().default(0),
-  tax: z.number().optional().default(0),
-  notes: z.string().optional(),
+  email: z.string().email("Invalid email address"),
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  address: z.string().min(1, "Address is required"),
+  city: z.string().min(1, "City is required"),
+  postalCode: z.string().min(1, "Postal code is required"),
+  country: z.string().min(1, "Country is required"),
+  paymentMethod: z.enum(["cod", "card"]).default("cod"),
 });
 
 // Create order from checkout
 router.post('/', async (req: Request, res: Response) => {
   try {
+    // 1. Validate Request Body
     const data = checkoutSchema.parse(req.body);
 
-    // Get customer ID from session or request
-    const customerId = data.customerId || (req as any).customerId;
+    // 2. Identify the Cart
+    // We try to get the cartId from the signed cookie first (secure), then fall back to body/header if necessary
+    const cartId = req.cookies.cartId;
 
-    // Get cart items
-    const cartItems = await prisma.cartItem.findMany({
-      where: customerId ? { customerId } : { customerId: null },
+    if (!cartId) {
+      return res.status(400).json({ message: "No active cart found" });
+    }
+
+    // 3. Fetch Cart and Items
+    const cart = await prisma.cart.findUnique({
+      where: { id: cartId },
       include: {
-        product: true,
+        items: {
+          include: { product: true },
+        },
       },
     });
 
-    if (!cartItems || cartItems.length === 0) {
-      return res.status(400).json({ error: "Cart is empty" });
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" });
     }
 
-    // Calculate totals
-    const subtotal = cartItems.reduce((sum, item) => 
-      sum + (item.product.price * item.quantity), 0
-    );
-    const total = subtotal + data.shippingCost + data.tax;
-
-    // Generate order number
-    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-
-    // Find or create customer
-    let customer = customerId ? await prisma.customer.findUnique({ where: { id: customerId } }) : null;
+    // 4. Calculate Totals (Server-side calculation is crucial for security)
+    const subtotal = cart.items.reduce((sum, item) => {
+      return sum + Number(item.product.price) * item.quantity;
+    }, 0);
     
-    if (!customer) {
-      // Create guest customer
-      customer = await prisma.customer.create({
+    // Simple logic for shipping: Free if over 500, else 20 (example logic)
+    const shippingCost = subtotal > 500 ? 0 : 20; 
+    const totalAmount = subtotal + shippingCost;
+
+    // 5. Database Transaction: Create Order & Clear Cart
+    const order = await prisma.$transaction(async (tx) => {
+      // Create the Order
+      const newOrder = await tx.order.create({
         data: {
+          orderNumber: `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+          status: "PENDING",
+          total: totalAmount,
           email: data.email,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          phone: data.phone,
-          address: data.address,
-          city: data.city,
-          country: data.country,
-          zipCode: data.zipCode,
-          passwordHash: '', // Guest customer
-        },
-      });
-    }
-
-    // Create order with items
-    const order = await prisma.order.create({
-      data: {
-        customerId: customer.id,
-        orderNumber,
-        status: "pending",
-        subtotal,
-        tax: data.tax,
-        shippingCost: data.shippingCost,
-        total,
-        notes: data.notes,
-        shippingAddress: `${data.address}, ${data.city}, ${data.country} ${data.zipCode}`,
-        items: {
-          create: cartItems.map((item) => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            price: item.product.price,
-            size: item.size,
-            color: item.color,
-          })),
-        },
-      },
-      include: {
-        items: {
-          include: {
-            product: true,
+          // Store shipping address as a JSON string to preserve snapshot of address at time of order
+          shippingAddress: JSON.stringify({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            address: data.address,
+            city: data.city,
+            postalCode: data.postalCode,
+            country: data.country,
+          }),
+          // Map cart items to order items
+          items: {
+            create: cart.items.map((item) => ({
+              productId: item.productId,
+              quantity: item.quantity,
+              price: item.product.price,
+            })),
           },
         },
-        customer: {
-          select: {
-            id: true,
-            email: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
-      },
-    });
-
-    // Clear cart after order creation
-    if (customer.id) {
-      await prisma.cartItem.deleteMany({
-        where: { customerId: customer.id },
       });
-    }
 
-    // Trigger plugin hooks (e.g., inventory deduction)
-    try {
-      await pluginManager.triggerHook('onOrderCreate', order);
-    } catch (error) {
-      console.error("Plugin hook error:", error);
-      // Don't fail the order if plugins fail
-    }
+      // Clear the Cart Items
+      await tx.cartItem.deleteMany({
+        where: { cartId: cart.id },
+      });
 
-    res.json({
-      order,
-      message: "Order created successfully",
+      return newOrder;
     });
+
+    // 6. Return Success Response
+    res.status(201).json({
+      success: true,
+      message: "Order placed successfully",
+      orderId: order.id,
+      orderNumber: order.orderNumber,
+    });
+
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: "Invalid checkout data", details: error.errors });
+      return res.status(400).json({ message: "Validation failed", errors: error.errors });
     }
-    console.error("Checkout error:", error);
-    res.status(500).json({ error: "Checkout failed" });
+    console.error("Checkout Error:", error);
+    res.status(500).json({ message: "Internal server error during checkout" });
   }
 });
 

@@ -63,13 +63,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   // Load cart from API or localStorage on initialization
   useEffect(() => {
-    if (!customerId || isInitialized) return;
+    if (isInitialized) return;
 
     const loadCart = async () => {
       setIsLoading(true);
       try {
         // Try to load from API
-        const response = await api.getCart(customerId);
+        const response = await api.getCart();
         const formattedItems: CartItem[] = (response.items || []).map((item: CartItemData & { product?: any }) => ({
           id: item.id,
           name: item.product?.name || "Unknown",
@@ -96,7 +96,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     };
 
     loadCart();
-  }, [customerId, isInitialized]);
+  }, [isInitialized]);
 
   // Sync to localStorage as backup
   useEffect(() => {
@@ -106,8 +106,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items]);
 
   const add = async (p: Product, opts?: { size?: string; color?: string; qty?: number }) => {
-    if (!customerId) return;
-
     try {
       // Optimistically update UI
       setItems((prev) => {
@@ -136,7 +134,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
       // Sync with API
       await api.addToCart({
-        customerId,
         productId: p.id,
         quantity: opts?.qty ?? 1,
         size: opts?.size,
@@ -186,16 +183,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const clear = async () => {
-    if (!customerId) return;
-
     try {
       setItems([]);
-      await api.clearCart(customerId);
+      await api.clearCart();
     } catch (error) {
       console.error("Failed to clear cart:", error);
       // Reload cart on error
       try {
-        const response = await api.getCart(customerId);
+        const response = await api.getCart();
         const formattedItems: CartItem[] = (response.items || []).map((item: CartItemData & { product?: any }) => ({
           id: item.id,
           name: item.product?.name || "Unknown",

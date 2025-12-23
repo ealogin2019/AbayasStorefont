@@ -1,13 +1,13 @@
-import {
-  GetProductResponse,
-  ListProductsResponse,
-  CartResponse,
-  CheckoutResponse,
-  CreateProductRequest,
-  AddToCartRequest,
-  UpdateCartItemRequest,
-  CheckoutRequest,
-} from "@shared/api";
+export interface CheckoutData {
+  email: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  paymentMethod: "cod" | "card";
+}
 
 export async function fetchJSON<T>(
   url: string,
@@ -41,9 +41,9 @@ export const api = {
     }),
 
   // Cart
-  getCart: (customerId: string) =>
-    fetchJSON<CartResponse>(`/api/cart?customerId=${customerId}`),
-  addToCart: (payload: AddToCartRequest & { customerId: string }) =>
+  getCart: () =>
+    fetchJSON<CartResponse>("/api/cart"),
+  addToCart: (payload: AddToCartRequest) =>
     fetchJSON<any>("/api/cart", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -59,11 +59,11 @@ export const api = {
     fetchJSON<{ message: string }>(`/api/cart/${cartItemId}`, {
       method: "DELETE",
     }),
-  clearCart: (customerId: string) =>
+  clearCart: () =>
     fetchJSON<{ message: string }>("/api/cart/clear", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ customerId }),
+      body: JSON.stringify({}),
     }),
 
   // Contact & Checkout
@@ -73,6 +73,22 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     }),
+  checkout: async (data: CheckoutData) => {
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Checkout failed");
+    }
+
+    return res.json();
+  },
   createCheckout: (payload: CheckoutRequest) =>
     fetchJSON<CheckoutResponse>("/api/checkout", {
       method: "POST",

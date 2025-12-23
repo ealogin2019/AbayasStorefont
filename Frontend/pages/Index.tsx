@@ -1,36 +1,74 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import ProductCard from "@/components/product/ProductCard";
+import { Product } from "@shared/api";
+
+interface HomepageContent {
+  id: string;
+  section: "hero" | "gallery" | "banner";
+  title?: string;
+  subtitle?: string;
+  image: string;
+  link?: string;
+  order: number;
+  isActive: boolean;
+}
 
 export default function Index() {
+  // Fetch homepage content
+  const { data: homepageData } = useQuery({
+    queryKey: ["homepage"],
+    queryFn: async () => {
+      const response = await fetch("/api/homepage");
+      if (!response.ok) throw new Error("Failed to fetch homepage content");
+      return response.json();
+    },
+  });
+
+  // Fetch featured products for add-to-cart functionality
+  const { data: productsData } = useQuery({
+    queryKey: ["products", { limit: 4 }],
+    queryFn: async () => {
+      const response = await fetch("/api/products?limit=4");
+      if (!response.ok) throw new Error("Failed to fetch products");
+      return response.json();
+    },
+  });
+
+  const homepageContent = homepageData?.data || {};
+  const products = productsData?.products || [];
+
+  // Get content by section
+  const heroContent = homepageContent.hero?.[0];
+  const galleryContent = homepageContent.gallery || [];
+  const bannerContent = homepageContent.banner || [];
+
   return (
     <main className="bg-white text-black min-h-screen">
       {/* Hero Section - Full Width Image */}
       <section className="relative w-full h-screen">
-        <img 
-          src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1920" 
+        <img
+          src={heroContent?.image || "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1920"}
           alt="Hero"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 flex items-end justify-center pb-20">
           <div className="text-center">
             <h1 className="text-white text-sm tracking-[0.2em] uppercase font-light mb-4">
-              DISCOVER THE RED CAPSULE
+              {heroContent?.title || "DISCOVER THE RED CAPSULE"}
             </h1>
             <div className="h-px w-32 bg-white mx-auto"></div>
           </div>
         </div>
       </section>
 
-      {/* Product Gallery - 4 Images Grid */}
+      {/* Product Gallery - 4 Images Grid with Add to Cart */}
       <section className="w-full">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-0">
-          {[1, 2, 3, 4].map((i) => (
-            <Link key={i} to="/shop" className="relative aspect-[3/4] overflow-hidden group">
-              <img 
-                src={`https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=600`}
-                alt={`Product ${i}`}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-            </Link>
+          {products.slice(0, 4).map((product: Product) => (
+            <div key={product.id} className="relative group">
+              <ProductCard product={product} />
+            </div>
           ))}
         </div>
       </section>
@@ -38,36 +76,58 @@ export default function Index() {
       {/* Split Banner - Two Side by Side Images */}
       <section className="w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-          <Link to="/shop" className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden group">
-            <img 
-              src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1000"
-              alt="Discover Now"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <h2 className="text-white text-sm tracking-[0.2em] uppercase font-light mb-3">
-                  DISCOVER NOW
-                </h2>
-                <div className="h-px w-24 bg-white mx-auto"></div>
+          {bannerContent.slice(0, 2).map((content: HomepageContent, index: number) => (
+            <Link key={content.id || index} to={content.link || "/shop"} className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden group">
+              <img
+                src={content.image}
+                alt={content.title || "Banner"}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                  <h2 className="text-white text-sm tracking-[0.2em] uppercase font-light mb-3">
+                    {content.title || (index === 0 ? "DISCOVER NOW" : "WINTER 25 COLLECTION")}
+                  </h2>
+                  <div className="h-px w-24 bg-white mx-auto"></div>
+                </div>
               </div>
-            </div>
-          </Link>
-          <Link to="/shop" className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden group">
-            <img 
-              src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1000"
-              alt="Winter 25 Collection"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <h2 className="text-white text-sm tracking-[0.2em] uppercase font-light mb-3">
-                  WINTER 25 COLLECTION
-                </h2>
-                <div className="h-px w-24 bg-white mx-auto"></div>
-              </div>
-            </div>
-          </Link>
+            </Link>
+          ))}
+          {/* Fallback banners if no content */}
+          {bannerContent.length === 0 && (
+            <>
+              <Link to="/shop" className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden group">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1000"
+                  alt="Discover Now"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <h2 className="text-white text-sm tracking-[0.2em] uppercase font-light mb-3">
+                      DISCOVER NOW
+                    </h2>
+                    <div className="h-px w-24 bg-white mx-auto"></div>
+                  </div>
+                </div>
+              </Link>
+              <Link to="/shop" className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden group">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1000"
+                  alt="Winter 25 Collection"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <h2 className="text-white text-sm tracking-[0.2em] uppercase font-light mb-3">
+                      WINTER 25 COLLECTION
+                    </h2>
+                    <div className="h-px w-24 bg-white mx-auto"></div>
+                  </div>
+                </div>
+              </Link>
+            </>
+          )}
         </div>
       </section>
 

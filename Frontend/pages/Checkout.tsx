@@ -69,23 +69,19 @@ export default function Checkout() {
     
     setLoading(true);
     try {
-      const res = await api.createCheckout({
-        customerId: customer?.id,
+      const res = await api.checkout({
         email: contactEmail || email,
         firstName,
         lastName,
         address: apartment ? `${address}, ${apartment}` : address,
         city,
+        postalCode: zipCode,
         country,
-        zipCode,
-        phone,
-        shippingCost,
-        tax: 0,
-        notes: `Payment: ${paymentMethod}, Shipping: ${shippingMethod}`,
+        paymentMethod: paymentMethod as "cod" | "card",
       });
-      toast.success(`Order ${res.order.orderNumber} created successfully!`);
+      toast.success(`Order ${res.orderNumber} created successfully!`);
       clear();
-      navigate(`/payment-success?order=${res.order.orderNumber}`);
+      navigate(`/payment-success?order=${res.orderNumber}`);
     } catch (err: any) {
       console.error(err);
       toast.error(err?.message ?? "Checkout failed. Please try again.");

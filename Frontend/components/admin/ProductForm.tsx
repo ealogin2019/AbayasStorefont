@@ -552,9 +552,9 @@ export default function ProductForm({
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
             <Select
-              value={formData.category || ""}
+              value={formData.category || "none"}
               onValueChange={(value) =>
-                setFormData({ ...formData, category: value })
+                setFormData({ ...formData, category: value === "none" ? "" : value })
               }
               disabled={loading}
             >
@@ -562,7 +562,7 @@ export default function ProductForm({
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 <SelectItem value="signature">Signature Collection</SelectItem>
                 <SelectItem value="premium">Premium Collection</SelectItem>
                 <SelectItem value="seasonal">Seasonal Collection</SelectItem>

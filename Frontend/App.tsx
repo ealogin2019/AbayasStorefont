@@ -42,6 +42,7 @@ import AdminSettings from "./pages/AdminSettings";
 import AdminInventory from "./pages/AdminInventory";
 import AdminUsers from "./pages/AdminUsers";
 import AdminHeroVideos from "./pages/AdminHeroVideos";
+import AdminHomepage from "./pages/AdminHomepage";
 
 const queryClient = new QueryClient();
 
@@ -104,6 +105,7 @@ const App = () => (
               <Route path="users" element={<AdminUsers />} />
               <Route path="settings" element={<AdminSettings />} />
               <Route path="hero-videos" element={<AdminHeroVideos />} />
+              <Route path="homepage" element={<AdminHomepage />} />
               {/* More admin pages will be added here */}
             </Route>
           </Routes>

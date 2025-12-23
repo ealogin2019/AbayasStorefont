@@ -10,6 +10,7 @@ const adminNav = [
   { label: "Orders", path: "/admin/orders" },
   { label: "Customers", path: "/admin/customers" },
   { label: "Inventory", path: "/admin/inventory" },
+  { label: "Homepage", path: "/admin/homepage" },
   { label: "Users", path: "/admin/users" },
   { label: "Hero Videos", path: "/admin/hero-videos" },
   { label: "Settings", path: "/admin/settings" },

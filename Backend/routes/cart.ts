@@ -11,18 +11,26 @@ function calculateCart(items: any[]): { total: number; itemCount: number } {
 
 export const getCart: RequestHandler = async (req, res) => {
   try {
-    const customerId = req.query.customerId as string;
-    if (!customerId) {
-      return res.status(400).json({ error: "customerId is required" });
+    const cartId = req.cookies.cartId;
+    if (!cartId) {
+      return res.status(400).json({ error: "No active cart found" });
     }
 
-    const items = await prisma.cartItem.findMany({
-      where: { customerId },
-      include: { product: true },
+    const cart = await prisma.cart.findUnique({
+      where: { id: cartId },
+      include: {
+        items: {
+          include: { product: true },
+        },
+      },
     });
 
-    const { total, itemCount } = calculateCart(items);
-    const formattedItems = items.map((item) => ({
+    if (!cart) {
+      return res.status(404).json({ error: "Cart not found" });
+    }
+
+    const { total, itemCount } = calculateCart(cart.items);
+    const formattedItems = cart.items.map((item) => ({
       id: item.id,
       productId: item.productId,
       product: item.product,
@@ -41,17 +49,34 @@ export const getCart: RequestHandler = async (req, res) => {
 
 export const addToCart: RequestHandler = async (req, res) => {
   try {
-    const { customerId, productId, quantity, size, color } = req.body as AddToCartRequest & { customerId: string };
+    let cartId = req.cookies.cartId;
+    const { productId, quantity, size, color } = req.body as AddToCartRequest;
 
-    if (!customerId || !productId || !quantity) {
+    if (!productId || !quantity) {
       return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    // Get or create cart
+    let cart;
+    if (cartId) {
+      cart = await prisma.cart.findUnique({ where: { id: cartId } });
+    }
+    if (!cart) {
+      cart = await prisma.cart.create({
+        data: {
+          sessionId: req.sessionID || null, // For guest carts
+        },
+      });
+      cartId = cart.id;
+      // Set cookie
+      res.cookie('cartId', cartId, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 }); // 30 days
     }
 
     // Use findFirst and pass `undefined` for optional fields so Prisma treats them as absent
     // (passing `null` caused PrismaClientValidationError when the generated client expected non-null)
     const existingItem = await prisma.cartItem.findFirst({
       where: {
-        customerId,
+        cartId,
         productId,
         size: size ?? undefined,
         color: color ?? undefined,
@@ -68,7 +93,7 @@ export const addToCart: RequestHandler = async (req, res) => {
     } else {
       cartItem = await prisma.cartItem.create({
         data: {
-          customerId,
+          cartId,
           productId,
           quantity,
           size,
@@ -128,13 +153,13 @@ export const removeFromCart: RequestHandler = async (req, res) => {
 
 export const clearCart: RequestHandler = async (req, res) => {
   try {
-    const customerId = req.body.customerId as string;
-    if (!customerId) {
-      return res.status(400).json({ error: "customerId is required" });
+    const cartId = req.cookies.cartId;
+    if (!cartId) {
+      return res.status(400).json({ error: "No active cart found" });
     }
 
     await prisma.cartItem.deleteMany({
-      where: { customerId },
+      where: { cartId },
     });
 
     res.json({ message: "Cart cleared" });

@@ -116,6 +116,42 @@ async function main() {
     },
   });
 
+  // Seed homepage content
+  console.log("Creating homepage content...");
+  await prisma.homepageContent.deleteMany(); // Clear existing
+
+  await prisma.homepageContent.create({
+    data: {
+      section: "hero",
+      title: "DISCOVER THE RED CAPSULE",
+      image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1920",
+      order: 0,
+      isActive: true,
+    },
+  });
+
+  await prisma.homepageContent.create({
+    data: {
+      section: "banner",
+      title: "DISCOVER NOW",
+      image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1000",
+      link: "/shop",
+      order: 0,
+      isActive: true,
+    },
+  });
+
+  await prisma.homepageContent.create({
+    data: {
+      section: "banner",
+      title: "WINTER 25 COLLECTION",
+      image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1000",
+      link: "/shop",
+      order: 1,
+      isActive: true,
+    },
+  });
+
   console.log("Seeding complete!");
 }
 
