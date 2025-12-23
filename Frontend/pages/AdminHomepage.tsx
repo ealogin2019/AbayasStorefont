@@ -106,7 +106,7 @@ export default function AdminHomepage() {
       setSubtitle(item.subtitle || "");
       setImage(item.image);
       setLink(item.link || "");
-      setOrder(item.order);
+      setOrder(item.order.toString());
       setIsActive(item.isActive);
     } else {
       resetForm();
