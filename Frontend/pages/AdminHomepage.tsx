@@ -118,6 +118,7 @@ export default function AdminHomepage() {
     e.preventDefault();
 
     try {
+      const token = localStorage.getItem("adminToken");
       const payload = {
         section,
         title: title || undefined,
@@ -135,7 +136,10 @@ export default function AdminHomepage() {
 
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(payload),
       });
 
