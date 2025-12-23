@@ -8,6 +8,8 @@ export default {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
     "./client/**/*.{ts,tsx}",
+    "./Frontend/**/*.{ts,tsx}",
+    "./index.html",
   ],
   prefix: "",
   theme: {
@@ -20,15 +22,20 @@ export default {
     },
     extend: {
       colors: {
-        // Luxury color palette
+        // Enhanced luxury color palette inspired by Bouguessa
         luxury: {
-          cream: '#F8F8F8',
-          'cream-dark': '#F0F0F0',
+          cream: '#FAFAFA',
+          'cream-dark': '#F5F5F5',
+          ivory: '#FFFFF0',
           gold: '#D4AF37',
-          'gold-light': '#E5C158',
-          charcoal: '#1A1A1A',
-          stone: '#E5E5E5',
-          'stone-dark': '#CCCCCC',
+          'gold-light': '#E6B800',
+          'gold-dark': '#B8860B',
+          charcoal: '#1C1C1C',
+          'charcoal-light': '#2A2A2A',
+          stone: '#F8F8F8',
+          'stone-dark': '#E8E8E8',
+          'warm-gray': '#D3D3D3',
+          'warm-gray-dark': '#A9A9A9',
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -65,13 +72,16 @@ export default {
         },
       },
       fontFamily: {
-        serif: ['Playfair Display', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Playfair Display', 'Times New Roman', 'serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       letterSpacing: {
+        'luxury-tight': '-0.02em',
         'luxury': '0.05em',
-        'ultra-wide': '0.15em',
-        'wide': '0.1em',
+        'ultra-wide': '0.2em',
+        'wide': '0.15em',
+        'nav': '0.15em',
       },
       borderRadius: {
         lg: "var(--radius)",

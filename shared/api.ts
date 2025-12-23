@@ -198,8 +198,10 @@ export interface CheckoutRequest {
 }
 
 export interface CheckoutResponse {
-  order: Order;
+  success: boolean;
   message: string;
+  orderId: string;
+  orderNumber: string;
 }
 
 export interface OrderListResponse {

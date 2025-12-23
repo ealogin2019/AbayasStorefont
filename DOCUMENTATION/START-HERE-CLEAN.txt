@@ -1,0 +1,240 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║               ✅ FRESH START - CLEAN POSTMAN COLLECTION                   ║
+║                                                                            ║
+║                          Starting from Scratch                            ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+📁 USE THIS FILE
+═════════════════════════════════════════════════════════════════════════════
+
+  Abayas-API-Clean.postman_collection.json
+
+  This is a FRESH, CLEAN Postman collection with:
+  ✓ No OpenAPI/Swagger issues
+  ✓ Simple Postman v2.1 format
+  ✓ All endpoints working
+  ✓ Ready to import directly
+
+
+🚀 QUICK START (3 STEPS)
+═════════════════════════════════════════════════════════════════════════════
+
+  STEP 1: Import Collection
+  ├─ Open APIdog
+  ├─ Click "Import"
+  ├─ Select "Abayas-API-Clean.postman_collection.json"
+  └─ ✓ Done! Collection imported
+
+  STEP 2: Run Admin Login Test
+  ├─ Click: Auth - Admin → Admin Login
+  ├─ Click: "Send"
+  ├─ Check: Status = 200
+  └─ ✓ Token auto-saved to admin_token
+
+  STEP 3: Start Testing
+  ├─ Create Product
+  ├─ Add to Cart
+  ├─ Create Order
+  ├─ Manage Orders
+  └─ ✓ All working!
+
+
+📊 WHAT'S INCLUDED
+═════════════════════════════════════════════════════════════════════════════
+
+  9 Test Groups (40+ endpoints):
+
+  1. Auth - Admin
+     └─ Admin Login
+     └─ Admin Profile
+
+  2. Auth - Customer
+     └─ Customer Signup
+     └─ Customer Login
+
+  3. Products - Public
+     └─ List Products
+     └─ Get Product
+
+  4. Products - Admin
+     └─ Create Product
+     └─ Update Product
+     └─ Delete Product
+
+  5. Cart
+     └─ Get Cart
+     └─ Add to Cart
+     └─ Update Cart Item
+     └─ Remove from Cart
+     └─ Clear Cart
+
+  6. Customer Profile
+     └─ Get Profile
+     └─ Update Profile
+
+  7. Orders - Customer
+     └─ Get My Orders
+     └─ Create Order
+
+  8. Orders - Admin
+     └─ List All Orders
+     └─ Get Order
+     └─ Update Order Status
+     └─ Update Tracking
+
+  9. Inventory - Admin
+     └─ Inventory Stats
+     └─ Low Stock Items
+     └─ Adjust Stock
+
+  10. Dashboard - Admin
+      └─ Dashboard Stats
+
+
+✨ KEY FEATURES
+═════════════════════════════════════════════════════════════════════════════
+
+  ✓ Auto-Save Variables
+    └─ Login → token auto-saved
+    └─ Create Product → ID auto-saved
+    └─ Create Order → ID auto-saved
+    └─ Use in next request automatically
+
+  ✓ Full Base URLs
+    └─ http://localhost:5173/api/...
+    └─ No empty URI errors
+
+  ✓ Bearer Token Auth
+    └─ Authorization: Bearer {{admin_token}}
+    └─ Authorization: Bearer {{customer_token}}
+
+  ✓ Pre-configured
+    └─ Ready to use immediately
+    └─ No additional setup
+
+
+📝 TEST WORKFLOW
+═════════════════════════════════════════════════════════════════════════════
+
+  Scenario: Complete Customer Journey
+
+  1️⃣  Admin Login
+      POST /api/admin/auth/login
+      ↓ (saves admin_token)
+
+  2️⃣  Create Product
+      POST /api/products
+      ↓ (saves product_id)
+
+  3️⃣  Customer Signup
+      POST /api/customer/auth/signup
+      ↓ (saves customer_token)
+
+  4️⃣  Add to Cart
+      POST /api/cart
+      ↓ (saves cart_item_id)
+
+  5️⃣  Create Order
+      POST /api/customer/orders/create
+      ↓ (saves order_id)
+
+  6️⃣  Update Order Status
+      PUT /api/admin/orders/:id/status
+      ↓
+
+  7️⃣  Get Order Details
+      GET /api/admin/orders/:id
+      ✓ Success!
+
+
+🎯 WHAT TO DO NOW
+═════════════════════════════════════════════════════════════════════════════
+
+  Option 1: Import as Postman Collection
+  ├─ Open Postman
+  ├─ Click Import
+  ├─ Select: Abayas-API-Clean.postman_collection.json
+  └─ ✓ Ready to use
+
+  Option 2: Import as APIdog Collection
+  ├─ Open APIdog
+  ├─ Click Import
+  ├─ Select: Abayas-API-Clean.postman_collection.json
+  └─ ✓ Ready to use
+
+
+🔐 Variables Auto-Saved
+═════════════════════════════════════════════════════════════════════════════
+
+  After Each Test:
+
+  Admin Login
+  └─ admin_token ← auto-saved
+
+  Customer Signup/Login
+  └─ customer_token ← auto-saved
+
+  Create Product
+  └─ product_id ← auto-saved
+
+  Add to Cart
+  └─ cart_item_id ← auto-saved
+
+  Create Order
+  └─ order_id ← auto-saved
+
+
+💡 TIPS
+═════════════════════════════════════════════════════════════════════════════
+
+  1. Test Authentication First
+     └─ Run Admin Login to get token
+
+  2. Use Variables
+     └─ {{admin_token}}, {{product_id}}, etc.
+
+  3. Run in Order
+     └─ Auth → Create → Use → Update
+
+  4. Check Response Status
+     └─ 200/201 = Success
+     └─ 401 = Auth error
+     └─ 404 = Not found
+
+  5. Read Response Body
+     └─ Check returned data
+     └─ Copy IDs if needed
+
+
+❌ Removed Issues
+═════════════════════════════════════════════════════════════════════════════
+
+  ✓ No more "Invalid URI" errors
+  ✓ No OpenAPI/Swagger warnings
+  ✓ No import panel confusion
+  ✓ Simple Postman format only
+  ✓ Clean and minimal
+
+
+✅ READY TO USE
+═════════════════════════════════════════════════════════════════════════════
+
+  File: Abayas-API-Clean.postman_collection.json
+  Format: Postman Collection v2.1
+  Endpoints: 40+
+  Test Groups: 10
+  Status: ✅ Ready
+
+  Just import and start testing!
+
+
+═════════════════════════════════════════════════════════════════════════════
+
+Questions? Open APIdog/Postman → Tools → Console to debug any issues.
+
+Start testing now! 🚀
+
+═════════════════════════════════════════════════════════════════════════════
