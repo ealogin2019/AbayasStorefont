@@ -48,15 +48,15 @@ export default function ProductCarousel({
   if (!products.length) return null;
 
   return (
-    <section className="py-12 md:py-16 lg:py-24">
-      <div className="container px-4 md:px-6">
-        <div className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+    <section className="py-8 sm:py-12 md:py-16 lg:py-24">
+      <div className="container px-3 sm:px-4 md:px-6">
+        <div className="mb-6 sm:mb-8 md:mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4 sm:gap-6">
           <div>
-            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight mb-1 md:mb-2">
+            <h2 className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-tight mb-1 md:mb-2">
               {title}
             </h2>
             {description && (
-              <p className="text-muted-foreground text-xs md:text-sm">
+              <p className="text-muted-foreground text-xs sm:text-sm">
                 {description}
               </p>
             )}
@@ -66,7 +66,7 @@ export default function ProductCarousel({
               <button
                 onClick={scrollPrev}
                 disabled={!canScrollPrev}
-                className="h-10 w-10 flex items-center justify-center border border-border/60 hover:bg-secondary/30 disabled:opacity-30 transition-colors"
+                className="h-10 w-10 flex items-center justify-center border border-border/60 hover:bg-secondary/30 disabled:opacity-30 transition-colors text-sm sm:text-base"
                 aria-label="Previous products"
               >
                 <svg
@@ -86,7 +86,7 @@ export default function ProductCarousel({
               <button
                 onClick={scrollNext}
                 disabled={!canScrollNext}
-                className="h-10 w-10 flex items-center justify-center border border-border/60 hover:bg-secondary/30 disabled:opacity-30 transition-colors"
+                className="h-10 w-10 flex items-center justify-center border border-border/60 hover:bg-secondary/30 disabled:opacity-30 transition-colors text-sm sm:text-base"
                 aria-label="Next products"
               >
                 <svg

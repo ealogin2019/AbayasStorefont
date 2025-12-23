@@ -43,6 +43,10 @@ const productSchema = z.object({
   tags: z.array(z.string()).optional(),
   quantity: z.number().int().default(0),
   inStock: z.boolean().default(true),
+  category: z.string().optional(),
+  featured: z.boolean().default(false),
+  bestSeller: z.boolean().default(false),
+  newArrival: z.boolean().default(false),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -61,7 +65,15 @@ export default function ProductForm({
   const navigate = useNavigate();
   const { toast } = useToast();
   const [formData, setFormData] = useState<ProductFormData>(
-    product || {
+    product ? {
+      ...product,
+      gallery: product.gallery || [],
+      tags: product.tags || [],
+      category: product.category || "",
+      featured: product.featured || false,
+      bestSeller: product.bestSeller || false,
+      newArrival: product.newArrival || false,
+    } : {
       name: "",
       description: "",
       price: 0,
@@ -74,6 +86,10 @@ export default function ProductForm({
       tags: [],
       quantity: 0,
       inStock: true,
+      category: "",
+      featured: false,
+      bestSeller: false,
+      newArrival: false,
     }
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -528,9 +544,100 @@ export default function ProductForm({
           </div>
         </div>
 
-        {/* Stock */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Category & Display Options */}
+        <div className="space-y-4 p-4 border rounded-md bg-secondary/20">
+          <h3 className="text-sm font-semibold">Category & Display Options</h3>
+          
+          {/* Category */}
           <div className="space-y-2">
+            <Label htmlFor="category">Category</Label>
+            <Select
+              value={formData.category || ""}
+              onValueChange={(value) =>
+                setFormData({ ...formData, category: value })
+              }
+              disabled={loading}
+            >
+              <SelectTrigger id="category">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                <SelectItem value="signature">Signature Collection</SelectItem>
+                <SelectItem value="premium">Premium Collection</SelectItem>
+                <SelectItem value="seasonal">Seasonal Collection</SelectItem>
+                <SelectItem value="casual">Casual Wear</SelectItem>
+                <SelectItem value="formal">Formal Occasions</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Assign this product to a specific collection
+            </p>
+          </div>
+
+          {/* Display Checkboxes */}
+          <div className="space-y-3">
+            <Label>Display On</Label>
+            
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="featured"
+                checked={formData.featured}
+                onCheckedChange={(checked) =>
+                  setFormData({
+                    ...formData,
+                    featured: checked === true,
+                  })
+                }
+                disabled={loading}
+              />
+              <Label htmlFor="featured" className="cursor-pointer font-normal">
+                Featured Collection (Home Page)
+              </Label>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="bestSeller"
+                checked={formData.bestSeller}
+                onCheckedChange={(checked) =>
+                  setFormData({
+                    ...formData,
+                    bestSeller: checked === true,
+                  })
+                }
+                disabled={loading}
+              />
+              <Label htmlFor="bestSeller" className="cursor-pointer font-normal">
+                Best Sellers Section
+              </Label>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="newArrival"
+                checked={formData.newArrival}
+                onCheckedChange={(checked) =>
+                  setFormData({
+                    ...formData,
+                    newArrival: checked === true,
+                  })
+                }
+                disabled={loading}
+              />
+              <Label htmlFor="newArrival" className="cursor-pointer font-normal">
+                New Arrivals Section
+              </Label>
+            </div>
+            
+            <p className="text-xs text-muted-foreground">
+              Select where this product should be displayed on the website
+            </p>
+          </div>
+        </div>
+
+        {/* Stock */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">\n          <div className="space-y-2">
             <Label htmlFor="quantity">Stock Quantity</Label>
             <Input
               id="quantity"

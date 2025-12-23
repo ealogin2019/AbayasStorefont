@@ -132,26 +132,29 @@ export default function Shop() {
     (inStockOnly ? 1 : 0);
 
   return (
-    <div className="container py-8 md:py-12 px-4 md:px-6">
+    <div className="container py-16 md:py-24 px-6 md:px-8 lg:px-12 pt-20 sm:pt-24 md:pt-32 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight">
-          Arab Abayas Collection
+      <div className="mb-16 md:mb-20">
+        <p className="text-xs tracking-[0.2em] uppercase font-light text-black/50 mb-4">
+          Collections
+        </p>
+        <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-light mb-6 tracking-tight">
+          Shop All
         </h1>
-        <p className="text-xs md:text-sm text-muted-foreground max-w-md mt-2">
-          Explore our curated range of modern abayas, crafted for elegance and comfort.
+        <p className="text-base md:text-lg text-black/70 max-w-2xl font-light leading-relaxed">
+          Explore our curated range of premium abayas, crafted for elegance and comfort.
         </p>
       </div>
 
       {/* Search & Sort Bar */}
-      <div className="mb-6 flex flex-col md:flex-row gap-4">
+      <div className="mb-4 sm:mb-6 flex flex-col gap-2 sm:gap-3 md:flex-row md:gap-4">
         <div className="flex-1">
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && applyFilters()}
-            placeholder="Search abayas by name, description, or tags..."
-            className="w-full"
+            placeholder="Search abayas..."
+            className="w-full text-xs sm:text-sm"
           />
         </div>
         <div className="flex gap-2">
@@ -159,7 +162,7 @@ export default function Shop() {
             value={`${sortBy}-${sortOrder}`}
             onValueChange={handleSortChange}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-32 sm:w-40 md:w-[180px] text-xs sm:text-sm">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -174,14 +177,14 @@ export default function Shop() {
             variant="outline"
             size="icon"
             onClick={() => setShowFilters(!showFilters)}
-            className="md:hidden"
+            className="md:hidden h-10 w-10 flex-shrink-0"
           >
             <SlidersHorizontal className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
         {/* Filters Sidebar */}
         <aside
           className={cn(
@@ -189,7 +192,7 @@ export default function Shop() {
             showFilters ? "block" : "hidden md:block"
           )}
         >
-          <Card className="p-4 space-y-6">
+          <Card className="p-3 sm:p-4 space-y-4 sm:space-y-6">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold flex items-center gap-2">
                 <Filter className="h-4 w-4" />
@@ -297,24 +300,24 @@ export default function Shop() {
           {isLoading ? (
             <div className="text-center py-12">
               <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent"></div>
-              <p className="mt-4 text-muted-foreground">Loading products...</p>
+              <p className="mt-4 text-sm text-muted-foreground">Loading products...</p>
             </div>
           ) : products.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-lg font-medium">No products found</p>
-              <p className="text-muted-foreground mt-2">
+              <p className="text-base sm:text-lg font-medium">No products found</p>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                 Try adjusting your filters or search terms
               </p>
-              <Button onClick={clearFilters} variant="outline" className="mt-4">
+              <Button onClick={clearFilters} variant="outline" className="mt-4 text-xs sm:text-sm">
                 Clear All Filters
               </Button>
             </div>
           ) : (
             <>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">
                 Showing {products.length} {products.length === 1 ? "product" : "products"}
               </p>
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+              <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
                 {products.map((p: any) => (
                   <ProductCard key={p.id} product={p} />
                 ))}

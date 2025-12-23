@@ -44,6 +44,10 @@ model Product {
   tags        Json?    // Array of tags
   inStock     Boolean  @default(true)
   quantity    Int      @default(0)
+  category    String?  // e.g., "signature", "premium", "seasonal"
+  featured    Boolean  @default(false) // Show in featured collection
+  bestSeller  Boolean  @default(false) // Show in best sellers
+  newArrival  Boolean  @default(false) // Show in new arrivals
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -51,6 +55,9 @@ model Product {
   orderItems OrderItem[]
 
   @@index([name])
+  @@index([category])
+  @@index([featured])
+  @@index([bestSeller])
 }
 
 // Shopping cart

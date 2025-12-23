@@ -41,15 +41,16 @@ import AdminCustomers from "./pages/AdminCustomers";
 import AdminSettings from "./pages/AdminSettings";
 import AdminInventory from "./pages/AdminInventory";
 import AdminUsers from "./pages/AdminUsers";
+import AdminHeroVideos from "./pages/AdminHeroVideos";
 
 const queryClient = new QueryClient();
 
 function Layout() {
   return (
-    <div className="min-h-screen grid grid-rows-[auto_auto_1fr_auto] bg-background text-foreground">
+    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] bg-white text-foreground">
       <AnnouncementBar />
       <Header />
-      <main className="pt-20">
+      <main>
         <Outlet />
       </main>
       <Footer />
@@ -102,6 +103,7 @@ const App = () => (
               <Route path="inventory" element={<AdminInventory />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="settings" element={<AdminSettings />} />
+              <Route path="hero-videos" element={<AdminHeroVideos />} />
               {/* More admin pages will be added here */}
             </Route>
           </Routes>

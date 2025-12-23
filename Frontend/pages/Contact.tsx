@@ -26,9 +26,9 @@ export default function Contact() {
   };
 
   return (
-    <div className="container py-16">
-      <div className="grid gap-8 md:grid-cols-2">
-        <div>
+    <div className="pt-20 sm:pt-24 md:pt-28">
+      <div className="container py-8 sm:py-12 md:py-16 px-3 sm:px-4 md:px-6">
+      <div className="grid gap-8 md:grid-cols-2">\n        <div>
           <h1 className="font-display text-3xl md:text-4xl">Contact Arab Abayas</h1>
           <p className="mt-4 text-muted-foreground">
             For questions about our abayas, your order, or bespoke services, please send us a message. Our team will respond within 1-2 business days.
@@ -91,6 +91,7 @@ export default function Contact() {
             />
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

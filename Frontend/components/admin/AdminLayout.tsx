@@ -11,6 +11,7 @@ const adminNav = [
   { label: "Customers", path: "/admin/customers" },
   { label: "Inventory", path: "/admin/inventory" },
   { label: "Users", path: "/admin/users" },
+  { label: "Hero Videos", path: "/admin/hero-videos" },
   { label: "Settings", path: "/admin/settings" },
 ];
 
@@ -62,7 +63,7 @@ export default function AdminLayout() {
           <Button
             variant="ghost"
             size="sm"
-            className="w-full text-amber-900/70 hover:text-amber-900 hover:bg-amber-100/50"
+            className="w-full justify-start text-amber-900/70 hover:text-amber-900 hover:bg-amber-100/50 px-3 py-2 h-auto"
             onClick={handleLogout}
           >
             {sidebarOpen && (

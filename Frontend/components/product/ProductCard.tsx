@@ -21,117 +21,91 @@ export default function ProductCard({ product }: { product: Product }) {
   const isNew =
     product.id === "sable-classic-black" || product.id === "noor-sand-kimono";
 
+  // Check if the main image is a video
+  const isVideo = (url: string) => url?.match(/\.(mp4|webm|mov)$/i);
+
   return (
-    <div className="group relative overflow-hidden">
-      {/* Product Image Container */}
+    <div className="group relative">
+      {/* Product Image/Video Container */}
       <Link
         to={`/product/${product.id}`}
-        className="block relative aspect-[3/4] w-full overflow-hidden bg-secondary/50 border border-border/40"
+        className="block relative aspect-[3/4] w-full overflow-hidden bg-white"
       >
-        <img
-          src={product.image}
-          alt={product.name}
-          className="size-full object-cover transition duration-500 group-hover:scale-105"
-          loading="lazy"
-        />
+        {isVideo(product.image) ? (
+          <video
+            src={product.image}
+            className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+            muted
+            loop
+            autoPlay
+            playsInline
+          />
+        ) : (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+            loading="lazy"
+          />
+        )}
 
-        {/* "New" Badge */}
+        {/* Simple "New" Badge */}
         {isNew && (
-          <div className="absolute top-4 left-4 bg-foreground text-background px-3 py-1 text-xs uppercase tracking-widest font-semibold">
+          <div className="absolute top-3 left-3 bg-black text-white px-3 py-1.5 text-[10px] uppercase tracking-[0.15em] font-light">
             New
           </div>
         )}
 
-        {/* Overlay with Size Options */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-background/95 backdrop-blur p-6 rounded-sm text-center transform scale-95 group-hover:scale-100 transition-transform">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-              Select Size
-            </p>
-            <div className="flex gap-2 mb-4 flex-wrap justify-center">
-              {product.sizes.map((size) => (
-                <button
-                  key={size}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedSize(size);
-                  }}
-                  className={`h-10 w-10 rounded-sm border transition-all ${
-                    selectedSize === size
-                      ? "bg-foreground text-background border-foreground"
-                      : "border-border/60 text-foreground hover:border-foreground"
-                  }`}
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
+        {/* Quick Shop - Simplified */}
+        <div className="absolute inset-x-0 bottom-0 bg-white/95 backdrop-blur-sm translate-y-full group-hover:translate-y-0 transition-transform duration-300 p-4">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              if (product.sizes && product.sizes.length > 0) {
+                setShowSizeMenu(true);
+              } else {
                 handleQuickAdd();
-              }}
-              className="w-full bg-foreground text-background px-4 py-2.5 text-xs uppercase tracking-widest font-semibold hover:bg-foreground/90 transition-colors"
-            >
-              Add to Bag
-            </button>
-          </div>
+              }
+            }}
+            className="w-full bg-black text-white py-3 text-xs tracking-[0.15em] uppercase font-light hover:bg-black/90 transition-colors"
+          >
+            Quick Add
+          </button>
         </div>
 
-        {/* Wishlist Icon */}
-        <button className="absolute top-4 right-4 h-8 w-8 flex items-center justify-center bg-background/80 backdrop-blur border border-border/40 hover:bg-background transition-colors opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        {/* Wishlist Icon - Minimal */}
+        <button className="absolute top-3 right-3 h-9 w-9 flex items-center justify-center bg-white/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 hover:bg-white">
           <svg
             className="h-4 w-4"
             fill="none"
             stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M21 8.25c0-1.085-.667-2.025-1.587-2.431a2.25 2.25 0 0 0-2.331-.873c-.464.15-.909.576-1.348.576-.46 0-.891-.423-1.348-.576a2.25 2.25 0 0 0-2.331.873c-.92.406-1.587 1.346-1.587 2.431M9 12c0-1.657.895-3.095 2.225-3.863m5.55 0c1.33.768 2.225 2.206 2.225 3.863m-12 0a8.25 8.25 0 1 1 16.5 0m-1.5 0c0 .937-.118 1.846-.338 2.729M15 12a3 3 0 1 1-6 0m6 0a3 3 0 1-6 0m6 0h.008v.008h-.008V12z"
-              />
-          </svg>
-        </button>
-      </Link>
-
-      {/* Product Info */}
-      <Link to={`/product/${product.id}`} className="block pt-3 pb-2">
-        <h3 className="font-display text-xs sm:text-sm leading-snug tracking-tight mb-1 sm:mb-2 line-clamp-2 group-hover:text-accent transition-colors">
-          {product.name}
-        </h3>
-        <p className="text-xs text-muted-foreground line-clamp-2 mb-2 sm:mb-4 hidden sm:block">
-          {product.description}
-        </p>
-      </Link>
-
-      {/* Price and Quick Add Footer */}
-      <div className="flex items-end justify-between gap-2">
-        <span className="text-xs sm:text-sm font-semibold tracking-tight uppercase">
-          {product.currency} {product.price.toFixed(2)}
-        </span>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            setShowSizeMenu(!showSizeMenu);
-          }}
-          className="h-8 w-8 flex items-center justify-center rounded-sm border border-border/60 bg-background hover:bg-foreground hover:text-background transition-colors opacity-0 group-hover:opacity-100 transform transition-all"
-        >
-          <svg
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
+            strokeWidth="1.5"
             viewBox="0 0 24 24"
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M12 4v16m8-8H4"
+              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
             />
           </svg>
         </button>
+      </Link>
+
+      {/* Product Info - Minimal */}
+      <div className="mt-4">
+        <Link to={`/product/${product.id}`} className="block">
+          <h3 className="text-sm font-light text-black mb-1 hover:text-black/70 transition-colors">{product.name}</h3>
+          <p className="text-sm font-light text-black/70">{product.price} {product.currency}</p>
+        </Link>
+
+        {/* Available colors indicator */}
+        {product.colors && product.colors.length > 0 && (
+          <div className="flex gap-1 mt-2">
+            {product.colors.slice(0, 4).map((color: string, index: number) => (
+              <div key={index} className="h-2 w-2 rounded-full border border-black/10" style={{ backgroundColor: color.toLowerCase() }} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

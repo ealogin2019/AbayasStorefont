@@ -39,12 +39,11 @@ export const listProducts: RequestHandler = async (req, res) => {
     // Build where clause
     const where: any = {};
 
-    // Search in name, description, and tags
+    // Search in name and description
     if (search) {
       where.OR = [
         { name: { contains: search, mode: "insensitive" } },
         { description: { contains: search, mode: "insensitive" } },
-        { tags: { hasSome: [search] } },
       ];
     }
 
@@ -60,21 +59,6 @@ export const listProducts: RequestHandler = async (req, res) => {
       where.inStock = inStock;
     }
 
-    // Color filter (any of the selected colors)
-    if (colors && colors.length > 0) {
-      where.colors = { hasSome: colors };
-    }
-
-    // Size filter (any of the selected sizes)
-    if (sizes && sizes.length > 0) {
-      where.sizes = { hasSome: sizes };
-    }
-
-    // Tags filter (any of the selected tags)
-    if (tags && tags.length > 0) {
-      where.tags = { hasSome: tags };
-    }
-
     // Build orderBy clause
     const orderBy: any = {};
     if (sortBy === "price" || sortBy === "name" || sortBy === "createdAt") {
@@ -83,10 +67,54 @@ export const listProducts: RequestHandler = async (req, res) => {
       orderBy.createdAt = "desc";
     }
 
-    const products = await prisma.product.findMany({
+    // Fetch all products that match basic criteria
+    let products = await prisma.product.findMany({
       where,
       orderBy,
     });
+
+    // Filter by colors, sizes, and tags in JavaScript (SQLite JSON doesn't support hasSome)
+    if (colors && colors.length > 0) {
+      products = products.filter(product => {
+        const productColors = product.colors as string[];
+        return productColors && productColors.some(c => colors.includes(c));
+      });
+    }
+
+    if (sizes && sizes.length > 0) {
+      products = products.filter(product => {
+        const productSizes = product.sizes as string[];
+        return productSizes && productSizes.some(s => sizes.includes(s));
+      });
+    }
+
+    if (tags && tags.length > 0) {
+      products = products.filter(product => {
+        const productTags = product.tags as string[] | null;
+        return productTags && productTags.some(t => tags.includes(t));
+      });
+    }
+
+    // Also filter by search in tags if search is provided
+    if (search) {
+      const searchLower = search.toLowerCase();
+      const searchFiltered = products.filter(product => {
+        const productTags = product.tags as string[] | null;
+        return productTags && productTags.some(t => t.toLowerCase().includes(searchLower));
+      });
+      
+      // Combine with OR logic - if it matches tags, include it
+      if (searchFiltered.length > 0) {
+        const matchedIds = new Set(searchFiltered.map(p => p.id));
+        products = products.filter(p => 
+          where.OR.some((condition: any) => {
+            if (condition.name) return p.name.toLowerCase().includes(searchLower);
+            if (condition.description) return p.description.toLowerCase().includes(searchLower);
+            return false;
+          }) || matchedIds.has(p.id)
+        );
+      }
+    }
 
     const formatted = products.map(formatProduct);
     res.json({ products: formatted } as ListProductsResponse);

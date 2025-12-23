@@ -1,0 +1,824 @@
+{
+  "info": {
+    "_postman_id": "abayas-storefront-api",
+    "name": "Abayas Storefront API",
+    "description": "Complete API for Abayas Storefront - Authentication, Products, Orders, Inventory",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health & Demo",
+      "item": [
+        {
+          "name": "Ping",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5173/api/ping",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "ping"]
+            }
+          }
+        },
+        {
+          "name": "Demo",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5173/api/demo",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "demo"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public Products",
+      "item": [
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5173/api/products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5173/api/products/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "products", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Black Abaya\", \"price\": 89.99, \"description\": \"Premium black abaya\", \"stock\": 100}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Black Abaya Updated\", \"price\": 99.99}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/products/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "products", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/products/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "products", ":id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shopping Cart",
+      "item": [
+        {
+          "name": "Get Cart",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5173/api/cart",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "cart"]
+            }
+          }
+        },
+        {
+          "name": "Add to Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"productId\": \"{{product_id}}\", \"quantity\": 2}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/cart",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "cart"]
+            }
+          }
+        },
+        {
+          "name": "Update Cart Item",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"quantity\": 5}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/cart/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "cart", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Remove from Cart",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "http://localhost:5173/api/cart/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "cart", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Clear Cart",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:5173/api/cart/clear",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "cart", "clear"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer Auth",
+      "item": [
+        {
+          "name": "Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"customer@example.com\", \"password\": \"password123\", \"firstName\": \"John\", \"lastName\": \"Doe\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/customer/auth/signup",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "customer", "auth", "signup"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"customer@example.com\", \"password\": \"password123\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/customer/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "customer", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer Profile & Orders",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/customer/profile",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "customer", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"firstName\": \"John\", \"lastName\": \"Updated\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/customer/profile",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "customer", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Get Orders",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/customer/orders",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "customer", "orders"]
+            }
+          }
+        },
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"items\": [{\"productId\": \"{{product_id}}\", \"quantity\": 2}], \"total\": 199.98}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/customer/orders/create",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "customer", "orders", "create"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Auth",
+      "item": [
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"admin@example.com\", \"password\": \"password123\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Admin Profile",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/auth/profile",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "auth", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Dashboard",
+      "item": [
+        {
+          "name": "Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/dashboard/stats",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "dashboard", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Products",
+      "item": [
+        {
+          "name": "List Products (Admin)",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "products"]
+            }
+          }
+        },
+        {
+          "name": "Bulk Update Stock",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"updates\": [{\"productId\": \"{{product_id}}\", \"stock\": 200}]}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/products/bulk/update-stock",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "products", "bulk", "update-stock"]
+            }
+          }
+        },
+        {
+          "name": "Bulk Update Price",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"updates\": [{\"productId\": \"{{product_id}}\", \"price\": 109.99}]}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/products/bulk/update-price",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "products", "bulk", "update-price"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Orders",
+      "item": [
+        {
+          "name": "List Orders",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/orders",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "orders"]
+            }
+          }
+        },
+        {
+          "name": "Get Order",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/orders/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "orders", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"status\": \"processing\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/orders/:id/status",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "orders", ":id", "status"]
+            }
+          }
+        },
+        {
+          "name": "Update Tracking",
+          "request": {
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"trackingNumber\": \"TRACK123456\"}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/orders/:id/tracking",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "orders", ":id", "tracking"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Inventory",
+      "item": [
+        {
+          "name": "Inventory Stats",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/inventory/stats",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "inventory", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Low Stock Items",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/inventory/low-stock",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "inventory", "low-stock"]
+            }
+          }
+        },
+        {
+          "name": "Out of Stock",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/inventory/out-of-stock",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "inventory", "out-of-stock"]
+            }
+          }
+        },
+        {
+          "name": "Adjust Stock",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"productId\": \"{{product_id}}\", \"quantity\": 50}"
+            },
+            "url": {
+              "raw": "http://localhost:5173/api/admin/inventory/adjust",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5173",
+              "path": ["api", "admin", "inventory", "adjust"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "admin_token",
+      "value": ""
+    },
+    {
+      "key": "customer_token",
+      "value": ""
+    },
+    {
+      "key": "product_id",
+      "value": ""
+    },
+    {
+      "key": "order_id",
+      "value": ""
+    }
+  ]
+}

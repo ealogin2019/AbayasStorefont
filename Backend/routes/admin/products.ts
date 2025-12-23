@@ -31,12 +31,16 @@ const productSchema = z.object({
       (val) => val.startsWith("/uploads/") || val.startsWith("http"),
       "Gallery images must be valid URLs or local upload paths"
     )
-  ).optional(),
+  ).optional().default([]).transform(val => val || []),
   colors: z.array(z.string()),
   sizes: z.array(z.string()),
   tags: z.array(z.string()).optional(),
   quantity: z.number().int().default(0),
   inStock: z.boolean().default(true),
+  category: z.string().optional(),
+  featured: z.boolean().default(false),
+  bestSeller: z.boolean().default(false),
+  newArrival: z.boolean().default(false),
 });
 
 /**

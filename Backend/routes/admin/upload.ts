@@ -55,21 +55,35 @@ export const handleUploadImage = async (
     if (!["product", "thumbnail", "gallery"].includes(fileType)) {
       return res.status(400).json({
         success: false,
-        error: "Invalid image type. Must be: product, thumbnail, or gallery",
+        error: "Invalid media type. Must be: product, thumbnail, or gallery",
       });
     }
 
-    // Validate file is an image
-    const allowedMimes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-    if (!allowedMimes.includes(req.file.mimetype)) {
+    // Validate file is an image or video
+    const allowedImageMimes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    const allowedVideoMimes = ["video/mp4", "video/webm", "video/quicktime"];
+    const allowedMimes = [...allowedImageMimes, ...allowedVideoMimes];
+    
+    const isVideo = allowedVideoMimes.includes(req.file.mimetype);
+    const isImage = allowedImageMimes.includes(req.file.mimetype);
+    
+    if (!isImage && !isVideo) {
       return res.status(400).json({
         success: false,
-        error: "Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed",
+        error: "Invalid file type. Only images (JPEG, PNG, GIF, WebP) and videos (MP4, WebM, MOV) are allowed",
       });
     }
 
-    // Validate file size (5MB max for products, 2MB for thumbnails)
-    const maxSize = fileType === "thumbnail" ? 2 * 1024 * 1024 : 5 * 1024 * 1024;
+    // Validate file size (10MB max for videos, 5MB for images, 2MB for thumbnails)
+    let maxSize: number;
+    if (isVideo) {
+      maxSize = 10 * 1024 * 1024; // 10MB for videos
+    } else if (fileType === "thumbnail") {
+      maxSize = 2 * 1024 * 1024; // 2MB for thumbnail images
+    } else {
+      maxSize = 5 * 1024 * 1024; // 5MB for other images
+    }
+    
     if (req.file.size > maxSize) {
       return res.status(400).json({
         success: false,
@@ -95,18 +109,19 @@ export const handleUploadImage = async (
     const filepath = path.join(typeDir, filename);
     await fs.writeFile(filepath, req.file.buffer);
 
-    // Return relative URL for accessing the image
-    const imageUrl = `/uploads/${fileType}/${filename}`;
+    // Return relative URL for accessing the media
+    const mediaUrl = `/uploads/${fileType}/${filename}`;
 
     return res.json({
       success: true,
-      message: "Image uploaded successfully",
+      message: `${isVideo ? 'Video' : 'Image'} uploaded successfully`,
       data: {
-        url: imageUrl,
+        url: mediaUrl,
         filename,
         type: fileType,
         mimetype: req.file.mimetype,
         size: req.file.size,
+        isVideo,
       },
     });
   } catch (error) {

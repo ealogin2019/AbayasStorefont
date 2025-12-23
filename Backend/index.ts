@@ -94,14 +94,17 @@ import { pluginManager } from "./plugins/manager.js";
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB max
+    fileSize: 10 * 1024 * 1024, // 10MB max (for videos)
   },
   fileFilter: (req, file, cb) => {
-    const allowedMimes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    const allowedMimes = [
+      "image/jpeg", "image/png", "image/gif", "image/webp",
+      "video/mp4", "video/webm", "video/quicktime"
+    ];
     if (allowedMimes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error("Invalid file type"));
+      cb(new Error("Invalid file type. Only images and short videos are allowed"));
     }
   },
 });

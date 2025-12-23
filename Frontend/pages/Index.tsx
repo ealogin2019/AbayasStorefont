@@ -1,266 +1,127 @@
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import HeroCarousel from "@/components/HeroCarousel";
-import ProductCarousel from "@/components/ProductCarousel";
-import PromotionalBanner from "@/components/PromotionalBanner";
-import DoublePromoBanner from "@/components/DoublePromoBanner";
-import { api } from "@/lib/api";
 
 export default function Index() {
-  const { data } = useQuery({
-    queryKey: ["products"],
-    queryFn: api.listProducts,
-  });
-  const products = data?.products ?? [];
-
   return (
-    <>
-      {/* Hero Carousel */}
-      <HeroCarousel />
-
-      {/* Featured Collection Carousel */}
-      {products.length > 0 && (
-        <section className="py-12 md:py-20 lg:py-32 border-t border-border/40">
-          <ProductCarousel
-            title="Featured Collection"
-            description="Our curated selection of premium pieces"
-            products={products.slice(0, 6)}
-            itemsPerView={3}
-          />
-        </section>
-      )}
-
-      {/* Promotional Banner */}
-      <PromotionalBanner
-        title="Summer Collection 2025"
-        subtitle="New Arrivals"
-        image="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1200"
-        cta="Shop Now"
-        ctaLink="/shop"
-        alignment="center"
-        variant="dark"
-      />
-
-      {/* Double Promotional Banners */}
-      <section className="py-8">
-        <div className="container">
-          <DoublePromoBanner
-            items={[
-              {
-                title: "New In Abayas",
-                image:
-                  "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=1200",
-                cta: "Explore",
-                ctaLink: "/shop",
-              },
-              {
-                title: "Premium Fabrics",
-                image:
-                  "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fe98ea904eac24d2a837f6a410800c6d1?format=webp&width=1200",
-                cta: "Discover",
-                ctaLink: "/shop",
-              },
-            ]}
-          />
+    <main className="bg-white text-black min-h-screen">
+      {/* Hero Section - Full Width Image */}
+      <section className="relative w-full h-screen">
+        <img 
+          src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1920" 
+          alt="Hero"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 flex items-end justify-center pb-20">
+          <div className="text-center">
+            <h1 className="text-white text-sm tracking-[0.2em] uppercase font-light mb-4">
+              DISCOVER THE RED CAPSULE
+            </h1>
+            <div className="h-px w-32 bg-white mx-auto"></div>
+          </div>
         </div>
       </section>
 
-      {/* Editorial Section 1 */}
-      <section className="border-t border-border/40 bg-secondary/20">
-        <div className="container py-12 md:py-16 lg:py-24 grid gap-6 md:gap-8 md:grid-cols-2">
-          <div className="flex flex-col justify-center">
-            <p className="uppercase tracking-widest text-xs text-muted-foreground mb-4">
-              Timeless Collection
-            </p>
-            <h2 className="font-display text-3xl md:text-4xl tracking-tight mb-6">
-              Signature Abayas
-            </h2>
-            <p className="text-foreground/80 leading-relaxed mb-8 max-w-md">
-              Discover our signature collection of abayas, meticulously crafted
-              from the finest materials. Each piece combines traditional
-              elegance with contemporary design, perfect for any occasion.
-            </p>
-            <Link
-              to="/shop"
-              className="inline-block w-fit uppercase tracking-widest text-sm font-semibold border border-foreground px-6 py-3 hover:bg-foreground hover:text-background transition-colors"
-            >
-              Shop Collection
+      {/* Product Gallery - 4 Images Grid */}
+      <section className="w-full">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0">
+          {[1, 2, 3, 4].map((i) => (
+            <Link key={i} to="/shop" className="relative aspect-[3/4] overflow-hidden group">
+              <img 
+                src={`https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=600`}
+                alt={`Product ${i}`}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
             </Link>
-          </div>
-          <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-secondary border border-border/40">
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=800"
-              alt="Signature Abayas"
-              className="h-full w-full object-cover"
-            />
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* Best Sellers Carousel */}
-      {products.length > 0 && (
-        <section className="py-12 md:py-20 lg:py-32 border-t border-border/40">
-          <ProductCarousel
-            title="Best Sellers"
-            description="Our most-loved designs"
-            products={products}
-            itemsPerView={4}
-          />
-        </section>
-      )}
-
-      {/* Editorial Section 2 */}
-      <section className="py-12 md:py-16 lg:py-24 border-t border-border/40">
-        <div className="container grid gap-6 md:gap-8 md:grid-cols-2">
-          <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-secondary border border-border/40 order-2 md:order-1">
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=800"
-              alt="Premium Quality"
-              className="h-full w-full object-cover"
+      {/* Split Banner - Two Side by Side Images */}
+      <section className="w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+          <Link to="/shop" className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden group">
+            <img 
+              src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1000"
+              alt="Discover Now"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
-          </div>
-          <div className="flex flex-col justify-center order-1 md:order-2">
-            <p className="uppercase tracking-widest text-xs text-muted-foreground mb-4">
-              Our Craftsmanship
-            </p>
-            <h2 className="font-display text-3xl md:text-4xl tracking-tight mb-6">
-              Premium Quality, Luxe Comfort
-            </h2>
-            <p className="text-foreground/80 leading-relaxed mb-8 max-w-md">
-              Every abaya is carefully crafted with attention to detail. We use
-              only the finest fabrics and employ traditional techniques combined
-              with modern design sensibilities.
-            </p>
-            <Link
-              to="/about"
-              className="inline-block w-fit uppercase tracking-widest text-sm font-semibold border border-foreground px-6 py-3 hover:bg-foreground hover:text-background transition-colors"
-            >
-              Learn More
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <h2 className="text-white text-sm tracking-[0.2em] uppercase font-light mb-3">
+                  DISCOVER NOW
+                </h2>
+                <div className="h-px w-24 bg-white mx-auto"></div>
+              </div>
+            </div>
+          </Link>
+          <Link to="/shop" className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden group">
+            <img 
+              src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=1000"
+              alt="Winter 25 Collection"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <h2 className="text-white text-sm tracking-[0.2em] uppercase font-light mb-3">
+                  WINTER 25 COLLECTION
+                </h2>
+                <div className="h-px w-24 bg-white mx-auto"></div>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* Category Grid - Three Categories */}
+      <section className="w-full bg-[#F5F5F5] py-16 md:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-6 md:px-12 max-w-7xl mx-auto">
+          {[
+            { title: "LONG JACKETS", image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=600" },
+            { title: "DRESSES", image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=600" },
+            { title: "TROUSERS", image: "https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=600" },
+          ].map((category) => (
+            <Link key={category.title} to="/shop" className="relative aspect-[3/4] overflow-hidden group">
+              <img 
+                src={category.image}
+                alt={category.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <h3 className="text-white text-sm tracking-[0.2em] uppercase font-light">
+                  {category.title}
+                </h3>
+              </div>
             </Link>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* Premium Services Section */}
-      <section className="py-12 md:py-16 lg:py-24 border-t border-border/40">
-        <div className="container">
-          <div className="text-center mb-12 md:mb-16">
-            <p className="uppercase tracking-widest text-xs text-muted-foreground mb-2 md:mb-4">
-              Arab Abayas Concierge
-            </p>
-            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight mb-3 md:mb-4">
-              Premium Services
-            </h2>
-            <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
-              Every order includes our signature services to ensure an
-              exceptional experience.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:gap-8 md:grid-cols-3">
-            {/* Service Card 1: Gift Wrap */}
-            <div className="flex flex-col">
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-secondary/30 border border-border/40 mb-6">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F81ce6da7ab2f4a539be7643f189385d0?format=webp&width=600"
-                  alt="Gift Wrap Service"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <h3 className="font-display text-xl tracking-tight mb-3">
-                Signature Gift Wrap
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4 flex-1">
-                Every order arrives beautifully wrapped in our signature boxes,
-                perfect for gifting or personal indulgence.
-              </p>
-              <Link
-                to="/shop"
-                className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors"
-              >
-                Learn More →
-              </Link>
-            </div>
-
-            {/* Service Card 2: Express Shipping */}
-            <div className="flex flex-col">
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-secondary/30 border border-border/40 mb-6">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Fc2f5ee03e6da48eb9353b11f7bc7da48?format=webp&width=600"
-                  alt="Express Shipping"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <h3 className="font-display text-xl tracking-tight mb-3">
-                Complimentary Shipping
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4 flex-1">
-                Enjoy free worldwide delivery on all orders. We partner with
-                premium couriers to ensure timely arrival.
-              </p>
-              <Link
-                to="/shop"
-                className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors"
-              >
-                Learn More →
-              </Link>
-            </div>
-
-            {/* Service Card 3: Personalisation */}
-            <div className="flex flex-col">
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-secondary/30 border border-border/40 mb-6">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2Faaa7802432b14c2bb78ec506a8aab37b?format=webp&width=600"
-                  alt="Personalisation"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <h3 className="font-display text-xl tracking-tight mb-3">
-                Personalisation
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4 flex-1">
-                Add a bespoke touch with custom monogramming and
-                hand-embroidery, finished in our atelier.
-              </p>
-              <Link
-                to="/shop"
-                className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent/80 transition-colors"
-              >
-                Learn More →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="border-t border-border/40 bg-secondary/30 py-12 md:py-20 lg:py-32">
-        <div className="container max-w-2xl text-center px-4">
-          <p className="uppercase tracking-widest text-xs text-muted-foreground mb-2 md:mb-4">
-            Stay Connected
-          </p>
-          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl tracking-tight mb-4 md:mb-6">
-            Subscribe to Our Newsletter
+      {/* As Seen On Section */}
+      <section className="w-full bg-white py-16 md:py-20">
+        <div className="text-center max-w-4xl mx-auto px-6">
+          <h2 className="font-serif text-2xl md:text-3xl font-light mb-4">
+            AS SEEN ON
           </h2>
-          <p className="text-sm md:text-base text-foreground/80 mb-6 md:mb-8 max-w-lg mx-auto">
-            Be the first to know about new collections, exclusive offers, and
-            styling tips from our team.
+          <p className="text-sm tracking-[0.15em] uppercase font-light text-black/60">
+            TAG @ARABAYAHS TO BE FEATURED
           </p>
-          <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 bg-background border border-border/60 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent rounded-sm"
-            />
-            <button
-              type="submit"
-              className="uppercase tracking-widest text-sm font-semibold bg-foreground text-background px-6 py-3 hover:bg-foreground/90 transition-colors rounded-sm"
-            >
-              Subscribe
-            </button>
-          </form>
         </div>
       </section>
-    </>
+
+      {/* Instagram Feed Grid */}
+      <section className="w-full pb-0">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="relative aspect-square overflow-hidden group cursor-pointer">
+              <img 
+                src={`https://cdn.builder.io/api/v1/image/assets%2Fdd122c117889471494f780391c37609a%2F9382199df584402087537bef94280808?format=webp&width=500`}
+                alt={`Instagram ${i}`}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
   );
 }
