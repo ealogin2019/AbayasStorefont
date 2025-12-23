@@ -52,7 +52,9 @@ export default function AdminHomepage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingContent, setEditingContent] = useState<HomepageContent | null>(null);
+  const [editingContent, setEditingContent] = useState<HomepageContent | null>(
+    null,
+  );
   const [uploading, setUploading] = useState(false);
 
   // Form state
@@ -145,7 +147,11 @@ export default function AdminHomepage() {
 
       if (!response.ok) throw new Error("Failed to save content");
 
-      toast.success(editingContent ? "Content updated successfully" : "Content created successfully");
+      toast.success(
+        editingContent
+          ? "Content updated successfully"
+          : "Content created successfully",
+      );
       setDialogOpen(false);
       resetForm();
       fetchContent();
@@ -223,11 +229,14 @@ export default function AdminHomepage() {
     }
   };
 
-  const groupedContent = content.reduce((acc, item) => {
-    if (!acc[item.section]) acc[item.section] = [];
-    acc[item.section].push(item);
-    return acc;
-  }, {} as Record<string, HomepageContent[]>);
+  const groupedContent = content.reduce(
+    (acc, item) => {
+      if (!acc[item.section]) acc[item.section] = [];
+      acc[item.section].push(item);
+      return acc;
+    },
+    {} as Record<string, HomepageContent[]>,
+  );
 
   if (loading) {
     return (
@@ -334,14 +343,19 @@ export default function AdminHomepage() {
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>
-              {editingContent ? "Edit Homepage Content" : "Add Homepage Content"}
+              {editingContent
+                ? "Edit Homepage Content"
+                : "Add Homepage Content"}
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="section">Section</Label>
-                <Select value={section} onValueChange={(value: any) => setSection(value)}>
+                <Select
+                  value={section}
+                  onValueChange={(value: any) => setSection(value)}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -404,7 +418,12 @@ export default function AdminHomepage() {
                     id="image-upload"
                   />
                   <Label htmlFor="image-upload">
-                    <Button type="button" variant="outline" disabled={uploading} asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={uploading}
+                      asChild
+                    >
                       <span>
                         <Upload className="w-4 h-4 mr-2" />
                         {uploading ? "Uploading..." : "Upload"}
@@ -415,7 +434,11 @@ export default function AdminHomepage() {
               </div>
               {image && (
                 <div className="mt-2">
-                  <img src={image} alt="Preview" className="w-32 h-32 object-cover rounded" />
+                  <img
+                    src={image}
+                    alt="Preview"
+                    className="w-32 h-32 object-cover rounded"
+                  />
                 </div>
               )}
             </div>
@@ -441,7 +464,11 @@ export default function AdminHomepage() {
             </div>
 
             <div className="flex justify-end gap-2">
-              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setDialogOpen(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit">

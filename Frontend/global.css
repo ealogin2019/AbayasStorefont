@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700;800;900&family=Inter:wght@200;300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700;800;900&family=Inter:wght@200;300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -66,7 +66,10 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: "rlig" 1, "calt" 1, "kern" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1,
+      "kern" 1;
     letter-spacing: 0.01em;
     line-height: 1.65;
     font-weight: 300;
@@ -79,7 +82,9 @@
     scroll-behavior: smooth;
   }
 
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 
@@ -99,7 +104,12 @@
   }
 
   /* Enhanced Luxury Typography */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif;
     font-weight: 400;
     letter-spacing: -0.02em;
@@ -221,7 +231,7 @@
     @apply w-full px-4 py-3 border border-gray-200 bg-white
            focus:outline-none focus:border-black focus:ring-0 transition-all duration-300
            text-sm font-light;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
   }
 
   /* Enhanced Link Styles */
@@ -255,17 +265,17 @@
   .scroll-smooth {
     scroll-behavior: smooth;
   }
-  
+
   /* Text balance for headings */
   .text-balance {
     text-wrap: balance;
   }
-  
+
   /* Remove scrollbar but keep functionality */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -317,7 +327,7 @@
 }
 
 .underline-slide::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -333,7 +343,7 @@
 
 /* Luxury button hover effect */
 .btn-luxury::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -362,7 +372,9 @@
   }
 
   * {
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-property:
+      color, background-color, border-color, text-decoration-color, fill,
+      stroke, opacity, box-shadow, transform, filter, backdrop-filter;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 300ms;
   }
@@ -370,7 +382,8 @@
 
 /* Subtle bounce for cart badge */
 @keyframes bounceSub {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {

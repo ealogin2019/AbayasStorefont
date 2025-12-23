@@ -21,7 +21,10 @@ const nav = [
     to: "/shop?category=abayas",
     label: "Abayas",
     dropdown: [
-      { to: "/shop?category=abayas&style=classic", label: "Classic Collection" },
+      {
+        to: "/shop?category=abayas&style=classic",
+        label: "Classic Collection",
+      },
       { to: "/shop?category=abayas&style=modern", label: "Modern Styles" },
       { to: "/shop?category=abayas&style=embellished", label: "Embellished" },
       { to: "/shop?category=abayas&style=casual", label: "Casual Wear" },
@@ -41,7 +44,10 @@ const nav = [
     label: "Scarves",
     dropdown: [
       { to: "/shop?category=scarves&material=silk", label: "Silk Scarves" },
-      { to: "/shop?category=scarves&material=chiffon", label: "Chiffon Scarves" },
+      {
+        to: "/shop?category=scarves&material=chiffon",
+        label: "Chiffon Scarves",
+      },
       { to: "/shop?category=scarves&style=printed", label: "Printed Designs" },
     ],
   },
@@ -76,7 +82,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Only apply transparency on index page
-  const isIndexPage = location.pathname === '/';
+  const isIndexPage = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -93,15 +99,17 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={cn(
-      "fixed left-0 right-0 z-[100] w-full transition-all duration-500 ease-out",
-      isScrolled ? "top-0" : "top-9",
-      openDropdown
-        ? "bg-white/98 backdrop-blur-xl border-b border-black/5 shadow-sm"
-        : isIndexPage && isOverHero
-          ? "bg-transparent"
-          : "bg-white/98 backdrop-blur-xl border-b border-black/5 shadow-sm"
-    )}>
+    <header
+      className={cn(
+        "fixed left-0 right-0 z-[100] w-full transition-all duration-500 ease-out",
+        isScrolled ? "top-0" : "top-9",
+        openDropdown
+          ? "bg-white/98 backdrop-blur-xl border-b border-black/5 shadow-sm"
+          : isIndexPage && isOverHero
+            ? "bg-transparent"
+            : "bg-white/98 backdrop-blur-xl border-b border-black/5 shadow-sm",
+      )}
+    >
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         {/* Top row: Logo, centered nav, right actions */}
         <div className="flex h-16 sm:h-18 md:h-20 lg:h-20 items-center justify-between gap-3 sm:gap-4 md:gap-6">
@@ -127,7 +135,10 @@ export default function Header() {
                 </svg>
               </button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-80 bg-white/95 backdrop-blur-xl border-r border-black/5">
+            <SheetContent
+              side="left"
+              className="w-80 bg-white/95 backdrop-blur-xl border-r border-black/5"
+            >
               <nav className="mt-12 space-y-8">
                 {nav.map((item) => (
                   <Link
@@ -150,7 +161,7 @@ export default function Header() {
               "font-serif text-lg sm:text-xl md:text-2xl tracking-luxury-tight transition-all duration-500 flex-shrink-0 font-light hover:opacity-80",
               isIndexPage && isOverHero
                 ? "text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
-                : "text-black"
+                : "text-black",
             )}
           >
             Arab Abayas
@@ -159,14 +170,16 @@ export default function Header() {
           {/* Centered Navigation - Desktop Only */}
           <nav
             className="hidden absolute left-1/2 -translate-x-1/2 gap-8 lg:gap-10 xl:gap-12 lg:flex"
-            onMouseEnter={() => isOverHero && setOpenDropdown('hover')}
+            onMouseEnter={() => isOverHero && setOpenDropdown("hover")}
             onMouseLeave={() => setOpenDropdown(null)}
           >
             {nav.map((item, idx) => (
               <div
                 key={item.to}
                 className="relative group"
-                onMouseEnter={() => setOpenDropdown(item.dropdown ? item.label : 'hover')}
+                onMouseEnter={() =>
+                  setOpenDropdown(item.dropdown ? item.label : "hover")
+                }
               >
                 <NavLink
                   to={item.to}
@@ -174,7 +187,7 @@ export default function Header() {
                     "nav-link py-3 relative inline-block font-light transition-colors duration-300",
                     isIndexPage && isOverHero
                       ? "text-white hover:text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
-                      : "text-black hover:text-black"
+                      : "text-black hover:text-black",
                   )}
                   style={{ transitionDelay: `${idx * 75}ms` }}
                   end
@@ -182,60 +195,67 @@ export default function Header() {
                   {item.label}
                 </NavLink>
 
-                  {/* Enhanced Dropdown Menu */}
-                  {item.dropdown && openDropdown === item.label && (
-                    <div className="absolute top-full pt-8 animate-slide-in-right" style={{ left: 'calc(50% - 30px)', transform: 'translateX(-50%)' }}>
-                      <div className="relative group/menu">
-                        {/* Premium container with refined borders */}
-                        <div className="relative bg-white/95 backdrop-blur-xl min-w-[280px] shadow-2xl border border-black/5">
-                          {/* Elegant top border accent */}
-                          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-black/20 to-transparent" />
+                {/* Enhanced Dropdown Menu */}
+                {item.dropdown && openDropdown === item.label && (
+                  <div
+                    className="absolute top-full pt-8 animate-slide-in-right"
+                    style={{
+                      left: "calc(50% - 30px)",
+                      transform: "translateX(-50%)",
+                    }}
+                  >
+                    <div className="relative group/menu">
+                      {/* Premium container with refined borders */}
+                      <div className="relative bg-white/95 backdrop-blur-xl min-w-[280px] shadow-2xl border border-black/5">
+                        {/* Elegant top border accent */}
+                        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-black/20 to-transparent" />
 
-                          {/* Content area */}
-                          <div className="px-8 py-8">
-                            <div className="space-y-1">
-                              {item.dropdown.map((subItem, subIdx) => (
-                                <Link
-                                  key={subItem.to}
-                                  to={subItem.to}
+                        {/* Content area */}
+                        <div className="px-8 py-8">
+                          <div className="space-y-1">
+                            {item.dropdown.map((subItem, subIdx) => (
+                              <Link
+                                key={subItem.to}
+                                to={subItem.to}
                                 className="dropdown-item block text-black/80 hover:text-black transition-all duration-300 opacity-0 relative group/item"
-                                  style={{
-                                    animationDelay: `${subIdx * 75}ms`,
-                                    animation: 'fadeInUp 0.6s ease-out forwards',
-                                    animationFillMode: 'forwards'
-                                  }}
-                                  onClick={() => setOpenDropdown(null)}
-                                >
-                                  <span className="relative inline-block">
-                                    {subItem.label}
-                                    {/* Sophisticated slide-in underline */}
-                                    <span className="absolute -bottom-1 left-0 w-0 h-[0.5px] bg-black transition-all duration-500 ease-out group-hover/item:w-full" />
-                                  </span>
-                                </Link>
-                              ))}
-                            </div>
+                                style={{
+                                  animationDelay: `${subIdx * 75}ms`,
+                                  animation: "fadeInUp 0.6s ease-out forwards",
+                                  animationFillMode: "forwards",
+                                }}
+                                onClick={() => setOpenDropdown(null)}
+                              >
+                                <span className="relative inline-block">
+                                  {subItem.label}
+                                  {/* Sophisticated slide-in underline */}
+                                  <span className="absolute -bottom-1 left-0 w-0 h-[0.5px] bg-black transition-all duration-500 ease-out group-hover/item:w-full" />
+                                </span>
+                              </Link>
+                            ))}
                           </div>
-
-                          {/* Refined bottom border */}
-                          <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-black/10 to-transparent" />
                         </div>
+
+                        {/* Refined bottom border */}
+                        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-black/10 to-transparent" />
                       </div>
                     </div>
-                  )}
-                </div>
-              ),
-            )}
+                  </div>
+                )}
+              </div>
+            ))}
           </nav>
 
           {/* Right Actions */}
           <div className="flex items-center gap-6 lg:gap-8 ml-auto">
             {/* Search */}
-            <div className={cn(
-              "transition-all duration-500",
-              isIndexPage && isOverHero
-                ? "text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
-                : "text-black"
-            )}>
+            <div
+              className={cn(
+                "transition-all duration-500",
+                isIndexPage && isOverHero
+                  ? "text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+                  : "text-black",
+              )}
+            >
               <SearchBar />
             </div>
 
@@ -247,12 +267,14 @@ export default function Header() {
                   "transition-all duration-300 inline-flex items-center gap-2",
                   isIndexPage && isOverHero
                     ? "text-white hover:text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
-                    : "text-black hover:text-black/90"
+                    : "text-black hover:text-black/90",
                 )}
               >
                 <User className="h-5 w-5 transition-transform duration-300 hover:scale-105" />
                 {isAuthenticated && customer?.firstName && (
-                  <span className="hidden lg:inline text-xs tracking-[0.1em] capitalize font-light">{customer.firstName}</span>
+                  <span className="hidden lg:inline text-xs tracking-[0.1em] capitalize font-light">
+                    {customer.firstName}
+                  </span>
                 )}
               </button>
               {showAccountMenu && (
@@ -332,7 +354,7 @@ export default function Header() {
                 "relative inline-flex items-center gap-2 transition-all duration-500 group",
                 isIndexPage && isOverHero
                   ? "text-white hover:text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
-                  : "text-black hover:text-black/90"
+                  : "text-black hover:text-black/90",
               )}
             >
               <svg
@@ -352,10 +374,14 @@ export default function Header() {
                 <circle cx="18" cy="20" r="1" />
               </svg>
               {count > 0 && (
-                <span className={cn(
-                  "absolute -top-1 -right-1 inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-medium transition-all duration-500 animate-bounce-subtle",
-                  isIndexPage && isOverHero && !openDropdown ? "bg-white text-black drop-shadow-lg" : "bg-black text-white"
-                )}>
+                <span
+                  className={cn(
+                    "absolute -top-1 -right-1 inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-medium transition-all duration-500 animate-bounce-subtle",
+                    isIndexPage && isOverHero && !openDropdown
+                      ? "bg-white text-black drop-shadow-lg"
+                      : "bg-black text-white",
+                  )}
+                >
                   {count}
                 </span>
               )}
