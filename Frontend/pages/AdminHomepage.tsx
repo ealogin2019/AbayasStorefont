@@ -358,7 +358,7 @@ export default function AdminHomepage() {
                   id="order"
                   type="number"
                   value={order}
-                  onChange={(e) => setOrder(parseInt(e.target.value) || 0)}
+                  onChange={(e) => setOrder(e.target.value || "0")}
                 />
               </div>
             </div>
