@@ -98,7 +98,9 @@ export default function Header() {
       isScrolled ? "top-0" : "top-9",
       openDropdown
         ? "bg-white/98 backdrop-blur-xl border-b border-black/5 shadow-sm"
-        : "bg-transparent"
+        : isIndexPage && isOverHero
+          ? "bg-transparent"
+          : "bg-white/98 backdrop-blur-xl border-b border-black/5 shadow-sm"
     )}>
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         {/* Top row: Logo, centered nav, right actions */}
