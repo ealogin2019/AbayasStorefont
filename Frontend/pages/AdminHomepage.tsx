@@ -125,7 +125,7 @@ export default function AdminHomepage() {
         subtitle: subtitle || undefined,
         image,
         link: link || undefined,
-        order,
+        order: parseInt(order) || 0,
         isActive,
       };
 
