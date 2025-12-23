@@ -159,8 +159,10 @@ export default function AdminHomepage() {
     if (!confirm("Are you sure you want to delete this content?")) return;
 
     try {
+      const token = localStorage.getItem("adminToken");
       const response = await fetch(`/api/admin/homepage/${id}`, {
         method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!response.ok) throw new Error("Failed to delete content");
