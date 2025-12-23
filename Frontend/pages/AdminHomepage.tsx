@@ -203,9 +203,13 @@ export default function AdminHomepage() {
 
   const toggleActive = async (item: HomepageContent) => {
     try {
+      const token = localStorage.getItem("adminToken");
       const response = await fetch(`/api/admin/homepage/${item.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ ...item, isActive: !item.isActive }),
       });
 
