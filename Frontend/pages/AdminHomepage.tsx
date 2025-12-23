@@ -178,11 +178,13 @@ export default function AdminHomepage() {
   const handleImageUpload = async (file: File) => {
     setUploading(true);
     try {
+      const token = localStorage.getItem("adminToken");
       const formData = new FormData();
       formData.append("file", file);
 
       const response = await fetch("/api/admin/upload", {
         method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
