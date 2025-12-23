@@ -61,7 +61,7 @@ export default function AdminHomepage() {
   const [subtitle, setSubtitle] = useState("");
   const [image, setImage] = useState("");
   const [link, setLink] = useState("");
-  const [order, setOrder] = useState(0);
+  const [order, setOrder] = useState("0");
   const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
