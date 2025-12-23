@@ -93,7 +93,7 @@ export default function AdminHomepage() {
     setSubtitle("");
     setImage("");
     setLink("");
-    setOrder(0);
+    setOrder("0");
     setIsActive(true);
     setEditingContent(null);
   };
