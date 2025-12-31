@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useCart } from '@/hooks/useCart';
 import { useCustomerAuth } from '@/hooks/useCustomerAuth';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/ui/button';
+import { Card, CardContent } from '@/ui/card';
 import { CheckCircle2, Package, Home } from 'lucide-react';
 
 export default function PaymentSuccess() {
