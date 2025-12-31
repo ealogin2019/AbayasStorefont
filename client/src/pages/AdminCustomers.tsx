@@ -2,9 +2,9 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useProtectedAdmin } from "@/hooks/useAdmin";
 import { useToast } from "@/hooks/use-toast";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Card } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
 import {
   Table,
   TableBody,
@@ -12,16 +12,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/ui/table";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Search, Users, TrendingUp, DollarSign, Mail, Phone, MapPin, Package } from "lucide-react";
+} from "@/ui/dialog";
+import { Skeleton } from "@/ui/skeleton";
+import {
+  Search,
+  Users,
+  TrendingUp,
+  DollarSign,
+  Mail,
+  Phone,
+  MapPin,
+  Package,
+} from "lucide-react";
 
 interface Customer {
   id: string;
@@ -73,7 +82,8 @@ export default function AdminCustomers() {
   const [page, setPage] = useState(parseInt(searchParams.get("page") || "1"));
 
   // Customer detail modal
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerDetails | null>(null);
+  const [selectedCustomer, setSelectedCustomer] =
+    useState<CustomerDetails | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [loadingDetails, setLoadingDetails] = useState(false);
 
@@ -201,7 +211,9 @@ export default function AdminCustomers() {
                 Total Customers
               </p>
               {stats ? (
-                <p className="text-3xl font-bold mt-2">{stats.totalCustomers}</p>
+                <p className="text-3xl font-bold mt-2">
+                  {stats.totalCustomers}
+                </p>
               ) : (
                 <Skeleton className="h-10 w-20 mt-2" />
               )}
@@ -370,8 +382,8 @@ export default function AdminCustomers() {
         {pagination && pagination.totalPages > 1 && (
           <div className="border-t border-border/40 p-4 flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              Page {pagination.page} of {pagination.totalPages} ({pagination.total}{" "}
-              total)
+              Page {pagination.page} of {pagination.totalPages} (
+              {pagination.total} total)
             </p>
             <div className="flex gap-2">
               <Button
@@ -443,42 +455,55 @@ export default function AdminCustomers() {
                       Location
                     </p>
                     <p className="mt-1 text-sm">
-                      {selectedCustomer.address && <span>{selectedCustomer.address}<br /></span>}
-                      {selectedCustomer.city}, {selectedCustomer.country} {selectedCustomer.zipCode}
+                      {selectedCustomer.address && (
+                        <span>
+                          {selectedCustomer.address}
+                          <br />
+                        </span>
+                      )}
+                      {selectedCustomer.city}, {selectedCustomer.country}{" "}
+                      {selectedCustomer.zipCode}
                     </p>
                   </div>
                 )}
               </div>
 
               {/* Order History */}
-              {selectedCustomer.orders && selectedCustomer.orders.length > 0 && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3">Order History</h3>
-                  <div className="space-y-2">
-                    {selectedCustomer.orders.map((order) => (
-                      <div
-                        key={order.id}
-                        className="flex items-center justify-between p-3 border rounded-lg hover:bg-secondary/50 cursor-pointer"
-                        onClick={() => {
-                          setShowDetails(false);
-                          navigate(`/admin/orders/${order.id}`);
-                        }}
-                      >
-                        <div>
-                          <p className="font-medium">Order #{order.orderNumber}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {new Date(order.createdAt).toLocaleDateString()}
-                          </p>
+              {selectedCustomer.orders &&
+                selectedCustomer.orders.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3">
+                      Order History
+                    </h3>
+                    <div className="space-y-2">
+                      {selectedCustomer.orders.map((order) => (
+                        <div
+                          key={order.id}
+                          className="flex items-center justify-between p-3 border rounded-lg hover:bg-secondary/50 cursor-pointer"
+                          onClick={() => {
+                            setShowDetails(false);
+                            navigate(`/admin/orders/${order.id}`);
+                          }}
+                        >
+                          <div>
+                            <p className="font-medium">
+                              Order #{order.orderNumber}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {new Date(order.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-medium">
+                              AED {order.total.toFixed(2)}
+                            </p>
+                            <p className="text-xs capitalize">{order.status}</p>
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <p className="font-medium">AED {order.total.toFixed(2)}</p>
-                          <p className="text-xs capitalize">{order.status}</p>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
           )}
         </DialogContent>

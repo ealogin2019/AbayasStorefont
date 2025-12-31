@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useProtectedAdmin } from "@/hooks/useAdmin";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -12,7 +18,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/ui/dialog";
 import {
   Table,
   TableBody,
@@ -20,16 +26,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/ui/table";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
+} from "@/ui/select";
+import { Switch } from "@/ui/switch";
+import { Badge } from "@/ui/badge";
 import { Users, UserPlus, Shield, Edit, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
@@ -50,12 +56,12 @@ export default function AdminUsers() {
   const [loading, setLoading] = useState(true);
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [stats, setStats] = useState<any>(null);
-  
+
   // Modal states
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
-  
+
   // Form states
   const [formData, setFormData] = useState({
     email: "",
@@ -138,7 +144,13 @@ export default function AdminUsers() {
       });
 
       setCreateModalOpen(false);
-      setFormData({ email: "", password: "", firstName: "", lastName: "", role: "editor" });
+      setFormData({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        role: "editor",
+      });
       await loadData();
     } catch (error: any) {
       toast({
@@ -161,7 +173,7 @@ export default function AdminUsers() {
         lastName: formData.lastName,
         role: formData.role,
       };
-      
+
       if (formData.password) {
         updateData.password = formData.password;
       }
@@ -278,10 +290,14 @@ export default function AdminUsers() {
 
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
-      case "admin": return "bg-red-100 text-red-800";
-      case "manager": return "bg-blue-100 text-blue-800";
-      case "editor": return "bg-green-100 text-green-800";
-      default: return "bg-gray-100 text-gray-800";
+      case "admin":
+        return "bg-red-100 text-red-800";
+      case "manager":
+        return "bg-blue-100 text-blue-800";
+      case "editor":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -298,7 +314,9 @@ export default function AdminUsers() {
       <div className="flex justify-between items-start mb-6">
         <div>
           <h1 className="text-3xl font-bold">Admin Users</h1>
-          <p className="text-gray-600 mt-1">Manage admin accounts and permissions</p>
+          <p className="text-gray-600 mt-1">
+            Manage admin accounts and permissions
+          </p>
         </div>
         <Button onClick={() => setCreateModalOpen(true)}>
           <UserPlus className="h-4 w-4 mr-2" />
@@ -311,7 +329,9 @@ export default function AdminUsers() {
         <div className="grid gap-4 md:grid-cols-4 mb-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Admins</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Admins
+              </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -334,7 +354,9 @@ export default function AdminUsers() {
               <CardTitle className="text-sm font-medium">Admins</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.byRole.admin || 0}</div>
+              <div className="text-2xl font-bold">
+                {stats.byRole.admin || 0}
+              </div>
             </CardContent>
           </Card>
 
@@ -343,7 +365,9 @@ export default function AdminUsers() {
               <CardTitle className="text-sm font-medium">Managers</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.byRole.manager || 0}</div>
+              <div className="text-2xl font-bold">
+                {stats.byRole.manager || 0}
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -353,7 +377,9 @@ export default function AdminUsers() {
       <Card>
         <CardHeader>
           <CardTitle>Admin Accounts</CardTitle>
-          <CardDescription>View and manage administrator accounts</CardDescription>
+          <CardDescription>
+            View and manage administrator accounts
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -389,7 +415,9 @@ export default function AdminUsers() {
                   </TableCell>
                   <TableCell className="text-sm text-gray-500">
                     {admin.lastLogin
-                      ? formatDistanceToNow(new Date(admin.lastLogin), { addSuffix: true })
+                      ? formatDistanceToNow(new Date(admin.lastLogin), {
+                          addSuffix: true,
+                        })
                       : "Never"}
                   </TableCell>
                   <TableCell className="text-right">
@@ -422,7 +450,9 @@ export default function AdminUsers() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Create Admin User</DialogTitle>
-            <DialogDescription>Add a new administrator account</DialogDescription>
+            <DialogDescription>
+              Add a new administrator account
+            </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
@@ -432,7 +462,9 @@ export default function AdminUsers() {
                 id="create-email"
                 type="email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 placeholder="admin@example.com"
               />
             </div>
@@ -443,7 +475,9 @@ export default function AdminUsers() {
                 id="create-password"
                 type="password"
                 value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 placeholder="Min 8 characters"
               />
             </div>
@@ -454,7 +488,9 @@ export default function AdminUsers() {
                 <Input
                   id="create-firstName"
                   value={formData.firstName}
-                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, firstName: e.target.value })
+                  }
                 />
               </div>
 
@@ -463,14 +499,21 @@ export default function AdminUsers() {
                 <Input
                   id="create-lastName"
                   value={formData.lastName}
-                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, lastName: e.target.value })
+                  }
                 />
               </div>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="create-role">Role</Label>
-              <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
+              <Select
+                value={formData.role}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, role: value })
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -484,7 +527,11 @@ export default function AdminUsers() {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setCreateModalOpen(false)} disabled={saving}>
+            <Button
+              variant="outline"
+              onClick={() => setCreateModalOpen(false)}
+              disabled={saving}
+            >
               Cancel
             </Button>
             <Button onClick={handleCreate} disabled={saving}>
@@ -515,7 +562,9 @@ export default function AdminUsers() {
                 id="edit-password"
                 type="password"
                 value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 placeholder="Leave blank to keep current"
               />
             </div>
@@ -526,7 +575,9 @@ export default function AdminUsers() {
                 <Input
                   id="edit-firstName"
                   value={formData.firstName}
-                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, firstName: e.target.value })
+                  }
                 />
               </div>
 
@@ -535,14 +586,21 @@ export default function AdminUsers() {
                 <Input
                   id="edit-lastName"
                   value={formData.lastName}
-                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, lastName: e.target.value })
+                  }
                 />
               </div>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="edit-role">Role</Label>
-              <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
+              <Select
+                value={formData.role}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, role: value })
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -556,7 +614,11 @@ export default function AdminUsers() {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditModalOpen(false)} disabled={saving}>
+            <Button
+              variant="outline"
+              onClick={() => setEditModalOpen(false)}
+              disabled={saving}
+            >
               Cancel
             </Button>
             <Button onClick={handleUpdate} disabled={saving}>

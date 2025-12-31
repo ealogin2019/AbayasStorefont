@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProtectedAdmin } from "@/hooks/useAdmin";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Card } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
 import {
   Table,
   TableBody,
@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/ui/table";
 import { Plus, Edit2, Trash2, Search } from "lucide-react";
 
 interface Product {
@@ -174,7 +174,9 @@ export default function AdminProducts() {
               ) : (
                 products.map((product) => (
                   <TableRow key={product.id}>
-                    <TableCell className="font-medium">{product.name}</TableCell>
+                    <TableCell className="font-medium">
+                      {product.name}
+                    </TableCell>
                     <TableCell>
                       {product.currency} {product.price.toFixed(2)}
                     </TableCell>
@@ -225,8 +227,8 @@ export default function AdminProducts() {
         {pagination && pagination.totalPages > 1 && (
           <div className="border-t border-border/40 p-4 flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              Page {pagination.page} of {pagination.totalPages} ({pagination.total}{" "}
-              total)
+              Page {pagination.page} of {pagination.totalPages} (
+              {pagination.total} total)
             </p>
             <div className="flex gap-2">
               <Button

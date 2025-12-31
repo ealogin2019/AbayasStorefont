@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useProtectedAdmin } from "@/hooks/useAdmin";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
+import { Textarea } from "@/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -13,7 +19,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/ui/dialog";
 import {
   Table,
   TableBody,
@@ -21,8 +27,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from "@/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
 import { Package, AlertTriangle, XCircle, TrendingUp } from "lucide-react";
 
 type Product = {
@@ -48,7 +54,7 @@ export default function AdminInventory() {
   const [stats, setStats] = useState<InventoryStats | null>(null);
   const [lowStockProducts, setLowStockProducts] = useState<Product[]>([]);
   const [outOfStockProducts, setOutOfStockProducts] = useState<Product[]>([]);
-  
+
   // Adjustment modal state
   const [adjustModalOpen, setAdjustModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -166,19 +172,27 @@ export default function AdminInventory() {
     <div className="container mx-auto p-6">
       <div className="mb-6">
         <h1 className="text-3xl font-bold">Inventory Management</h1>
-        <p className="text-gray-600 mt-1">Monitor and manage your product stock levels</p>
+        <p className="text-gray-600 mt-1">
+          Monitor and manage your product stock levels
+        </p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-4 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Products</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Products
+            </CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.totalProducts || 0}</div>
-            <p className="text-xs text-muted-foreground">All products in catalog</p>
+            <div className="text-2xl font-bold">
+              {stats?.totalProducts || 0}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              All products in catalog
+            </p>
           </CardContent>
         </Card>
 
@@ -189,7 +203,9 @@ export default function AdminInventory() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.inStock || 0}</div>
-            <p className="text-xs text-muted-foreground">Products with good stock</p>
+            <p className="text-xs text-muted-foreground">
+              Products with good stock
+            </p>
           </CardContent>
         </Card>
 
@@ -199,7 +215,9 @@ export default function AdminInventory() {
             <AlertTriangle className="h-4 w-4 text-amber-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-amber-600">{stats?.lowStock || 0}</div>
+            <div className="text-2xl font-bold text-amber-600">
+              {stats?.lowStock || 0}
+            </div>
             <p className="text-xs text-muted-foreground">Needs reorder soon</p>
           </CardContent>
         </Card>
@@ -210,8 +228,12 @@ export default function AdminInventory() {
             <XCircle className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{stats?.outOfStock || 0}</div>
-            <p className="text-xs text-muted-foreground">Urgent restock needed</p>
+            <div className="text-2xl font-bold text-red-600">
+              {stats?.outOfStock || 0}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Urgent restock needed
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -249,7 +271,9 @@ export default function AdminInventory() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Product Name</TableHead>
-                      <TableHead className="text-right">Current Stock</TableHead>
+                      <TableHead className="text-right">
+                        Current Stock
+                      </TableHead>
                       <TableHead className="text-right">Price</TableHead>
                       <TableHead className="text-right">Value</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
@@ -258,7 +282,9 @@ export default function AdminInventory() {
                   <TableBody>
                     {lowStockProducts.map((product) => (
                       <TableRow key={product.id}>
-                        <TableCell className="font-medium">{product.name}</TableCell>
+                        <TableCell className="font-medium">
+                          {product.name}
+                        </TableCell>
                         <TableCell className="text-right">
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
                             {product.quantity} units
@@ -268,7 +294,8 @@ export default function AdminInventory() {
                           {product.currency} {product.price.toFixed(2)}
                         </TableCell>
                         <TableCell className="text-right">
-                          {product.currency} {(product.price * product.quantity).toFixed(2)}
+                          {product.currency}{" "}
+                          {(product.price * product.quantity).toFixed(2)}
                         </TableCell>
                         <TableCell className="text-right">
                           <Button
@@ -316,7 +343,9 @@ export default function AdminInventory() {
                   <TableBody>
                     {outOfStockProducts.map((product) => (
                       <TableRow key={product.id}>
-                        <TableCell className="font-medium">{product.name}</TableCell>
+                        <TableCell className="font-medium">
+                          {product.name}
+                        </TableCell>
                         <TableCell className="text-right">
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                             Out of Stock
@@ -353,11 +382,13 @@ export default function AdminInventory() {
               Adjust inventory for {selectedProduct?.name}
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label>Current Stock</Label>
-              <div className="text-2xl font-bold">{selectedProduct?.quantity || 0} units</div>
+              <div className="text-2xl font-bold">
+                {selectedProduct?.quantity || 0} units
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -377,7 +408,9 @@ export default function AdminInventory() {
             <div className="space-y-2">
               <Label>New Stock Level</Label>
               <div className="text-xl font-semibold text-blue-600">
-                {(selectedProduct?.quantity || 0) + parseInt(adjustQuantity || "0")} units
+                {(selectedProduct?.quantity || 0) +
+                  parseInt(adjustQuantity || "0")}{" "}
+                units
               </div>
             </div>
 

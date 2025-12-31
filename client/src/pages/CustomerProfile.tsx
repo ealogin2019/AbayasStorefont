@@ -1,17 +1,24 @@
 import { useState, useEffect } from "react";
 import { useCustomerAuth, RequireCustomerAuth } from "@/hooks/useCustomerAuth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+import { Alert, AlertDescription } from "@/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { User, ShoppingBag, Lock, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 function ProfileContent() {
-  const { customer, logout, updateProfile, changePassword, token } = useCustomerAuth();
+  const { customer, logout, updateProfile, changePassword, token } =
+    useCustomerAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -85,12 +92,19 @@ function ProfileContent() {
     setIsUpdating(true);
 
     try {
-      await changePassword(passwordData.currentPassword, passwordData.newPassword);
+      await changePassword(
+        passwordData.currentPassword,
+        passwordData.newPassword,
+      );
       toast({
         title: "Success",
         description: "Password changed successfully",
       });
-      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
     } catch (err: any) {
       setError(err.message || "Failed to change password");
     } finally {
@@ -176,7 +190,12 @@ function ProfileContent() {
                     <Input
                       id="firstName"
                       value={profileData.firstName}
-                      onChange={(e) => setProfileData({ ...profileData, firstName: e.target.value })}
+                      onChange={(e) =>
+                        setProfileData({
+                          ...profileData,
+                          firstName: e.target.value,
+                        })
+                      }
                       disabled={isUpdating}
                     />
                   </div>
@@ -186,7 +205,12 @@ function ProfileContent() {
                     <Input
                       id="lastName"
                       value={profileData.lastName}
-                      onChange={(e) => setProfileData({ ...profileData, lastName: e.target.value })}
+                      onChange={(e) =>
+                        setProfileData({
+                          ...profileData,
+                          lastName: e.target.value,
+                        })
+                      }
                       disabled={isUpdating}
                     />
                   </div>
@@ -195,7 +219,9 @@ function ProfileContent() {
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input id="email" value={customer?.email} disabled />
-                  <p className="text-xs text-gray-500">Email cannot be changed</p>
+                  <p className="text-xs text-gray-500">
+                    Email cannot be changed
+                  </p>
                 </div>
 
                 <div className="space-y-2">
@@ -203,7 +229,9 @@ function ProfileContent() {
                   <Input
                     id="phone"
                     value={profileData.phone}
-                    onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, phone: e.target.value })
+                    }
                     disabled={isUpdating}
                   />
                 </div>
@@ -213,7 +241,12 @@ function ProfileContent() {
                   <Input
                     id="address"
                     value={profileData.address}
-                    onChange={(e) => setProfileData({ ...profileData, address: e.target.value })}
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        address: e.target.value,
+                      })
+                    }
                     disabled={isUpdating}
                   />
                 </div>
@@ -224,7 +257,9 @@ function ProfileContent() {
                     <Input
                       id="city"
                       value={profileData.city}
-                      onChange={(e) => setProfileData({ ...profileData, city: e.target.value })}
+                      onChange={(e) =>
+                        setProfileData({ ...profileData, city: e.target.value })
+                      }
                       disabled={isUpdating}
                     />
                   </div>
@@ -234,7 +269,12 @@ function ProfileContent() {
                     <Input
                       id="country"
                       value={profileData.country}
-                      onChange={(e) => setProfileData({ ...profileData, country: e.target.value })}
+                      onChange={(e) =>
+                        setProfileData({
+                          ...profileData,
+                          country: e.target.value,
+                        })
+                      }
                       disabled={isUpdating}
                     />
                   </div>
@@ -244,7 +284,12 @@ function ProfileContent() {
                     <Input
                       id="zipCode"
                       value={profileData.zipCode}
-                      onChange={(e) => setProfileData({ ...profileData, zipCode: e.target.value })}
+                      onChange={(e) =>
+                        setProfileData({
+                          ...profileData,
+                          zipCode: e.target.value,
+                        })
+                      }
                       disabled={isUpdating}
                     />
                   </div>
@@ -284,19 +329,28 @@ function ProfileContent() {
                     <div key={order.id} className="border rounded-lg p-4">
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="font-medium">Order #{order.orderNumber}</p>
+                          <p className="font-medium">
+                            Order #{order.orderNumber}
+                          </p>
                           <p className="text-sm text-gray-600">
                             {new Date(order.createdAt).toLocaleDateString()}
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-medium">{order.total.toFixed(2)} AED</p>
-                          <span className={`text-xs px-2 py-1 rounded-full ${
-                            order.status === "delivered" ? "bg-green-100 text-green-800" :
-                            order.status === "shipped" ? "bg-blue-100 text-blue-800" :
-                            order.status === "cancelled" ? "bg-red-100 text-red-800" :
-                            "bg-yellow-100 text-yellow-800"
-                          }`}>
+                          <p className="font-medium">
+                            {order.total.toFixed(2)} AED
+                          </p>
+                          <span
+                            className={`text-xs px-2 py-1 rounded-full ${
+                              order.status === "delivered"
+                                ? "bg-green-100 text-green-800"
+                                : order.status === "shipped"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : order.status === "cancelled"
+                                    ? "bg-red-100 text-red-800"
+                                    : "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
                             {order.status}
                           </span>
                         </div>
@@ -334,7 +388,12 @@ function ProfileContent() {
                     id="currentPassword"
                     type="password"
                     value={passwordData.currentPassword}
-                    onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                    onChange={(e) =>
+                      setPasswordData({
+                        ...passwordData,
+                        currentPassword: e.target.value,
+                      })
+                    }
                     required
                     disabled={isUpdating}
                   />
@@ -346,11 +405,18 @@ function ProfileContent() {
                     id="newPassword"
                     type="password"
                     value={passwordData.newPassword}
-                    onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                    onChange={(e) =>
+                      setPasswordData({
+                        ...passwordData,
+                        newPassword: e.target.value,
+                      })
+                    }
                     required
                     disabled={isUpdating}
                   />
-                  <p className="text-xs text-gray-500">Must be at least 8 characters</p>
+                  <p className="text-xs text-gray-500">
+                    Must be at least 8 characters
+                  </p>
                 </div>
 
                 <div className="space-y-2">
@@ -359,7 +425,12 @@ function ProfileContent() {
                     id="confirmPassword"
                     type="password"
                     value={passwordData.confirmPassword}
-                    onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                    onChange={(e) =>
+                      setPasswordData({
+                        ...passwordData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                     required
                     disabled={isUpdating}
                   />

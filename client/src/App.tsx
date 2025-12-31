@@ -1,10 +1,10 @@
 import "./global.css";
 
-import { Toaster } from "@/components/ui/toaster";
-import { HelmetProvider } from 'react-helmet-async';
+import { Toaster } from "@/ui/toaster";
+import { HelmetProvider } from "react-helmet-async";
 import { createRoot } from "react-dom/client";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster as Sonner } from "@/ui/sonner";
+import { TooltipProvider } from "@/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import Index from "./pages/Index";
@@ -16,10 +16,10 @@ import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import PaymentSuccess from "./pages/PaymentSuccess";
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
-import AnnouncementBar from "./components/AnnouncementBar";
-import CookieConsent from "./components/CookieConsent";
+import Header from "./layout/Header";
+import Footer from "./layout/Footer";
+import AnnouncementBar from "./AnnouncementBar";
+import CookieConsent from "./CookieConsent";
 import { CartProvider } from "@/hooks/useCart";
 import { CustomerAuthProvider } from "@/hooks/useCustomerAuth";
 
@@ -34,7 +34,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProducts from "./pages/AdminProducts";
 import AdminProductForm from "./pages/AdminProductForm";
-import AdminLayout from "./components/admin/AdminLayout";
+import AdminLayout from "@/admin/AdminLayout";
 import AdminOrders from "./pages/AdminOrders";
 import AdminOrderCreate from "./pages/AdminOrderCreate";
 import AdminOrderDetails from "./pages/AdminOrderDetails";
@@ -67,54 +67,54 @@ const App = () => (
         <HelmetProvider>
           <TooltipProvider>
             <Toaster />
-          <Sonner />
-          <CookieConsent />
-          <BrowserRouter>
-            <Routes>
-              {/* Public Store Routes */}
-              <Route element={<Layout />}>
-              <Route path="/" element={<Index />} />
-              <Route path="/product/:id" element={<Product />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/payment-success" element={<PaymentSuccess />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              
-              {/* Customer Auth Routes */}
-              <Route path="/login" element={<CustomerLogin />} />
-              <Route path="/signup" element={<CustomerSignup />} />
-              <Route path="/profile" element={<CustomerProfile />} />
-              <Route path="/orders/:id" element={<OrderTracking />} />
-              
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Route>
+            <Sonner />
+            <CookieConsent />
+            <BrowserRouter>
+              <Routes>
+                {/* Public Store Routes */}
+                <Route element={<Layout />}>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/product/:id" element={<Product />} />
+                  <Route path="/shop" element={<Shop />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/payment-success" element={<PaymentSuccess />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
 
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/*" element={<AdminLayout />}>
-              <Route path="" element={<AdminDashboard />} />
-              <Route path="products" element={<AdminProducts />} />
-              <Route path="products/new" element={<AdminProductForm />} />
-              <Route path="products/:id" element={<AdminProductForm />} />
-              <Route path="orders" element={<AdminOrders />} />
-              <Route path="orders/new" element={<AdminOrderCreate />} />
-              <Route path="orders/:id" element={<AdminOrderDetails />} />
-              <Route path="customers" element={<AdminCustomers />} />
-              <Route path="inventory" element={<AdminInventory />} />
-              <Route path="users" element={<AdminUsers />} />
-              <Route path="settings" element={<AdminSettings />} />
-              <Route path="hero-videos" element={<AdminHeroVideos />} />
-              <Route path="homepage" element={<AdminHomepage />} />
-              {/* More admin pages will be added here */}
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-      </HelmetProvider>
-    </CartProvider>
+                  {/* Customer Auth Routes */}
+                  <Route path="/login" element={<CustomerLogin />} />
+                  <Route path="/signup" element={<CustomerSignup />} />
+                  <Route path="/profile" element={<CustomerProfile />} />
+                  <Route path="/orders/:id" element={<OrderTracking />} />
+
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+
+                {/* Admin Routes */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin/*" element={<AdminLayout />}>
+                  <Route path="" element={<AdminDashboard />} />
+                  <Route path="products" element={<AdminProducts />} />
+                  <Route path="products/new" element={<AdminProductForm />} />
+                  <Route path="products/:id" element={<AdminProductForm />} />
+                  <Route path="orders" element={<AdminOrders />} />
+                  <Route path="orders/new" element={<AdminOrderCreate />} />
+                  <Route path="orders/:id" element={<AdminOrderDetails />} />
+                  <Route path="customers" element={<AdminCustomers />} />
+                  <Route path="inventory" element={<AdminInventory />} />
+                  <Route path="users" element={<AdminUsers />} />
+                  <Route path="settings" element={<AdminSettings />} />
+                  <Route path="hero-videos" element={<AdminHeroVideos />} />
+                  <Route path="homepage" element={<AdminHomepage />} />
+                  {/* More admin pages will be added here */}
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </HelmetProvider>
+      </CartProvider>
     </CustomerAuthProvider>
   </QueryClientProvider>
 );

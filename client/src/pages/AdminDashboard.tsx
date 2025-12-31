@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/ui/card";
+import { Button } from "@/ui/button";
 import {
   Package,
   ShoppingCart,
@@ -132,10 +132,14 @@ export default function AdminDashboard() {
           <div className="flex items-start gap-3">
             <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5" />
             <div>
-              <h3 className="font-semibold text-yellow-900">Attention Needed</h3>
+              <h3 className="font-semibold text-yellow-900">
+                Attention Needed
+              </h3>
               <ul className="text-sm text-yellow-800 mt-2 space-y-1">
                 {stats.pendingOrders > 0 && (
-                  <li>• {stats.pendingOrders} pending order(s) need processing</li>
+                  <li>
+                    • {stats.pendingOrders} pending order(s) need processing
+                  </li>
                 )}
                 {stats.lowStockProducts.length > 0 && (
                   <li>
@@ -153,7 +157,11 @@ export default function AdminDashboard() {
         <Card className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Recent Orders</h2>
-            <Button variant="ghost" size="sm" onClick={() => navigate("/admin/orders")}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/admin/orders")}
+            >
               View All
             </Button>
           </div>
@@ -188,7 +196,11 @@ export default function AdminDashboard() {
         <Card className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Low Stock Alert</h2>
-            <Button variant="ghost" size="sm" onClick={() => navigate("/admin/products")}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/admin/products")}
+            >
               Manage
             </Button>
           </div>
@@ -210,7 +222,9 @@ export default function AdminDashboard() {
                 </div>
               ))
             ) : (
-              <p className="text-sm text-muted-foreground">All products well stocked</p>
+              <p className="text-sm text-muted-foreground">
+                All products well stocked
+              </p>
             )}
           </div>
         </Card>

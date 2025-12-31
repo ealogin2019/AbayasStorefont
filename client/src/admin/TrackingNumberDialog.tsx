@@ -6,10 +6,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/ui/dialog";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Truck } from "lucide-react";
 
@@ -36,12 +36,16 @@ export default function TrackingNumberDialog({
 }: TrackingNumberDialogProps) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [trackingNumber, setTrackingNumber] = useState(currentTracking?.trackingNumber || "");
-  const [trackingUrl, setTrackingUrl] = useState(currentTracking?.trackingUrl || "");
+  const [trackingNumber, setTrackingNumber] = useState(
+    currentTracking?.trackingNumber || "",
+  );
+  const [trackingUrl, setTrackingUrl] = useState(
+    currentTracking?.trackingUrl || "",
+  );
   const [estimatedDelivery, setEstimatedDelivery] = useState(
     currentTracking?.estimatedDelivery
       ? new Date(currentTracking.estimatedDelivery).toISOString().split("T")[0]
-      : ""
+      : "",
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,7 +63,9 @@ export default function TrackingNumberDialog({
         body: JSON.stringify({
           trackingNumber: trackingNumber || null,
           trackingUrl: trackingUrl || null,
-          estimatedDelivery: estimatedDelivery ? new Date(estimatedDelivery).toISOString() : null,
+          estimatedDelivery: estimatedDelivery
+            ? new Date(estimatedDelivery).toISOString()
+            : null,
         }),
       });
 
@@ -123,7 +129,9 @@ export default function TrackingNumberDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="estimatedDelivery">Estimated Delivery Date (Optional)</Label>
+            <Label htmlFor="estimatedDelivery">
+              Estimated Delivery Date (Optional)
+            </Label>
             <Input
               id="estimatedDelivery"
               type="date"

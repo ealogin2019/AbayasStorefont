@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Card } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+} from "@/ui/select";
+import { Textarea } from "@/ui/textarea";
+import { Label } from "@/ui/label";
+import { Checkbox } from "@/ui/checkbox";
 import { Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ImageUploader from "./ImageUploader";
@@ -24,28 +24,42 @@ const productSchema = z.object({
   description: z.string().min(1, "Description is required"),
   price: z.number().positive("Price must be positive"),
   currency: z.string().default("AED"),
-  image: z.string().min(1, "Main image is required").refine(
-    (val) => val.startsWith("/uploads/") || val.startsWith("http"),
-    "Invalid image URL"
-  ),
-  thumbnail: z.string().min(1, "Thumbnail is required").refine(
-    (val) => val.startsWith("/uploads/") || val.startsWith("http"),
-    "Invalid thumbnail URL"
-  ),
-  gallery: z.array(
-    z.string().refine(
+  image: z
+    .string()
+    .min(1, "Main image is required")
+    .refine(
       (val) => val.startsWith("/uploads/") || val.startsWith("http"),
-      "Invalid gallery image URL"
+      "Invalid image URL",
+    ),
+  thumbnail: z
+    .string()
+    .min(1, "Thumbnail is required")
+    .refine(
+      (val) => val.startsWith("/uploads/") || val.startsWith("http"),
+      "Invalid thumbnail URL",
+    ),
+  gallery: z
+    .array(
+      z
+        .string()
+        .refine(
+          (val) => val.startsWith("/uploads/") || val.startsWith("http"),
+          "Invalid gallery image URL",
+        ),
     )
-  ).optional(),
+    .optional(),
   colors: z.array(z.string()),
   sizes: z.array(z.string()),
-  variants: z.array(z.object({
-    size: z.string(),
-    color: z.string(),
-    stock: z.number().int().default(0),
-    price: z.number().optional(),
-  })).optional(),
+  variants: z
+    .array(
+      z.object({
+        size: z.string(),
+        color: z.string(),
+        stock: z.number().int().default(0),
+        price: z.number().optional(),
+      }),
+    )
+    .optional(),
   tags: z.array(z.string()).optional(),
   quantity: z.number().int().default(0),
   inStock: z.boolean().default(true),
@@ -71,41 +85,43 @@ export default function ProductForm({
   const navigate = useNavigate();
   const { toast } = useToast();
   const [formData, setFormData] = useState<ProductFormData>(
-    product ? {
-      ...product,
-      gallery: product.gallery || [],
-      tags: product.tags || [],
-      category: product.category || "",
-      featured: product.featured || false,
-      bestSeller: product.bestSeller || false,
-      newArrival: product.newArrival || false,
-    } : {
-      name: "",
-      description: "",
-      price: 0,
-      currency: "AED",
-      image: "",
-      thumbnail: "",
-      gallery: [],
-      colors: [],
-      sizes: [],
-      tags: [],
-      quantity: 0,
-      inStock: true,
-      category: "",
-      featured: false,
-      bestSeller: false,
-      newArrival: false,
-    }
+    product
+      ? {
+          ...product,
+          gallery: product.gallery || [],
+          tags: product.tags || [],
+          category: product.category || "",
+          featured: product.featured || false,
+          bestSeller: product.bestSeller || false,
+          newArrival: product.newArrival || false,
+        }
+      : {
+          name: "",
+          description: "",
+          price: 0,
+          currency: "AED",
+          image: "",
+          thumbnail: "",
+          gallery: [],
+          colors: [],
+          sizes: [],
+          tags: [],
+          quantity: 0,
+          inStock: true,
+          category: "",
+          featured: false,
+          bestSeller: false,
+          newArrival: false,
+        },
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [colorInput, setColorInput] = useState("");
   const [sizeInput, setSizeInput] = useState("");
   const [tagInput, setTagInput] = useState("");
-  const [variants, setVariants] = useState<Array<{ size: string; color: string; stock: number; price?: number }>>(
-    (product && product.variants) ? product.variants : []
-  );
+  const [variants, setVariants] = useState<
+    Array<{ size: string; color: string; stock: number; price?: number }>
+  >(product && product.variants ? product.variants : []);
 
   const validateForm = (): boolean => {
     try {
@@ -185,8 +201,18 @@ export default function ProductForm({
     setVariants((v) => [...v, { size: "", color: "", stock: 0 }]);
   };
 
-  const handleUpdateVariant = (index: number, patch: Partial<{ size: string; color: string; stock: number; price?: number }>) => {
-    setVariants((cur) => cur.map((it, i) => i === index ? { ...it, ...patch } : it));
+  const handleUpdateVariant = (
+    index: number,
+    patch: Partial<{
+      size: string;
+      color: string;
+      stock: number;
+      price?: number;
+    }>,
+  ) => {
+    setVariants((cur) =>
+      cur.map((it, i) => (i === index ? { ...it, ...patch } : it)),
+    );
   };
 
   const handleRemoveVariant = (index: number) => {
@@ -248,8 +274,8 @@ export default function ProductForm({
       // Success
       toast({
         title: "Success",
-        description: product?.id 
-          ? "Product updated successfully" 
+        description: product?.id
+          ? "Product updated successfully"
           : "Product created successfully",
       });
       onSuccess?.();
@@ -317,9 +343,7 @@ export default function ProductForm({
           <Input
             id="name"
             value={formData.name}
-            onChange={(e) =>
-              setFormData({ ...formData, name: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="e.g., Black Premium Abaya"
             disabled={loading}
           />
@@ -400,9 +424,7 @@ export default function ProductForm({
           onThumbnailChange={(thumbnail) =>
             setFormData({ ...formData, thumbnail })
           }
-          onGalleryChange={(gallery) =>
-            setFormData({ ...formData, gallery })
-          }
+          onGalleryChange={(gallery) => setFormData({ ...formData, gallery })}
           disabled={loading}
         />
 
@@ -526,32 +548,78 @@ export default function ProductForm({
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label>Variants (size / color / stock)</Label>
-            <Button type="button" variant="outline" onClick={handleAddVariant} disabled={loading}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleAddVariant}
+              disabled={loading}
+            >
               Add Variant
             </Button>
           </div>
           <div className="space-y-2">
             {variants.map((v, idx) => (
-              <div key={idx} className="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end">
+              <div
+                key={idx}
+                className="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end"
+              >
                 <div>
                   <Label className="text-xs">Size</Label>
-                  <Input value={v.size} onChange={(e) => handleUpdateVariant(idx, { size: e.target.value })} disabled={loading} />
+                  <Input
+                    value={v.size}
+                    onChange={(e) =>
+                      handleUpdateVariant(idx, { size: e.target.value })
+                    }
+                    disabled={loading}
+                  />
                 </div>
                 <div>
                   <Label className="text-xs">Color</Label>
-                  <Input value={v.color} onChange={(e) => handleUpdateVariant(idx, { color: e.target.value })} disabled={loading} />
+                  <Input
+                    value={v.color}
+                    onChange={(e) =>
+                      handleUpdateVariant(idx, { color: e.target.value })
+                    }
+                    disabled={loading}
+                  />
                 </div>
                 <div>
                   <Label className="text-xs">Stock</Label>
-                  <Input type="number" value={String(v.stock)} onChange={(e) => handleUpdateVariant(idx, { stock: parseInt(e.target.value) || 0 })} disabled={loading} />
+                  <Input
+                    type="number"
+                    value={String(v.stock)}
+                    onChange={(e) =>
+                      handleUpdateVariant(idx, {
+                        stock: parseInt(e.target.value) || 0,
+                      })
+                    }
+                    disabled={loading}
+                  />
                 </div>
                 <div className="flex gap-2">
                   <div className="flex-1">
                     <Label className="text-xs">Price (optional)</Label>
-                    <Input type="number" step="0.01" value={v.price ?? ""} onChange={(e) => handleUpdateVariant(idx, { price: e.target.value ? parseFloat(e.target.value) : undefined })} disabled={loading} />
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={v.price ?? ""}
+                      onChange={(e) =>
+                        handleUpdateVariant(idx, {
+                          price: e.target.value
+                            ? parseFloat(e.target.value)
+                            : undefined,
+                        })
+                      }
+                      disabled={loading}
+                    />
                   </div>
                   <div className="flex items-center">
-                    <Button type="button" variant="destructive" onClick={() => handleRemoveVariant(idx)} disabled={loading}>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={() => handleRemoveVariant(idx)}
+                      disabled={loading}
+                    >
                       Remove
                     </Button>
                   </div>
@@ -608,14 +676,17 @@ export default function ProductForm({
         {/* Category & Display Options */}
         <div className="space-y-4 p-4 border rounded-md bg-secondary/20">
           <h3 className="text-sm font-semibold">Category & Display Options</h3>
-          
+
           {/* Category */}
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
             <Select
               value={formData.category || "none"}
               onValueChange={(value) =>
-                setFormData({ ...formData, category: value === "none" ? "" : value })
+                setFormData({
+                  ...formData,
+                  category: value === "none" ? "" : value,
+                })
               }
               disabled={loading}
             >
@@ -639,7 +710,7 @@ export default function ProductForm({
           {/* Display Checkboxes */}
           <div className="space-y-3">
             <Label>Display On</Label>
-            
+
             <div className="flex items-center gap-2">
               <Checkbox
                 id="featured"
@@ -669,7 +740,10 @@ export default function ProductForm({
                 }
                 disabled={loading}
               />
-              <Label htmlFor="bestSeller" className="cursor-pointer font-normal">
+              <Label
+                htmlFor="bestSeller"
+                className="cursor-pointer font-normal"
+              >
                 Best Sellers Section
               </Label>
             </div>
@@ -686,11 +760,14 @@ export default function ProductForm({
                 }
                 disabled={loading}
               />
-              <Label htmlFor="newArrival" className="cursor-pointer font-normal">
+              <Label
+                htmlFor="newArrival"
+                className="cursor-pointer font-normal"
+              >
                 New Arrivals Section
               </Label>
             </div>
-            
+
             <p className="text-xs text-muted-foreground">
               Select where this product should be displayed on the website
             </p>
@@ -698,7 +775,9 @@ export default function ProductForm({
         </div>
 
         {/* Stock */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">\n          <div className="space-y-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          \n{" "}
+          <div className="space-y-2">
             <Label htmlFor="quantity">Stock Quantity</Label>
             <Input
               id="quantity"
@@ -714,7 +793,6 @@ export default function ProductForm({
               disabled={loading}
             />
           </div>
-
           <div className="space-y-2 flex flex-col justify-end">
             <div className="flex items-center gap-2">
               <Checkbox
@@ -767,8 +845,17 @@ export default function ProductForm({
               </Button>
             )}
           </div>
-          <Button type="submit" disabled={loading} size="lg" className="w-full sm:w-auto">
-            {loading ? "Saving..." : product?.id ? "Update Product" : "Create Product"}
+          <Button
+            type="submit"
+            disabled={loading}
+            size="lg"
+            className="w-full sm:w-auto"
+          >
+            {loading
+              ? "Saving..."
+              : product?.id
+                ? "Update Product"
+                : "Create Product"}
           </Button>
         </div>
       </form>

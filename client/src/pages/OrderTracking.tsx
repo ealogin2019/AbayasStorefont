@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCustomerAuth } from "@/hooks/useCustomerAuth";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Badge } from "@/ui/badge";
+import { Skeleton } from "@/ui/skeleton";
 import {
   Package,
   Clock,
@@ -142,7 +148,9 @@ export default function OrderTracking() {
     );
   }
 
-  const currentStatusIndex = STATUS_TIMELINE.findIndex((s) => s.status === order.status);
+  const currentStatusIndex = STATUS_TIMELINE.findIndex(
+    (s) => s.status === order.status,
+  );
   const isCancelled = order.status === "cancelled";
 
   return (
@@ -157,7 +165,8 @@ export default function OrderTracking() {
           Order #{order.orderNumber}
         </h1>
         <p className="text-sm text-muted-foreground">
-          Placed on {format(new Date(order.createdAt), "MMMM d, yyyy 'at' h:mm a")}
+          Placed on{" "}
+          {format(new Date(order.createdAt), "MMMM d, yyyy 'at' h:mm a")}
         </p>
       </div>
 
@@ -189,7 +198,10 @@ export default function OrderTracking() {
                   const Icon = step.icon;
 
                   return (
-                    <div key={step.status} className="flex flex-col items-center">
+                    <div
+                      key={step.status}
+                      className="flex flex-col items-center"
+                    >
                       <div
                         className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all ${
                           isActive
@@ -227,7 +239,8 @@ export default function OrderTracking() {
               Order Cancelled
             </CardTitle>
             <CardDescription>
-              This order was cancelled on {format(new Date(order.updatedAt), "MMMM d, yyyy")}
+              This order was cancelled on{" "}
+              {format(new Date(order.updatedAt), "MMMM d, yyyy")}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -244,13 +257,21 @@ export default function OrderTracking() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">Tracking Number</p>
-              <p className="text-lg font-mono font-semibold">{order.trackingNumber}</p>
+              <p className="text-sm font-medium text-muted-foreground mb-1">
+                Tracking Number
+              </p>
+              <p className="text-lg font-mono font-semibold">
+                {order.trackingNumber}
+              </p>
             </div>
 
             {order.trackingUrl && (
               <Button asChild variant="outline" className="w-full">
-                <a href={order.trackingUrl} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={order.trackingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Track Shipment
                   <ExternalLink className="h-4 w-4 ml-2" />
                 </a>
@@ -263,7 +284,10 @@ export default function OrderTracking() {
                   Estimated Delivery
                 </p>
                 <p className="text-lg font-semibold">
-                  {format(new Date(order.estimatedDelivery), "EEEE, MMMM d, yyyy")}
+                  {format(
+                    new Date(order.estimatedDelivery),
+                    "EEEE, MMMM d, yyyy",
+                  )}
                 </p>
               </div>
             )}

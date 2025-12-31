@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCustomerAuth } from "@/hooks/useCustomerAuth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/ui/card";
+import { Alert, AlertDescription } from "@/ui/alert";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 
 export default function CustomerLogin() {
@@ -14,7 +21,7 @@ export default function CustomerLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { login } = useCustomerAuth();
   const navigate = useNavigate();
 
@@ -96,12 +103,18 @@ export default function CustomerLogin() {
         <CardFooter className="flex flex-col space-y-2">
           <div className="text-sm text-center text-gray-600">
             Don't have an account?{" "}
-            <Link to="/signup" className="text-primary hover:underline font-medium">
+            <Link
+              to="/signup"
+              className="text-primary hover:underline font-medium"
+            >
               Sign up
             </Link>
           </div>
           <div className="text-sm text-center">
-            <Link to="/" className="text-gray-600 hover:text-primary hover:underline">
+            <Link
+              to="/"
+              className="text-gray-600 hover:text-primary hover:underline"
+            >
               Continue shopping
             </Link>
           </div>
