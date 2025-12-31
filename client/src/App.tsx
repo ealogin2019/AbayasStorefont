@@ -34,7 +34,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProducts from "./pages/AdminProducts";
 import AdminProductForm from "./pages/AdminProductForm";
-import AdminLayout from "./components/admin/AdminLayout";
+import AdminLayout from "@/admin/AdminLayout";
 import AdminOrders from "./pages/AdminOrders";
 import AdminOrderCreate from "./pages/AdminOrderCreate";
 import AdminOrderDetails from "./pages/AdminOrderDetails";
