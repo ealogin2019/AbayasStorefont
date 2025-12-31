@@ -52,7 +52,9 @@ export default function AdminHomepage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingContent, setEditingContent] = useState<HomepageContent | null>(null);
+  const [editingContent, setEditingContent] = useState<HomepageContent | null>(
+    null,
+  );
   const [uploading, setUploading] = useState(false);
 
   // Form state
@@ -61,7 +63,7 @@ export default function AdminHomepage() {
   const [subtitle, setSubtitle] = useState("");
   const [image, setImage] = useState("");
   const [link, setLink] = useState("");
-  const [order, setOrder] = useState(0);
+  const [order, setOrder] = useState("0");
   const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
@@ -71,7 +73,10 @@ export default function AdminHomepage() {
   const fetchContent = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/admin/homepage");
+      const token = localStorage.getItem("adminToken");
+      const response = await fetch("/api/admin/homepage", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!response.ok) throw new Error("Failed to fetch homepage content");
       const data = await response.json();
       setContent(data.data || []);
@@ -90,7 +95,7 @@ export default function AdminHomepage() {
     setSubtitle("");
     setImage("");
     setLink("");
-    setOrder(0);
+    setOrder("0");
     setIsActive(true);
     setEditingContent(null);
   };
@@ -103,7 +108,7 @@ export default function AdminHomepage() {
       setSubtitle(item.subtitle || "");
       setImage(item.image);
       setLink(item.link || "");
-      setOrder(item.order);
+      setOrder(item.order.toString());
       setIsActive(item.isActive);
     } else {
       resetForm();
@@ -115,13 +120,14 @@ export default function AdminHomepage() {
     e.preventDefault();
 
     try {
+      const token = localStorage.getItem("adminToken");
       const payload = {
         section,
         title: title || undefined,
         subtitle: subtitle || undefined,
         image,
         link: link || undefined,
-        order,
+        order: parseInt(order) || 0,
         isActive,
       };
 
@@ -132,13 +138,20 @@ export default function AdminHomepage() {
 
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) throw new Error("Failed to save content");
 
-      toast.success(editingContent ? "Content updated successfully" : "Content created successfully");
+      toast.success(
+        editingContent
+          ? "Content updated successfully"
+          : "Content created successfully",
+      );
       setDialogOpen(false);
       resetForm();
       fetchContent();
@@ -152,8 +165,10 @@ export default function AdminHomepage() {
     if (!confirm("Are you sure you want to delete this content?")) return;
 
     try {
+      const token = localStorage.getItem("adminToken");
       const response = await fetch(`/api/admin/homepage/${id}`, {
         method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!response.ok) throw new Error("Failed to delete content");
@@ -169,11 +184,13 @@ export default function AdminHomepage() {
   const handleImageUpload = async (file: File) => {
     setUploading(true);
     try {
+      const token = localStorage.getItem("adminToken");
       const formData = new FormData();
       formData.append("file", file);
 
       const response = await fetch("/api/admin/upload", {
         method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
@@ -192,9 +209,13 @@ export default function AdminHomepage() {
 
   const toggleActive = async (item: HomepageContent) => {
     try {
+      const token = localStorage.getItem("adminToken");
       const response = await fetch(`/api/admin/homepage/${item.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ ...item, isActive: !item.isActive }),
       });
 
@@ -208,11 +229,14 @@ export default function AdminHomepage() {
     }
   };
 
-  const groupedContent = content.reduce((acc, item) => {
-    if (!acc[item.section]) acc[item.section] = [];
-    acc[item.section].push(item);
-    return acc;
-  }, {} as Record<string, HomepageContent[]>);
+  const groupedContent = content.reduce(
+    (acc, item) => {
+      if (!acc[item.section]) acc[item.section] = [];
+      acc[item.section].push(item);
+      return acc;
+    },
+    {} as Record<string, HomepageContent[]>,
+  );
 
   if (loading) {
     return (
@@ -319,14 +343,19 @@ export default function AdminHomepage() {
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>
-              {editingContent ? "Edit Homepage Content" : "Add Homepage Content"}
+              {editingContent
+                ? "Edit Homepage Content"
+                : "Add Homepage Content"}
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="section">Section</Label>
-                <Select value={section} onValueChange={(value: any) => setSection(value)}>
+                <Select
+                  value={section}
+                  onValueChange={(value: any) => setSection(value)}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -343,7 +372,7 @@ export default function AdminHomepage() {
                   id="order"
                   type="number"
                   value={order}
-                  onChange={(e) => setOrder(parseInt(e.target.value) || 0)}
+                  onChange={(e) => setOrder(e.target.value || "0")}
                 />
               </div>
             </div>
@@ -389,7 +418,12 @@ export default function AdminHomepage() {
                     id="image-upload"
                   />
                   <Label htmlFor="image-upload">
-                    <Button type="button" variant="outline" disabled={uploading} asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={uploading}
+                      asChild
+                    >
                       <span>
                         <Upload className="w-4 h-4 mr-2" />
                         {uploading ? "Uploading..." : "Upload"}
@@ -400,7 +434,11 @@ export default function AdminHomepage() {
               </div>
               {image && (
                 <div className="mt-2">
-                  <img src={image} alt="Preview" className="w-32 h-32 object-cover rounded" />
+                  <img
+                    src={image}
+                    alt="Preview"
+                    className="w-32 h-32 object-cover rounded"
+                  />
                 </div>
               )}
             </div>
@@ -426,7 +464,11 @@ export default function AdminHomepage() {
             </div>
 
             <div className="flex justify-end gap-2">
-              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setDialogOpen(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit">
