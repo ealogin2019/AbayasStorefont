@@ -2,16 +2,16 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useProtectedAdmin } from "@/hooks/useAdmin";
 import { useToast } from "@/hooks/use-toast";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Card } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/ui/select";
 import {
   Table,
   TableBody,
@@ -19,10 +19,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
+} from "@/ui/table";
+import { Skeleton } from "@/ui/skeleton";
 import { Plus, Search, Download, CheckCircle2 } from "lucide-react";
-import OrderStatusBadge from "@/components/admin/OrderStatusBadge";
+import OrderStatusBadge from "@/admin/OrderStatusBadge";
 
 interface Order {
   id: string;

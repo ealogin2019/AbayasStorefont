@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useProtectedAdmin } from "@/hooks/useAdmin";
 import { useToast } from "@/hooks/use-toast";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { Card } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Textarea } from "@/ui/textarea";
+import { Skeleton } from "@/ui/skeleton";
+import { Badge } from "@/ui/badge";
+import { Separator } from "@/ui/separator";
 import { ArrowLeft, Printer, Download, Package } from "lucide-react";
-import OrderStatusBadge from "@/components/admin/OrderStatusBadge";
+import OrderStatusBadge from "@/admin/OrderStatusBadge";
 
 interface OrderItem {
   id: string;
