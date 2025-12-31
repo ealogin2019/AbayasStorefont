@@ -1,10 +1,10 @@
 import "./global.css";
 
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/ui/toaster";
 import { HelmetProvider } from 'react-helmet-async';
 import { createRoot } from "react-dom/client";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster as Sonner } from "@/ui/sonner";
+import { TooltipProvider } from "@/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import Index from "./pages/Index";
@@ -16,10 +16,10 @@ import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import PaymentSuccess from "./pages/PaymentSuccess";
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
-import AnnouncementBar from "./components/AnnouncementBar";
-import CookieConsent from "./components/CookieConsent";
+import Header from "./layout/Header";
+import Footer from "./layout/Footer";
+import AnnouncementBar from "./AnnouncementBar";
+import CookieConsent from "./CookieConsent";
 import { CartProvider } from "@/hooks/useCart";
 import { CustomerAuthProvider } from "@/hooks/useCustomerAuth";
 
