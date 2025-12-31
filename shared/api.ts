@@ -22,12 +22,21 @@ export interface Product {
   gallery?: string[];
   colors: string[];
   sizes: string[];
+  variants?: ProductVariant[];
   description: string;
   tags: string[];
   inStock: boolean;
   quantity: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ProductVariant {
+  id: string;
+  size: string;
+  color: string;
+  stock: number;
+  price?: number;
 }
 
 export interface ListProductsResponse {
@@ -120,6 +129,8 @@ export interface CartItemData {
   id: string;
   productId: string;
   product?: Product;
+  variantId?: string;
+  variant?: ProductVariant;
   quantity: number;
   size?: string;
   color?: string;
@@ -135,6 +146,7 @@ export interface CartResponse {
 
 export interface AddToCartRequest {
   productId: string;
+  variantId?: string;
   quantity: number;
   size?: string;
   color?: string;
