@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
 import { useCustomerAuth } from "@/hooks/useCustomerAuth";
 import { useState, useEffect } from "react";
-import SearchBar from "@/components/SearchBar";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import SearchBar from "@/SearchBar";
+import { Sheet, SheetContent, SheetTrigger } from "@/ui/sheet";
 import { User, LogOut } from "lucide-react";
 
 const nav = [
