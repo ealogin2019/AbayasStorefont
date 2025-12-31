@@ -4,7 +4,14 @@ import { useCustomerAuth } from "@/hooks/useCustomerAuth";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/ui/card";
 import { Alert, AlertDescription } from "@/ui/alert";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
 
@@ -20,7 +27,7 @@ export default function CustomerSignup() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { signup } = useCustomerAuth();
   const navigate = useNavigate();
 
@@ -155,7 +162,9 @@ export default function CustomerSignup() {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              <p className="text-xs text-gray-500">Must be at least 8 characters</p>
+              <p className="text-xs text-gray-500">
+                Must be at least 8 characters
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -180,12 +189,18 @@ export default function CustomerSignup() {
         <CardFooter className="flex flex-col space-y-2">
           <div className="text-sm text-center text-gray-600">
             Already have an account?{" "}
-            <Link to="/login" className="text-primary hover:underline font-medium">
+            <Link
+              to="/login"
+              className="text-primary hover:underline font-medium"
+            >
               Sign in
             </Link>
           </div>
           <div className="text-sm text-center">
-            <Link to="/" className="text-gray-600 hover:text-primary hover:underline">
+            <Link
+              to="/"
+              className="text-gray-600 hover:text-primary hover:underline"
+            >
               Continue shopping
             </Link>
           </div>

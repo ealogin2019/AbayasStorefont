@@ -32,7 +32,7 @@ export default function ImageUploader({
 
   const handleFileSelect = async (
     files: FileList | null,
-    type: "main" | "thumbnail" | "gallery"
+    type: "main" | "thumbnail" | "gallery",
   ) => {
     if (!files || files.length === 0) return;
 
@@ -52,30 +52,33 @@ export default function ImageUploader({
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        
+
         // Validate file type
-        const isVideo = file.type.startsWith('video/');
-        const isImage = file.type.startsWith('image/');
-        
+        const isVideo = file.type.startsWith("video/");
+        const isImage = file.type.startsWith("image/");
+
         if (!isVideo && !isImage) {
           throw new Error(`Invalid file type: ${file.name}`);
         }
-        
+
         // Create FormData for multipart upload
         const formData = new FormData();
         formData.append("file", file);
-        
+
         // Convert "main" to "product" for server API
         const uploadType = type === "main" ? "product" : type;
 
         // Upload to server - send type as query parameter
-        const uploadResponse = await fetch(`/api/admin/upload?type=${uploadType}`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const uploadResponse = await fetch(
+          `/api/admin/upload?type=${uploadType}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
           },
-          body: formData,
-        });
+        );
 
         const uploadData = await uploadResponse.json();
 
@@ -99,7 +102,7 @@ export default function ImageUploader({
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to upload image. Please try again."
+          : "Failed to upload image. Please try again.",
       );
       console.error("Image upload error:", err);
     } finally {
@@ -310,18 +313,21 @@ export default function ImageUploader({
           </Button>
         </div>
         <p className="text-xs text-muted-foreground mt-2">
-          Additional photos/videos (Max 10 items, images up to 5MB, videos up to 10MB)
+          Additional photos/videos (Max 10 items, images up to 5MB, videos up to
+          10MB)
         </p>
         {(gallery || []).length > 0 && (
           <p className="text-xs text-muted-foreground mt-1">
-            {(gallery || []).length} item{(gallery || []).length !== 1 ? "s" : ""} added
+            {(gallery || []).length} item
+            {(gallery || []).length !== 1 ? "s" : ""} added
           </p>
         )}
       </Card>
 
       <p className="text-xs text-muted-foreground">
-        💡 <strong>Tip:</strong> Use clear, well-lit photos with consistent backgrounds. 
-        Short videos (under 10 seconds) work great for showing fabric movement and detail.
+        💡 <strong>Tip:</strong> Use clear, well-lit photos with consistent
+        backgrounds. Short videos (under 10 seconds) work great for showing
+        fabric movement and detail.
       </p>
     </div>
   );

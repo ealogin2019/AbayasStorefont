@@ -11,7 +11,12 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
-type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+type OrderStatus =
+  | "pending"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
 
 interface OrderStatusBadgeProps {
   status: OrderStatus;
@@ -21,10 +26,14 @@ interface OrderStatusBadgeProps {
   className?: string;
 }
 
-const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; icon: string }> = {
+const STATUS_CONFIG: Record<
+  OrderStatus,
+  { label: string; color: string; icon: string }
+> = {
   pending: {
     label: "Pending",
-    color: "bg-yellow-100 text-yellow-800 border-yellow-300 hover:bg-yellow-200",
+    color:
+      "bg-yellow-100 text-yellow-800 border-yellow-300 hover:bg-yellow-200",
     icon: "⏱️",
   },
   processing: {
@@ -34,7 +43,8 @@ const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; icon: s
   },
   shipped: {
     label: "Shipped",
-    color: "bg-purple-100 text-purple-800 border-purple-300 hover:bg-purple-200",
+    color:
+      "bg-purple-100 text-purple-800 border-purple-300 hover:bg-purple-200",
     icon: "📦",
   },
   delivered: {
@@ -49,7 +59,13 @@ const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; icon: s
   },
 };
 
-const STATUS_OPTIONS: OrderStatus[] = ["pending", "processing", "shipped", "delivered", "cancelled"];
+const STATUS_OPTIONS: OrderStatus[] = [
+  "pending",
+  "processing",
+  "shipped",
+  "delivered",
+  "cancelled",
+];
 
 export default function OrderStatusBadge({
   status,
@@ -105,7 +121,10 @@ export default function OrderStatusBadge({
         });
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Failed to update order status";
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to update order status";
       toast({
         title: "Error",
         description: message,

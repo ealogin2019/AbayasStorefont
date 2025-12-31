@@ -143,15 +143,17 @@ export default function AdminOrderCreate() {
     const product = products.find((p) => p.id === selectedProductId);
     if (!product) return;
 
-    const existingItem = orderItems.find((item) => item.productId === selectedProductId);
+    const existingItem = orderItems.find(
+      (item) => item.productId === selectedProductId,
+    );
     if (existingItem) {
       // Increase quantity
       setOrderItems(
         orderItems.map((item) =>
           item.productId === selectedProductId
             ? { ...item, quantity: item.quantity + selectedQuantity }
-            : item
-        )
+            : item,
+        ),
       );
     } else {
       // Add new item
@@ -177,7 +179,7 @@ export default function AdminOrderCreate() {
   const calculateTotals = () => {
     const subtotal = orderItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
-      0
+      0,
     );
     const tax = subtotal * 0.05; // 5% tax
     const shipping = 50; // Fixed shipping
@@ -248,7 +250,8 @@ export default function AdminOrderCreate() {
 
       navigate(`/admin/orders/${data.data.id}`);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to create order";
+      const message =
+        err instanceof Error ? err.message : "Failed to create order";
       toast({
         title: "Error",
         description: message,
@@ -269,7 +272,7 @@ export default function AdminOrderCreate() {
     );
   });
   const filteredProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(searchProduct.toLowerCase())
+    p.name.toLowerCase().includes(searchProduct.toLowerCase()),
   );
 
   return (
@@ -287,7 +290,10 @@ export default function AdminOrderCreate() {
         <h1 className="text-3xl font-bold">Create Order</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+      >
         {/* Main Form */}
         <div className="lg:col-span-2 space-y-6">
           {/* Customer Selection */}
@@ -297,7 +303,9 @@ export default function AdminOrderCreate() {
               {selectedCustomer ? (
                 <div className="p-4 bg-secondary rounded-lg flex items-start justify-between">
                   <div>
-                    <p className="font-medium">{getCustomerName(selectedCustomer)}</p>
+                    <p className="font-medium">
+                      {getCustomerName(selectedCustomer)}
+                    </p>
                     <p className="text-sm text-muted-foreground">
                       {selectedCustomer.email}
                     </p>
@@ -346,7 +354,9 @@ export default function AdminOrderCreate() {
                               }}
                               className="w-full text-left p-3 hover:bg-secondary transition-colors"
                             >
-                              <p className="font-medium">{getCustomerName(customer)}</p>
+                              <p className="font-medium">
+                                {getCustomerName(customer)}
+                              </p>
                               <p className="text-sm text-muted-foreground">
                                 {customer.email}
                               </p>
@@ -380,7 +390,10 @@ export default function AdminOrderCreate() {
                     No products available
                   </div>
                 ) : (
-                  <Select value={selectedProductId} onValueChange={setSelectedProductId}>
+                  <Select
+                    value={selectedProductId}
+                    onValueChange={setSelectedProductId}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select product..." />
                     </SelectTrigger>
@@ -394,7 +407,9 @@ export default function AdminOrderCreate() {
                   </Select>
                 )}
                 {!loadingProducts && filteredProducts.length === 0 && (
-                  <p className="text-sm text-muted-foreground mt-2">No products available</p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    No products available
+                  </p>
                 )}
               </div>
 
@@ -405,14 +420,14 @@ export default function AdminOrderCreate() {
                     type="number"
                     min="1"
                     value={selectedQuantity}
-                    onChange={(e) => setSelectedQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                    onChange={(e) =>
+                      setSelectedQuantity(
+                        Math.max(1, parseInt(e.target.value) || 1),
+                      )
+                    }
                   />
                 </div>
-                <Button
-                  type="button"
-                  onClick={addItem}
-                  className="self-end"
-                >
+                <Button type="button" onClick={addItem} className="self-end">
                   <Plus className="mr-2 h-4 w-4" />
                   Add Item
                 </Button>
@@ -443,7 +458,9 @@ export default function AdminOrderCreate() {
                         <TableCell className="text-right">
                           AED {item.price.toFixed(2)}
                         </TableCell>
-                        <TableCell className="text-right">{item.quantity}</TableCell>
+                        <TableCell className="text-right">
+                          {item.quantity}
+                        </TableCell>
                         <TableCell className="text-right font-medium">
                           AED {(item.price * item.quantity).toFixed(2)}
                         </TableCell>
@@ -491,7 +508,9 @@ export default function AdminOrderCreate() {
                 <div className="space-y-3 mb-4 pb-4 border-b border-border/40">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Items</span>
-                    <span>{orderItems.reduce((sum, item) => sum + item.quantity, 0)}</span>
+                    <span>
+                      {orderItems.reduce((sum, item) => sum + item.quantity, 0)}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Subtotal</span>

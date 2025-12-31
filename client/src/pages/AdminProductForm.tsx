@@ -28,7 +28,7 @@ export default function AdminProductForm() {
 
   const navigate = useNavigate();
   const { id } = useParams();
-  
+
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(!!id);
   const [error, setError] = useState("");
@@ -93,7 +93,9 @@ export default function AdminProductForm() {
           {id ? "Edit Product" : "Create New Product"}
         </h1>
         <p className="text-muted-foreground mt-2">
-          {id ? "Update product details and images" : "Add a new product to your store"}
+          {id
+            ? "Update product details and images"
+            : "Add a new product to your store"}
         </p>
       </div>
 

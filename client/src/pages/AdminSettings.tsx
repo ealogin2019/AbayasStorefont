@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useProtectedAdmin } from "@/hooks/useAdmin";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/ui/card";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { Button } from "@/ui/button";
@@ -53,7 +59,7 @@ export default function AdminSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [allSettings, setAllSettings] = useState<Setting[]>([]);
-  
+
   // Store settings
   const [storeSettings, setStoreSettings] = useState<StoreSettings>({
     storeName: "Abaya Store",
@@ -127,12 +133,17 @@ export default function AdminSettings() {
     loadSettings();
   }, []);
 
-  const saveSettingsGroup = async (group: string, settings: Record<string, any>) => {
+  const saveSettingsGroup = async (
+    group: string,
+    settings: Record<string, any>,
+  ) => {
     setSaving(true);
     try {
       const updates = Object.entries(settings).map(async ([key, value]) => {
-        const existing = allSettings.find((s) => s.key === key && s.group === group);
-        
+        const existing = allSettings.find(
+          (s) => s.key === key && s.group === group,
+        );
+
         if (existing) {
           // Update existing setting
           return fetch(`/api/admin/settings/${existing.id}`, {
@@ -157,12 +168,12 @@ export default function AdminSettings() {
       });
 
       await Promise.all(updates);
-      
+
       toast({
         title: "Success",
         description: "Settings saved successfully",
       });
-      
+
       await loadSettings();
     } catch (error) {
       console.error("Save settings error:", error);
@@ -220,7 +231,9 @@ export default function AdminSettings() {
           <Card>
             <CardHeader>
               <CardTitle>Store Information</CardTitle>
-              <CardDescription>Basic information about your store</CardDescription>
+              <CardDescription>
+                Basic information about your store
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -228,7 +241,12 @@ export default function AdminSettings() {
                 <Input
                   id="storeName"
                   value={storeSettings.storeName}
-                  onChange={(e) => setStoreSettings({ ...storeSettings, storeName: e.target.value })}
+                  onChange={(e) =>
+                    setStoreSettings({
+                      ...storeSettings,
+                      storeName: e.target.value,
+                    })
+                  }
                   placeholder="Your Store Name"
                 />
               </div>
@@ -239,7 +257,12 @@ export default function AdminSettings() {
                   id="storeEmail"
                   type="email"
                   value={storeSettings.storeEmail}
-                  onChange={(e) => setStoreSettings({ ...storeSettings, storeEmail: e.target.value })}
+                  onChange={(e) =>
+                    setStoreSettings({
+                      ...storeSettings,
+                      storeEmail: e.target.value,
+                    })
+                  }
                   placeholder="contact@store.com"
                 />
               </div>
@@ -249,7 +272,12 @@ export default function AdminSettings() {
                 <Input
                   id="storePhone"
                   value={storeSettings.storePhone}
-                  onChange={(e) => setStoreSettings({ ...storeSettings, storePhone: e.target.value })}
+                  onChange={(e) =>
+                    setStoreSettings({
+                      ...storeSettings,
+                      storePhone: e.target.value,
+                    })
+                  }
                   placeholder="+971 50 123 4567"
                 />
               </div>
@@ -260,7 +288,12 @@ export default function AdminSettings() {
                   <Input
                     id="currency"
                     value={storeSettings.currency}
-                    onChange={(e) => setStoreSettings({ ...storeSettings, currency: e.target.value })}
+                    onChange={(e) =>
+                      setStoreSettings({
+                        ...storeSettings,
+                        currency: e.target.value,
+                      })
+                    }
                     placeholder="AED"
                   />
                 </div>
@@ -271,7 +304,12 @@ export default function AdminSettings() {
                     id="taxRate"
                     type="number"
                     value={storeSettings.taxRate}
-                    onChange={(e) => setStoreSettings({ ...storeSettings, taxRate: parseFloat(e.target.value) || 0 })}
+                    onChange={(e) =>
+                      setStoreSettings({
+                        ...storeSettings,
+                        taxRate: parseFloat(e.target.value) || 0,
+                      })
+                    }
                     placeholder="5"
                   />
                 </div>
@@ -292,7 +330,9 @@ export default function AdminSettings() {
           <Card>
             <CardHeader>
               <CardTitle>Payment Configuration</CardTitle>
-              <CardDescription>Configure Stripe payment gateway</CardDescription>
+              <CardDescription>
+                Configure Stripe payment gateway
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -300,7 +340,12 @@ export default function AdminSettings() {
                 <Input
                   id="stripePublicKey"
                   value={paymentSettings.stripePublicKey}
-                  onChange={(e) => setPaymentSettings({ ...paymentSettings, stripePublicKey: e.target.value })}
+                  onChange={(e) =>
+                    setPaymentSettings({
+                      ...paymentSettings,
+                      stripePublicKey: e.target.value,
+                    })
+                  }
                   placeholder="pk_test_..."
                 />
               </div>
@@ -311,21 +356,35 @@ export default function AdminSettings() {
                   id="stripeSecretKey"
                   type="password"
                   value={paymentSettings.stripeSecretKey}
-                  onChange={(e) => setPaymentSettings({ ...paymentSettings, stripeSecretKey: e.target.value })}
+                  onChange={(e) =>
+                    setPaymentSettings({
+                      ...paymentSettings,
+                      stripeSecretKey: e.target.value,
+                    })
+                  }
                   placeholder="sk_test_..."
                 />
-                <p className="text-sm text-gray-500">Keep this secret and never share it publicly</p>
+                <p className="text-sm text-gray-500">
+                  Keep this secret and never share it publicly
+                </p>
               </div>
 
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label htmlFor="testMode">Test Mode</Label>
-                  <p className="text-sm text-gray-500">Use Stripe test keys for development</p>
+                  <p className="text-sm text-gray-500">
+                    Use Stripe test keys for development
+                  </p>
                 </div>
                 <Switch
                   id="testMode"
                   checked={paymentSettings.testMode}
-                  onCheckedChange={(checked) => setPaymentSettings({ ...paymentSettings, testMode: checked })}
+                  onCheckedChange={(checked) =>
+                    setPaymentSettings({
+                      ...paymentSettings,
+                      testMode: checked,
+                    })
+                  }
                 />
               </div>
 
@@ -344,42 +403,67 @@ export default function AdminSettings() {
           <Card>
             <CardHeader>
               <CardTitle>Shipping Configuration</CardTitle>
-              <CardDescription>Configure shipping costs and options</CardDescription>
+              <CardDescription>
+                Configure shipping costs and options
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label htmlFor="shippingEnabled">Enable Shipping</Label>
-                  <p className="text-sm text-gray-500">Enable shipping for orders</p>
+                  <p className="text-sm text-gray-500">
+                    Enable shipping for orders
+                  </p>
                 </div>
                 <Switch
                   id="shippingEnabled"
                   checked={shippingSettings.enabled}
-                  onCheckedChange={(checked) => setShippingSettings({ ...shippingSettings, enabled: checked })}
+                  onCheckedChange={(checked) =>
+                    setShippingSettings({
+                      ...shippingSettings,
+                      enabled: checked,
+                    })
+                  }
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="defaultCost">Default Shipping Cost ({storeSettings.currency})</Label>
+                <Label htmlFor="defaultCost">
+                  Default Shipping Cost ({storeSettings.currency})
+                </Label>
                 <Input
                   id="defaultCost"
                   type="number"
                   value={shippingSettings.defaultCost}
-                  onChange={(e) => setShippingSettings({ ...shippingSettings, defaultCost: parseFloat(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setShippingSettings({
+                      ...shippingSettings,
+                      defaultCost: parseFloat(e.target.value) || 0,
+                    })
+                  }
                   placeholder="25"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="freeShippingThreshold">Free Shipping Threshold ({storeSettings.currency})</Label>
+                <Label htmlFor="freeShippingThreshold">
+                  Free Shipping Threshold ({storeSettings.currency})
+                </Label>
                 <Input
                   id="freeShippingThreshold"
                   type="number"
                   value={shippingSettings.freeShippingThreshold}
-                  onChange={(e) => setShippingSettings({ ...shippingSettings, freeShippingThreshold: parseFloat(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setShippingSettings({
+                      ...shippingSettings,
+                      freeShippingThreshold: parseFloat(e.target.value) || 0,
+                    })
+                  }
                   placeholder="500"
                 />
-                <p className="text-sm text-gray-500">Orders above this amount get free shipping</p>
+                <p className="text-sm text-gray-500">
+                  Orders above this amount get free shipping
+                </p>
               </div>
 
               <Button
@@ -397,7 +481,9 @@ export default function AdminSettings() {
           <Card>
             <CardHeader>
               <CardTitle>Email Configuration</CardTitle>
-              <CardDescription>Configure SMTP settings for email notifications</CardDescription>
+              <CardDescription>
+                Configure SMTP settings for email notifications
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -406,7 +492,12 @@ export default function AdminSettings() {
                   <Input
                     id="smtpHost"
                     value={emailSettings.smtpHost}
-                    onChange={(e) => setEmailSettings({ ...emailSettings, smtpHost: e.target.value })}
+                    onChange={(e) =>
+                      setEmailSettings({
+                        ...emailSettings,
+                        smtpHost: e.target.value,
+                      })
+                    }
                     placeholder="smtp.gmail.com"
                   />
                 </div>
@@ -417,7 +508,12 @@ export default function AdminSettings() {
                     id="smtpPort"
                     type="number"
                     value={emailSettings.smtpPort}
-                    onChange={(e) => setEmailSettings({ ...emailSettings, smtpPort: parseInt(e.target.value) || 587 })}
+                    onChange={(e) =>
+                      setEmailSettings({
+                        ...emailSettings,
+                        smtpPort: parseInt(e.target.value) || 587,
+                      })
+                    }
                     placeholder="587"
                   />
                 </div>
@@ -428,7 +524,12 @@ export default function AdminSettings() {
                 <Input
                   id="smtpUser"
                   value={emailSettings.smtpUser}
-                  onChange={(e) => setEmailSettings({ ...emailSettings, smtpUser: e.target.value })}
+                  onChange={(e) =>
+                    setEmailSettings({
+                      ...emailSettings,
+                      smtpUser: e.target.value,
+                    })
+                  }
                   placeholder="your-email@gmail.com"
                 />
               </div>
@@ -439,7 +540,12 @@ export default function AdminSettings() {
                   id="smtpPassword"
                   type="password"
                   value={emailSettings.smtpPassword}
-                  onChange={(e) => setEmailSettings({ ...emailSettings, smtpPassword: e.target.value })}
+                  onChange={(e) =>
+                    setEmailSettings({
+                      ...emailSettings,
+                      smtpPassword: e.target.value,
+                    })
+                  }
                   placeholder="••••••••"
                 />
               </div>
@@ -450,7 +556,12 @@ export default function AdminSettings() {
                   id="senderEmail"
                   type="email"
                   value={emailSettings.senderEmail}
-                  onChange={(e) => setEmailSettings({ ...emailSettings, senderEmail: e.target.value })}
+                  onChange={(e) =>
+                    setEmailSettings({
+                      ...emailSettings,
+                      senderEmail: e.target.value,
+                    })
+                  }
                   placeholder="noreply@abayastore.com"
                 />
               </div>
@@ -460,7 +571,12 @@ export default function AdminSettings() {
                 <Input
                   id="senderName"
                   value={emailSettings.senderName}
-                  onChange={(e) => setEmailSettings({ ...emailSettings, senderName: e.target.value })}
+                  onChange={(e) =>
+                    setEmailSettings({
+                      ...emailSettings,
+                      senderName: e.target.value,
+                    })
+                  }
                   placeholder="Abaya Store"
                 />
               </div>
@@ -480,7 +596,9 @@ export default function AdminSettings() {
           <Card>
             <CardHeader>
               <CardTitle>Plugin Management</CardTitle>
-              <CardDescription>Manage installed plugins and their settings</CardDescription>
+              <CardDescription>
+                Manage installed plugins and their settings
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -489,22 +607,32 @@ export default function AdminSettings() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-semibold">Inventory Management</h3>
-                      <p className="text-sm text-gray-500">Automatic stock tracking and low stock alerts</p>
-                      <p className="text-xs text-gray-400 mt-1">Version 1.0.0</p>
+                      <p className="text-sm text-gray-500">
+                        Automatic stock tracking and low stock alerts
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Version 1.0.0
+                      </p>
                     </div>
                     <Switch defaultChecked disabled />
                   </div>
                   <div className="mt-4 space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Low Stock Threshold:</span>
+                      <span className="text-gray-600">
+                        Low Stock Threshold:
+                      </span>
                       <span className="font-medium">10 units</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Prevent Overselling:</span>
+                      <span className="text-gray-600">
+                        Prevent Overselling:
+                      </span>
                       <span className="font-medium">Enabled</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Low Stock Notifications:</span>
+                      <span className="text-gray-600">
+                        Low Stock Notifications:
+                      </span>
                       <span className="font-medium">Enabled</span>
                     </div>
                   </div>

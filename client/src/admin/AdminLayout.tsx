@@ -32,7 +32,7 @@ export default function AdminLayout() {
       <aside
         className={cn(
           "transition-all duration-300 border-r border-amber-200/50 bg-gradient-to-b from-[#fff9f0] to-[#fef6ed] shadow-lg",
-          sidebarOpen ? "w-64" : "w-20"
+          sidebarOpen ? "w-64" : "w-20",
         )}
       >
         <div className="p-6 border-b border-amber-200/50 bg-gradient-to-r from-amber-50/50 to-orange-50/30">
@@ -52,7 +52,7 @@ export default function AdminLayout() {
               to={item.path}
               className={cn(
                 "block px-4 py-2.5 rounded-lg transition-all duration-200 text-amber-900/80 hover:bg-gradient-to-r hover:from-amber-100/70 hover:to-orange-100/60 hover:text-amber-900 hover:shadow-sm font-medium",
-                sidebarOpen ? "" : "text-center"
+                sidebarOpen ? "" : "text-center",
               )}
             >
               {sidebarOpen ? item.label : item.label[0]}

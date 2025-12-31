@@ -87,12 +87,7 @@ export default function AdminLogin() {
             />
           </div>
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading}
-            size="lg"
-          >
+          <Button type="submit" className="w-full" disabled={loading} size="lg">
             {loading ? "Logging in..." : "Login"}
           </Button>
         </form>

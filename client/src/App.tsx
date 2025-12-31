@@ -1,7 +1,7 @@
 import "./global.css";
 
 import { Toaster } from "@/ui/toaster";
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider } from "react-helmet-async";
 import { createRoot } from "react-dom/client";
 import { Toaster as Sonner } from "@/ui/sonner";
 import { TooltipProvider } from "@/ui/tooltip";

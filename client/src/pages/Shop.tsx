@@ -20,22 +20,26 @@ import { cn } from "@/lib/utils";
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   // Filter states
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "");
   const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "");
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedColors, setSelectedColors] = useState<string[]>(
-    searchParams.get("colors")?.split(",").filter(Boolean) || []
+    searchParams.get("colors")?.split(",").filter(Boolean) || [],
   );
   const [selectedSizes, setSelectedSizes] = useState<string[]>(
-    searchParams.get("sizes")?.split(",").filter(Boolean) || []
+    searchParams.get("sizes")?.split(",").filter(Boolean) || [],
   );
-  const [inStockOnly, setInStockOnly] = useState(searchParams.get("inStock") === "true");
-  const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "createdAt");
+  const [inStockOnly, setInStockOnly] = useState(
+    searchParams.get("inStock") === "true",
+  );
+  const [sortBy, setSortBy] = useState(
+    searchParams.get("sortBy") || "createdAt",
+  );
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">(
-    (searchParams.get("sortOrder") as "asc" | "desc") || "desc"
+    (searchParams.get("sortOrder") as "asc" | "desc") || "desc",
   );
   const [showFilters, setShowFilters] = useState(false);
 
@@ -67,7 +71,15 @@ export default function Shop() {
   const products = data?.products ?? [];
 
   // Available filters (extract from all products for dynamic filters)
-  const availableColors = ["Black", "White", "Navy", "Brown", "Beige", "Gray", "Green"];
+  const availableColors = [
+    "Black",
+    "White",
+    "Navy",
+    "Brown",
+    "Beige",
+    "Gray",
+    "Green",
+  ];
   const availableSizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
   // Apply filters
@@ -93,14 +105,14 @@ export default function Shop() {
   // Handle color selection
   const toggleColor = (color: string) => {
     setSelectedColors((prev) =>
-      prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]
+      prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color],
     );
   };
 
   // Handle size selection
   const toggleSize = (size: string) => {
     setSelectedSizes((prev) =>
-      prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
+      prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size],
     );
   };
 
@@ -124,7 +136,7 @@ export default function Shop() {
     }
   };
 
-  const activeFiltersCount = 
+  const activeFiltersCount =
     (search ? 1 : 0) +
     (minPrice || maxPrice ? 1 : 0) +
     selectedColors.length +
@@ -142,7 +154,8 @@ export default function Shop() {
           Shop All
         </h1>
         <p className="text-base md:text-lg text-black/70 max-w-2xl font-light leading-relaxed">
-          Explore our curated range of premium abayas, crafted for elegance and comfort.
+          Explore our curated range of premium abayas, crafted for elegance and
+          comfort.
         </p>
       </div>
 
@@ -189,7 +202,7 @@ export default function Shop() {
         <aside
           className={cn(
             "w-full md:w-64 space-y-6",
-            showFilters ? "block" : "hidden md:block"
+            showFilters ? "block" : "hidden md:block",
           )}
         >
           <Card className="p-3 sm:p-4 space-y-4 sm:space-y-6">
@@ -265,7 +278,9 @@ export default function Shop() {
                 {availableSizes.map((size) => (
                   <Button
                     key={size}
-                    variant={selectedSizes.includes(size) ? "default" : "outline"}
+                    variant={
+                      selectedSizes.includes(size) ? "default" : "outline"
+                    }
                     size="sm"
                     onClick={() => toggleSize(size)}
                     className="h-8"
@@ -300,22 +315,31 @@ export default function Shop() {
           {isLoading ? (
             <div className="text-center py-12">
               <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent"></div>
-              <p className="mt-4 text-sm text-muted-foreground">Loading products...</p>
+              <p className="mt-4 text-sm text-muted-foreground">
+                Loading products...
+              </p>
             </div>
           ) : products.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-base sm:text-lg font-medium">No products found</p>
+              <p className="text-base sm:text-lg font-medium">
+                No products found
+              </p>
               <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                 Try adjusting your filters or search terms
               </p>
-              <Button onClick={clearFilters} variant="outline" className="mt-4 text-xs sm:text-sm">
+              <Button
+                onClick={clearFilters}
+                variant="outline"
+                className="mt-4 text-xs sm:text-sm"
+              >
                 Clear All Filters
               </Button>
             </div>
           ) : (
             <>
               <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">
-                Showing {products.length} {products.length === 1 ? "product" : "products"}
+                Showing {products.length}{" "}
+                {products.length === 1 ? "product" : "products"}
               </p>
               <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
                 {products.map((p: any) => (

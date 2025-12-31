@@ -265,7 +265,8 @@ export default function AdminOrders() {
               </p>
               {stats ? (
                 <p className="text-3xl font-bold mt-2">
-                  AED {stats.totalRevenue.toLocaleString("en-US", {
+                  AED{" "}
+                  {stats.totalRevenue.toLocaleString("en-US", {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}
@@ -287,7 +288,8 @@ export default function AdminOrders() {
               </p>
               {stats ? (
                 <p className="text-3xl font-bold mt-2">
-                  AED {stats.averageOrderValue.toLocaleString("en-US", {
+                  AED{" "}
+                  {stats.averageOrderValue.toLocaleString("en-US", {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}
@@ -359,10 +361,13 @@ export default function AdminOrders() {
           </div>
 
           {/* Status Filter */}
-          <Select value={status} onValueChange={(value) => {
-            setStatus(value);
-            setPage(1);
-          }}>
+          <Select
+            value={status}
+            onValueChange={(value) => {
+              setStatus(value);
+              setPage(1);
+            }}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="All Statuses" />
             </SelectTrigger>
@@ -476,7 +481,8 @@ export default function AdminOrders() {
                       </div>
                     </TableCell>
                     <TableCell className="text-sm">
-                      {order.items.length} item{order.items.length !== 1 ? "s" : ""}
+                      {order.items.length} item
+                      {order.items.length !== 1 ? "s" : ""}
                     </TableCell>
                     <TableCell className="font-medium">
                       AED {order.total.toFixed(2)}
@@ -511,8 +517,8 @@ export default function AdminOrders() {
         {pagination && pagination.totalPages > 1 && (
           <div className="border-t border-border/40 p-4 flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              Page {pagination.page} of {pagination.totalPages} ({pagination.total}{" "}
-              total)
+              Page {pagination.page} of {pagination.totalPages} (
+              {pagination.total} total)
             </p>
             <div className="flex gap-2">
               <Button

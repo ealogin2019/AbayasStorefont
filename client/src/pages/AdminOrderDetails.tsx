@@ -265,7 +265,10 @@ export default function AdminOrderDetails() {
                 </thead>
                 <tbody>
                   {order.items.map((item) => (
-                    <tr key={item.id} className="border-b border-border/40 hover:bg-secondary/30">
+                    <tr
+                      key={item.id}
+                      className="border-b border-border/40 hover:bg-secondary/30"
+                    >
                       <td className="p-4">
                         <div className="flex gap-3 items-center">
                           {item.product.image && (
@@ -283,7 +286,9 @@ export default function AdminOrderDetails() {
                           </div>
                         </div>
                       </td>
-                      <td className="p-4 text-right">AED {item.price.toFixed(2)}</td>
+                      <td className="p-4 text-right">
+                        AED {item.price.toFixed(2)}
+                      </td>
                       <td className="p-4 text-right">{item.quantity}</td>
                       <td className="p-4 text-right font-medium">
                         AED {(item.price * item.quantity).toFixed(2)}
@@ -347,7 +352,9 @@ export default function AdminOrderDetails() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Email</p>
-                <p className="font-medium break-all text-sm">{order.customer.email}</p>
+                <p className="font-medium break-all text-sm">
+                  {order.customer.email}
+                </p>
               </div>
               {order.customer.phone && (
                 <div>
@@ -371,7 +378,9 @@ export default function AdminOrderDetails() {
                   {order.shippingAddress.city}, {order.shippingAddress.state}{" "}
                   {order.shippingAddress.postalCode}
                 </p>
-                <p className="text-muted-foreground">{order.shippingAddress.country}</p>
+                <p className="text-muted-foreground">
+                  {order.shippingAddress.country}
+                </p>
               </div>
             </Card>
           )}
