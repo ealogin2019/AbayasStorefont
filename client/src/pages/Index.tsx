@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import ProductCard from "@/components/product/ProductCard";
+import ProductCard from "@/product/ProductCard";
 import { Product } from "@shared/api";
 
 interface HomepageContent {

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useProtectedAdmin } from "@/hooks/useAdmin";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import ProductForm from "@/components/admin/ProductForm";
+import { Card } from "@/ui/card";
+import { Button } from "@/ui/button";
+import ProductForm from "@/admin/ProductForm";
 
 interface Product {
   id: string;
