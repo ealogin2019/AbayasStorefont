@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Card } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+} from "@/ui/select";
+import { Textarea } from "@/ui/textarea";
+import { Label } from "@/ui/label";
+import { Checkbox } from "@/ui/checkbox";
 import { Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ImageUploader from "./ImageUploader";

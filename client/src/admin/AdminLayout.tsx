@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/ui/button";
 import { LogOut, Menu, X } from "lucide-react";
 
 const adminNav = [

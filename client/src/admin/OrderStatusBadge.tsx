@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
