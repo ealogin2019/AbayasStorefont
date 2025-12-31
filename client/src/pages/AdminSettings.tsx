@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useProtectedAdmin } from "@/hooks/useAdmin";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/ui/card";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
+import { Button } from "@/ui/button";
+import { Textarea } from "@/ui/textarea";
+import { Switch } from "@/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { Store, CreditCard, Package, Mail, Plug } from "lucide-react";
 

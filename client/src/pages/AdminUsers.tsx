@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useProtectedAdmin } from "@/hooks/useAdmin";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -12,7 +12,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/ui/dialog";
 import {
   Table,
   TableBody,
@@ -20,16 +20,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/ui/table";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
+} from "@/ui/select";
+import { Switch } from "@/ui/switch";
+import { Badge } from "@/ui/badge";
 import { Users, UserPlus, Shield, Edit, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
