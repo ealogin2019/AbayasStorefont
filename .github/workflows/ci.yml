@@ -19,10 +19,10 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
-      # Then setup Node with pnpm caching
+      # Setup Node with pnpm caching (Node 20+ for better ESM support)
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -30,8 +30,9 @@ jobs:
 
       # Generate Prisma client BEFORE typecheck
       - name: Generate Prisma Client
-        run: |
-          npx prisma generate
+        run: npx prisma generate
+        env:
+          NODE_OPTIONS: --experimental-vm-modules
 
       # Create .env file for CI (SQLite for testing)
       - name: Setup environment
@@ -49,7 +50,8 @@ jobs:
 
       # Build frontend
       - name: Build frontend
-        run: cd frontend && npm run build
+        working-directory: frontend
+        run: npm run build
 
       # Build backend
       - name: Build backend
@@ -57,8 +59,10 @@ jobs:
 
       # Type checking
       - name: Type check backend
-        run: cd backend && npx tsc --noEmit
+        working-directory: backend
+        run: npx tsc --noEmit
 
       - name: Type check frontend
-        run: cd frontend && npx tsc --noEmit
+        working-directory: frontend
+        run: npx tsc --noEmit
 
