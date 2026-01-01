@@ -1,205 +1,195 @@
+/**
+ * Customer Orders Routes
+ * Handles creating orders, listing orders, and fetching order details
+ */
+
 import { RequestHandler } from "express";
 import { prisma } from "../../db";
 import { z } from "zod";
-import { pluginManager } from "../../plugins/manager";
 
+// --------------------
+// Schemas
+// --------------------
 const createOrderSchema = z.object({
-  customerId: z.string().optional(),
-  items: z.array(z.object({
-    productId: z.string(),
-    quantity: z.number().min(1),
-    price: z.number(),
-    size: z.string().optional(),
-    color: z.string().optional(),
-  })),
-  subtotal: z.number(),
-  tax: z.number().optional(),
-  shippingCost: z.number().optional(),
-  total: z.number(),
-  notes: z.string().optional(),
+  customerId: z.string(),
+  paymentMethod: z.enum(["cod", "card"]).default("cod"),
+  shippingAddress: z.object({
+    firstName: z.string(),
+    lastName: z.string(),
+    address: z.string(),
+    city: z.string(),
+    postalCode: z.string(),
+    country: z.string(),
+  }),
 });
 
-// Create order from cart (called after successful payment)
-export const handleCreateOrderFromCart: RequestHandler = async (req, res) => {
-  try {
-    const { customerId, cartItems, paymentIntentId, shippingCost = 0, tax = 0, notes } = req.body;
+const listOrdersSchema = z.object({
+  customerId: z.string(),
+  page: z.number().optional().default(1),
+  limit: z.number().optional().default(10),
+});
 
-    if (!cartItems || cartItems.length === 0) {
-      return res.status(400).json({ error: "No items in cart" });
-    }
-
-    // Calculate totals
-    const subtotal = cartItems.reduce((sum: number, item: any) => 
-      sum + ((item.variant?.price ? Number(item.variant.price) : item.product.price) * item.quantity), 0
-    );
-    const total = subtotal + shippingCost + tax;
-
-    // Generate order number
-    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-
-    // Create order with items
-    const order = await prisma.order.create({
-      data: {
-        customerId: customerId || null,
-        orderNumber,
-        status: "pending",
-        subtotal,
-        tax,
-        shippingCost,
-        total,
-        notes,
-        items: {
-          create: cartItems.map((item: any) => ({
-            productId: item.productId,
-            variantId: item.variantId || undefined,
-            quantity: item.quantity,
-            price: item.variant?.price ? Number(item.variant.price) : item.product.price,
-            size: item.size,
-            color: item.color,
-          })),
-        },
-      },
-      include: {
-        items: {
-          include: {
-            product: true,
-          },
-        },
-        customer: {
-          select: {
-            id: true,
-            email: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
-      },
-    });
-
-    // Clear cart after order creation
-    if (customerId) {
-      await prisma.cartItem.deleteMany({
-        where: { customerId },
-      });
-    }
-
-    // Trigger plugin hooks (e.g., inventory deduction)
-    try {
-      await pluginManager.triggerHook('onOrderCreate', order);
-    } catch (error) {
-      console.error("Plugin hook error:", error);
-      // Don't fail the order if plugins fail
-    }
-
-    // TODO: Send confirmation email
-    // await sendOrderConfirmationEmail(order);
-
-    res.json({
-      order,
-      message: "Order created successfully",
-    });
-  } catch (error) {
-    console.error("Create order error:", error);
-    res.status(500).json({ error: "Failed to create order" });
-  }
-};
-
-// Create order (manual - for admin or direct API usage)
+// --------------------
+// Create Order
+// --------------------
 export const handleCreateOrder: RequestHandler = async (req, res) => {
   try {
     const data = createOrderSchema.parse(req.body);
+    const { customerId, paymentMethod, shippingAddress } = data;
 
-    // Generate order number
-    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-
-    // Create order
-    const order = await prisma.order.create({
-      data: {
-        customerId: data.customerId || null,
-        orderNumber,
-        status: "pending",
-        subtotal: data.subtotal,
-        tax: data.tax || 0,
-        shippingCost: data.shippingCost || 0,
-        total: data.total,
-        notes: data.notes,
-        items: {
-          create: data.items.map((item) => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            price: item.price,
-            size: item.size,
-            color: item.color,
-          })),
-        },
-      },
+    // 1️⃣ Find customer's cart with items
+    const cart = await prisma.cart.findFirst({
+      where: { customerId },
       include: {
         items: {
           include: {
             product: true,
+            variant: true,
           },
         },
       },
     });
 
-    // Trigger plugin hooks (e.g., inventory deduction)
-    try {
-      await pluginManager.triggerHook('onOrderCreate', order);
-    } catch (error) {
-      console.error("Plugin hook error:", error);
-      // Don't fail the order if plugins fail
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ success: false, error: "Cart is empty or not found" });
     }
 
-    res.json(order);
+    // 2️⃣ Calculate total
+    const total = cart.items.reduce((sum, item) => {
+      const price = item.variant?.price ?? item.product.price;
+      return sum + price * item.quantity;
+    }, 0);
+
+    // 3️⃣ Create order in transaction
+    const order = await prisma.$transaction(async (tx) => {
+      const newOrder = await tx.order.create({
+        data: {
+          customerId,
+          total,
+          status: "PENDING",
+          paymentMethod,
+          shippingAddress: JSON.stringify(shippingAddress),
+          items: {
+            create: cart.items.map((item) => ({
+              productId: item.productId,
+              variantId: item.variantId ?? undefined,
+              quantity: item.quantity,
+              price: item.variant?.price ?? item.product.price,
+              size: item.size,
+              color: item.color,
+            })),
+          },
+        },
+        include: { items: true },
+      });
+
+      // Clear cart items
+      await tx.cartItem.deleteMany({
+        where: { cartId: cart.id },
+      });
+
+      return newOrder;
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Order created successfully",
+      data: order,
+    });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: "Invalid input", details: error.errors });
+      return res.status(400).json({ success: false, error: error.errors });
     }
     console.error("Create order error:", error);
-    res.status(500).json({ error: "Failed to create order" });
+    res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
-// Get customer orders (public endpoint with customer ID)
-export const handleGetCustomerOrders: RequestHandler = async (req, res) => {
+// --------------------
+// List Orders (Paginated)
+// --------------------
+export const handleListOrders: RequestHandler = async (req, res) => {
   try {
-    const customerId = req.query.customerId as string;
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const skip = (page - 1) * limit;
+    const data = listOrdersSchema.parse({
+      customerId: req.query.customerId,
+      page: Number(req.query.page) || undefined,
+      limit: Number(req.query.limit) || undefined,
+    });
 
-    if (!customerId) {
-      return res.status(400).json({ error: "customerId is required" });
-    }
+    const { customerId, page, limit } = data;
+    const skip = (page - 1) * limit;
 
     const [orders, total] = await Promise.all([
       prisma.order.findMany({
         where: { customerId },
-        include: {
-          items: {
-            include: {
-              product: true,
-            },
-          },
-        },
-        orderBy: { createdAt: "desc" },
         skip,
         take: limit,
+        orderBy: { createdAt: "desc" },
+        include: { items: { include: { product: true, variant: true } } },
       }),
       prisma.order.count({ where: { customerId } }),
     ]);
 
     res.json({
-      orders,
-      pagination: {
-        page,
-        limit,
+      success: true,
+      data: {
+        items: orders,
         total,
-        pages: Math.ceil(total / limit),
+        page,
+        pageSize: limit,
+        totalPages: Math.ceil(total / limit),
       },
     });
   } catch (error) {
-    console.error("Get customer orders error:", error);
-    res.status(500).json({ error: "Failed to get orders" });
+    console.error("List orders error:", error);
+    res.status(500).json({ success: false, error: "Failed to list orders" });
+  }
+};
+
+// --------------------
+// Get Single Order
+// --------------------
+export const handleGetOrder: RequestHandler = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        items: {
+          include: { product: true, variant: true },
+        },
+      },
+    });
+
+    if (!order) {
+      return res.status(404).json({ success: false, error: "Order not found" });
+    }
+
+    res.json({ success: true, data: order });
+  } catch (error) {
+    console.error("Get order error:", error);
+    res.status(500).json({ success: false, error: "Failed to fetch order" });
+  }
+};
+
+// --------------------
+// Update Order Status
+// --------------------
+export const handleUpdateOrderStatus: RequestHandler = async (req, res) => {
+  try {
+    const { status } = req.body as { status: string };
+    const orderId = req.params.id;
+
+    const updatedOrder = await prisma.order.update({
+      where: { id: orderId },
+      data: { status },
+      include: { items: { include: { product: true, variant: true } } },
+    });
+
+    res.json({ success: true, message: "Order status updated", data: updatedOrder });
+  } catch (error) {
+    console.error("Update order status error:", error);
+    res.status(500).json({ success: false, error: "Failed to update order status" });
   }
 };
