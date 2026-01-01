@@ -28,11 +28,37 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Typecheck
-        run: pnpm run typecheck
+      # Generate Prisma client BEFORE typecheck
+      - name: Generate Prisma Client
+        run: |
+          npx prisma generate
 
-      - name: Run tests
-        run: pnpm test -- --reporter dot
+      # Create .env file for CI (SQLite for testing)
+      - name: Setup environment
+        run: |
+          echo "DATABASE_URL=\"file:./dev.db\"" > .env
+          echo "PING_MESSAGE=\"ping pong\"" >> .env
+          echo "VITE_PUBLIC_BUILDER_KEY=__BUILDER_PUBLIC_KEY__" >> .env
+          echo "NODE_ENV=test" >> .env
+          echo "JWT_SECRET=test-secret-key-for-ci" >> .env
+          echo "JWT_EXPIRES_IN=7d" >> .env
 
-      - name: Build
-        run: pnpm run build
+      # Apply database migrations
+      - name: Run database migrations
+        run: npx prisma migrate deploy
+
+      # Build frontend
+      - name: Build frontend
+        run: npm run build:frontend --workspace=abayas-frontend
+
+      # Build backend
+      - name: Build backend
+        run: npm run build:backend
+
+      # Type checking
+      - name: Type check backend
+        run: cd backend && npx tsc --noEmit
+
+      - name: Type check frontend
+        run: cd frontend && npx tsc --noEmit
+

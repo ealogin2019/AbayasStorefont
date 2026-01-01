@@ -1,5 +1,13 @@
 import "dotenv/config";
-import { prisma } from "./Backend/db.js";
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
+
+const prisma = new PrismaClient();
+
+// Password hashing using bcrypt (same as in production)
+async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 10);
+}
 
 const sampleProducts = [
   {
@@ -85,6 +93,22 @@ async function main() {
   await prisma.cartItem.deleteMany({});
   await prisma.product.deleteMany({});
   await prisma.customer.deleteMany({});
+  await prisma.admin.deleteMany({});
+
+  // Seed admin account
+  console.log("Creating admin account...");
+  const hashedPassword = await hashPassword("admin@123");
+  await prisma.admin.create({
+    data: {
+      email: "admin@abayas.com",
+      password: hashedPassword,
+      firstName: "Admin",
+      lastName: "User",
+      role: "admin",
+      active: true,
+    },
+  });
+  console.log("✓ Admin created: admin@abayas.com / admin@123");
 
   // Seed products
   console.log("Creating products...");
