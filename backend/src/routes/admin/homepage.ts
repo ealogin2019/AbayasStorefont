@@ -59,7 +59,7 @@ export const handleCreateHomepageContent: RequestHandler = async (req, res) => {
     const data = homepageContentSchema.parse(req.body);
 
     const content = await prisma.homepageContent.create({
-      data,
+      data: data as any,
     });
 
     // Audit log
@@ -108,7 +108,7 @@ export const handleUpdateHomepageContent: RequestHandler = async (req, res) => {
 
     const content = await prisma.homepageContent.update({
       where: { id },
-      data,
+      data: data as any,
     });
 
     // Audit log

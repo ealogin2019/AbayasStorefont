@@ -1,18 +1,35 @@
-import { RequestHandler } from "express";
+import { RequestHandler, Request, Response } from "express";
 import { prisma } from "../db";
 import { CartResponse, AddToCartRequest, UpdateCartItemRequest } from "@shared/api";
 
-function calculateCart(items: any[]): { total: number; itemCount: number } {
+/**
+ * Extended Request type for cart operations
+ * Includes cookies for cart ID and sessionID from express-session
+ */
+interface CartRequest extends Request {
+  cookies: { cartId?: string };
+  sessionID?: string;
+}
+
+/**
+ * Type for cart items with relations included
+ */
+type CartItemWithRelations = any & { product: any; variant?: any };
+
+/**
+ * Calculate cart totals from items
+ */
+function calculateCart(items: CartItemWithRelations[]): { total: number; itemCount: number } {
   return {
     total: items.reduce((sum, item) => {
-      const price = item.variant?.price ? Number(item.variant.price) : (item.product?.price || 0);
+      const price = item.variant?.price ? Number(item.variant.price) : Number(item.product.price);
       return sum + price * item.quantity;
     }, 0),
     itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
   };
 }
 
-export const getCart: RequestHandler = async (req, res) => {
+export const getCart: RequestHandler = async (req: CartRequest, res) => {
   try {
     let cartId = req.cookies.cartId;
     
@@ -76,7 +93,7 @@ export const getCart: RequestHandler = async (req, res) => {
       return res.json({ items: [], total: 0, itemCount: 0 });
     }
 
-    const { total, itemCount } = calculateCart(cart.items);
+    const { total, itemCount } = calculateCart(cart.items as CartItemWithRelations[]);
     const formattedItems = cart.items.map((item) => ({
       id: item.id,
       productId: item.productId,
@@ -96,7 +113,7 @@ export const getCart: RequestHandler = async (req, res) => {
   }
 };
 
-export const addToCart: RequestHandler = async (req, res) => {
+export const addToCart: RequestHandler = async (req: CartRequest, res) => {
   try {
     let cartId = req.cookies.cartId;
     const { productId, quantity, size, color, variantId } = req.body as AddToCartRequest;
@@ -113,7 +130,7 @@ export const addToCart: RequestHandler = async (req, res) => {
     if (!cart) {
       cart = await prisma.cart.create({
         data: {
-          sessionId: req.sessionID || null, // For guest carts
+          sessionId: req.sessionID ?? null, // For guest carts
         },
       });
       cartId = cart.id;
@@ -200,7 +217,7 @@ export const removeFromCart: RequestHandler = async (req, res) => {
   }
 };
 
-export const clearCart: RequestHandler = async (req, res) => {
+export const clearCart: RequestHandler = async (req: CartRequest, res) => {
   try {
     const cartId = req.cookies.cartId;
     if (!cartId) {

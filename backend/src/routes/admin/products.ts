@@ -35,10 +35,10 @@ const productSchema = z.object({
   colors: z.array(z.string()),
   sizes: z.array(z.string()),
   variants: z.array(z.object({
-    size: z.string(),
-    color: z.string(),
+    size: z.string().min(1, "Size is required"),
+    color: z.string().min(1, "Color is required"),
     stock: z.number().int().default(0),
-    price: z.number().optional(),
+    price: z.number().positive("Price must be positive"),
   })).optional(),
   tags: z.array(z.string()).optional(),
   quantity: z.number().int().default(0),
@@ -135,7 +135,8 @@ export const handleGetProduct: RequestHandler = async (req, res) => {
  */
 export const handleCreateProduct: RequestHandler = async (req, res) => {
   try {
-    const data = productSchema.parse(req.body);
+    const parsedData = productSchema.parse(req.body);
+    const data = parsedData as any;
 
     // Check if product name already exists
     const existing = await prisma.product.findUnique({
@@ -154,17 +155,18 @@ export const handleCreateProduct: RequestHandler = async (req, res) => {
         name: data.name,
         description: data.description,
         price: data.price,
-        currency: data.currency,
+        currency: data.currency || "AED",
         image: data.image,
         thumbnail: data.thumbnail,
         gallery: data.gallery,
         colors: data.colors,
         sizes: data.sizes,
         tags: data.tags,
-        quantity: data.quantity,
-        inStock: data.inStock,
-        variants: data.variants ? { create: data.variants } : undefined,
+        quantity: data.quantity || 0,
+        inStock: data.inStock !== undefined ? data.inStock : true,
+        variants: data.variants ? { create: data.variants as any } : undefined,
       },
+      include: { variants: true },
     });
 
     // Trigger plugin hooks
@@ -214,12 +216,12 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
       });
     }
 
-    const data = productSchema.partial().parse(req.body);
+    const parsedData = productSchema.partial().parse(req.body);
 
     // Check name uniqueness if changed
-    if (data.name && data.name !== oldProduct.name) {
+    if (parsedData.name && parsedData.name !== oldProduct.name) {
       const existing = await prisma.product.findUnique({
-        where: { name: data.name },
+        where: { name: parsedData.name },
       });
       if (existing) {
         return res.status(400).json({
@@ -230,11 +232,11 @@ export const handleUpdateProduct: RequestHandler = async (req, res) => {
     }
 
     // If variants are part of the update, perform nested writes: delete existing and create new
-    const updateData: any = { ...data };
-    if (data.variants) {
+    const updateData: any = { ...parsedData };
+    if (parsedData.variants) {
       updateData.variants = {
         deleteMany: {},
-        create: data.variants,
+        create: parsedData.variants as any,
       };
     }
 

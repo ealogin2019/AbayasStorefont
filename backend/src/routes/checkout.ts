@@ -2,10 +2,19 @@
 import { Router, Request, Response } from 'express'
 import stripe from 'stripe'
 import { z } from 'zod'
+import type { AdminTokenPayload } from '@shared/plugins'
 import { prisma } from '../db'
 import { pluginManager } from '../plugins/manager'
-// Import the correct authentication middleware
-import { authenticateAdmin } from '../auth/middleware'
+
+/**
+ * Extended Request type for checkout operations
+ * Includes cookies for cart ID and admin for future features
+ */
+interface CheckoutRequest extends Request {
+  cookies: { cartId?: string };
+  admin?: AdminTokenPayload;
+  sessionID?: string;
+}
 
 const router = Router()
 
@@ -31,10 +40,10 @@ const checkoutSchema = z.object({
 });
 
 // Create order from checkout
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', async (req: CheckoutRequest, res: Response) => {
   try {
     // 1. Validate Request Body
-    const data = checkoutSchema.parse(req.body);
+    const checkoutData = checkoutSchema.parse(req.body);
 
     // 2. Identify the Cart
     // We try to get the cartId from the signed cookie first (secure), then fall back to body/header if necessary
@@ -49,7 +58,7 @@ router.post('/', async (req: Request, res: Response) => {
       where: { id: cartId },
       include: {
         items: {
-          include: { product: true },
+          include: { product: true, variant: true },
         },
       },
     });
@@ -60,7 +69,7 @@ router.post('/', async (req: Request, res: Response) => {
 
     // 4. Calculate Totals (Server-side calculation is crucial for security)
     const subtotal = cart.items.reduce((sum, item) => {
-      const price = item.variant?.price ? Number(item.variant.price) : Number(item.product.price);
+      const price = item.variantId ? Number(item.variant?.price) : Number(item.product.price);
       return sum + price * item.quantity;
     }, 0);
     
@@ -71,33 +80,35 @@ router.post('/', async (req: Request, res: Response) => {
     // 5. Database Transaction: Create Order & Clear Cart
     const order = await prisma.$transaction(async (tx) => {
       // Create the Order
-      const newOrder = await tx.order.create({
-        data: {
-          orderNumber: `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-          status: "PENDING",
-          total: totalAmount,
-          email: data.email,
-          // Store shipping address as a JSON string to preserve snapshot of address at time of order
-          shippingAddress: JSON.stringify({
-            firstName: data.firstName,
-            lastName: data.lastName,
-            address: data.address,
-            city: data.city,
-            postalCode: data.postalCode,
-            country: data.country,
-          }),
-          // Map cart items to order items
-          items: {
-            create: cart.items.map((item) => ({
-              productId: item.productId,
-              variantId: (item as any).variantId || undefined,
-              quantity: item.quantity,
-              price: item.variant?.price ? Number(item.variant.price) : item.product.price,
-              size: item.size,
-              color: item.color,
-            })),
-          },
+      const orderData = {
+        orderNumber: `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        status: "PENDING" as const,
+        total: totalAmount,
+        email: checkoutData.email,
+        // Store shipping address as a JSON string to preserve snapshot of address at time of order
+        shippingAddress: JSON.stringify({
+          firstName: checkoutData.firstName,
+          lastName: checkoutData.lastName,
+          address: checkoutData.address,
+          city: checkoutData.city,
+          postalCode: checkoutData.postalCode,
+          country: checkoutData.country,
+        }),
+        // Map cart items to order items
+        items: {
+          create: cart.items.map((item) => ({
+            productId: item.productId,
+            variantId: item.variantId || undefined,
+            quantity: item.quantity,
+            price: item.variantId ? Number(item.variant?.price) : Number(item.product.price),
+            size: item.size,
+            color: item.color,
+          })),
         },
+      };
+      
+      const newOrder = await tx.order.create({
+        data: orderData as any,
       });
 
       // Clear the Cart Items
