@@ -1,3 +1,14 @@
+import type {
+  ListProductsResponse,
+  GetProductResponse,
+  CreateProductRequest,
+  CartResponse,
+  AddToCartRequest,
+  UpdateCartItemRequest,
+  CheckoutRequest,
+  CheckoutResponse,
+} from "../../../shared/api";
+
 export interface CheckoutData {
   email: string;
   firstName: string;

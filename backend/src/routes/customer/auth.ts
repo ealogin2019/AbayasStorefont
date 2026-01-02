@@ -145,7 +145,7 @@ export const handleCustomerLogin: RequestHandler = async (req, res) => {
 // Get Customer Profile
 export const handleGetProfile: RequestHandler = async (req, res) => {
   try {
-    const customerId = (req as any).customerId;
+    const customerId = req.customerId;
 
     const customer = await prisma.customer.findUnique({
       where: { id: customerId },
@@ -178,7 +178,7 @@ export const handleGetProfile: RequestHandler = async (req, res) => {
 // Update Customer Profile
 export const handleUpdateProfile: RequestHandler = async (req, res) => {
   try {
-    const customerId = (req as any).customerId;
+    const customerId = req.customerId;
     const data = updateProfileSchema.parse(req.body);
 
     const customer = await prisma.customer.update({
@@ -211,7 +211,7 @@ export const handleUpdateProfile: RequestHandler = async (req, res) => {
 // Change Password
 export const handleChangePassword: RequestHandler = async (req, res) => {
   try {
-    const customerId = (req as any).customerId;
+    const customerId = req.customerId;
     const data = changePasswordSchema.parse(req.body);
 
     // Get customer
@@ -251,7 +251,7 @@ export const handleChangePassword: RequestHandler = async (req, res) => {
 // Get Customer Orders
 export const handleGetCustomerOrders: RequestHandler = async (req, res) => {
   try {
-    const customerId = (req as any).customerId;
+    const customerId = req.customerId;
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const skip = (page - 1) * limit;

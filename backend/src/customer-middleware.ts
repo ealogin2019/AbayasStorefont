@@ -25,8 +25,8 @@ export const authenticateCustomer: RequestHandler = (req, res, next) => {
     }
 
     // Attach customer ID to request
-    (req as any).customerId = decoded.id;
-    (req as any).customerEmail = decoded.email;
+    req.customerId = decoded.id;
+    req.customerEmail = decoded.email;
 
     next();
   } catch (error) {
@@ -44,8 +44,8 @@ export const optionalCustomerAuth: RequestHandler = (req, res, next) => {
       const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
 
       if (decoded.type === "customer") {
-        (req as any).customerId = decoded.id;
-        (req as any).customerEmail = decoded.email;
+        req.customerId = decoded.id;
+        req.customerEmail = decoded.email;
       }
     }
   } catch (error) {

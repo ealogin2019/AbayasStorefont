@@ -61,7 +61,7 @@ export interface Plugin extends PluginHooks {
   settings?: PluginSetting[];
 
   // Get admin UI component (for dashboard plugins)
-  getAdminUI?: () => Promise<React.ComponentType<any>>;
+  getAdminUI?: () => Promise<any>;
 }
 
 /**

@@ -29,7 +29,7 @@ const handleCreateOrderFromCart = [
   async (req: Request, res: Response) => {
     try {
       const { paymentMethod, shippingAddress } = createOrderSchema.parse(req.body);
-      const customerId = req.user?.id;
+      const customerId = req.customerId;
 
       if (!customerId) {
         return res.status(401).json({ success: false, message: "Unauthorized" });
@@ -51,7 +51,7 @@ const handleCreateOrderFromCart = [
 
       // Calculate totals
       const subtotal = cart.items.reduce((sum, item) => {
-        const price = item.variant?.price ?? item.product.price ?? 0;
+        const price = Number(item.variant?.price ?? item.product.price ?? 0);
         return sum + price * item.quantity;
       }, 0);
 
@@ -74,10 +74,10 @@ const handleCreateOrderFromCart = [
             shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : undefined,
             items: {
               create: cart.items.map((item) => ({
-                productId: item.productId,
-                variantId: item.variantId ?? undefined,
+                product: { connect: { id: item.productId } },
+                variant: item.variantId ? { connect: { id: item.variantId } } : undefined,
                 quantity: item.quantity,
-                price: item.variant?.price ?? item.product.price ?? 0,
+                price: Number(item.variant?.price ?? item.product.price ?? 0),
                 size: item.size,
                 color: item.color,
               })),
@@ -116,7 +116,7 @@ const handleListOrders = [
   authenticateCustomer,
   async (req: Request, res: Response) => {
     try {
-      const customerId = req.user?.id;
+      const customerId = req.customerId;
       if (!customerId) {
         return res.status(401).json({ success: false, message: "Unauthorized" });
       }
@@ -163,7 +163,7 @@ const handleGetOrder = [
   authenticateCustomer,
   async (req: Request, res: Response) => {
     try {
-      const customerId = req.user?.id;
+      const customerId = req.customerId;
       const orderId = req.params.id;
 
       if (!customerId) {

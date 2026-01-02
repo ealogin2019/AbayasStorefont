@@ -64,7 +64,7 @@ export const handleCreateHomepageContent: RequestHandler = async (req, res) => {
 
     // Audit log
     await createAuditLog(
-      (req as any).adminId,
+      req.admin?.adminId || "unknown",
       "create",
       "homepage_content",
       content.id,
@@ -113,7 +113,7 @@ export const handleUpdateHomepageContent: RequestHandler = async (req, res) => {
 
     // Audit log
     await createAuditLog(
-      (req as any).adminId,
+      req.admin?.adminId || "unknown",
       "update",
       "homepage_content",
       content.id,
@@ -160,7 +160,7 @@ export const handleDeleteHomepageContent: RequestHandler = async (req, res) => {
 
     // Audit log
     await createAuditLog(
-      (req as any).adminId,
+      req.admin?.adminId || "unknown",
       "delete",
       "homepage_content",
       id,

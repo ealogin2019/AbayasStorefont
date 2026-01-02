@@ -131,14 +131,14 @@ export default function ProductForm({
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors: Record<string, string> = {};
-        error.errors.forEach((err) => {
+        error.issues.forEach((err) => {
           const path = err.path.join(".");
           newErrors[path] = err.message;
         });
         setErrors(newErrors);
         toast({
           title: "Validation Error",
-          description: error.errors[0].message,
+          description: error.issues[0].message,
           variant: "destructive",
         });
       }

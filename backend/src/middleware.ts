@@ -8,17 +8,6 @@ import { extractToken, verifyToken } from "./utils";
 import { AdminTokenPayload } from "@shared/plugins";
 
 /**
- * Extend Express Request to include admin user info
- */
-declare global {
-  namespace Express {
-    interface Request {
-      admin?: AdminTokenPayload;
-    }
-  }
-}
-
-/**
  * Middleware to verify admin authentication
  */
 export function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
