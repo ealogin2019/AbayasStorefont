@@ -83,7 +83,7 @@ export default function Checkout() {
       });
       toast.success(`Order ${res.orderNumber} created successfully!`);
       clear();
-      navigate(`/payment-success?order=${res.orderNumber}`);
+      navigate(`/thank-you?orderNumber=${res.orderNumber}`);
     } catch (err: any) {
       console.error(err);
       toast.error(err?.message ?? "Checkout failed. Please try again.");

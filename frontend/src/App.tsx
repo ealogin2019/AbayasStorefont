@@ -15,6 +15,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import ThankYou from "./pages/ThankYou";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
@@ -78,6 +79,7 @@ const App = () => (
                   <Route path="/shop" element={<Shop />} />
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/thank-you" element={<ThankYou />} />
                   <Route path="/payment-success" element={<PaymentSuccess />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/contact" element={<Contact />} />

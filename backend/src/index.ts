@@ -1,4 +1,3 @@
-
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
@@ -6,14 +5,27 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
+
+// Routes
 import { handleDemo } from "./routes/demo";
-import { listProducts, getProduct, createProduct, updateProduct, deleteProduct } from "./routes/products";
-import { getCart, addToCart, updateCartItem, removeFromCart, clearCart } from "./routes/cart";
+import {
+  listProducts,
+  getProduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "./routes/products";
+import {
+  getCart,
+  addToCart,
+  updateCartItem,
+  removeFromCart,
+  clearCart,
+} from "./routes/cart";
 import { handleContact } from "./routes/contact";
-// Import the new Stripe checkout router
 import checkoutRouter from "./routes/checkout";
 
-// Customer auth routes
+// Customer auth
 import {
   handleCustomerSignup,
   handleCustomerLogin,
@@ -22,9 +34,9 @@ import {
   handleChangePassword,
   handleGetCustomerOrders,
 } from "./routes/customer/auth";
-import { handleCreateOrderFromCart } from "./routes/customer/orders";
+import ordersRouter from "./routes/customer/orders";
 
-// Admin routes
+// Admin auth & routes
 import { handleAdminLogin, handleCreateAdmin, handleGetProfile } from "./routes/admin/auth";
 import {
   handleListProducts as handleListAdminProducts,
@@ -41,11 +53,7 @@ import {
   handleUpdateOrderTracking,
   handleOrderStats,
 } from "./routes/admin/orders";
-import {
-  handleListCustomers,
-  handleGetCustomer,
-  handleCustomerStats,
-} from "./routes/admin/customers";
+import { handleListCustomers, handleGetCustomer, handleCustomerStats } from "./routes/admin/customers";
 import {
   handleListSettings,
   handleGetSetting,
@@ -76,11 +84,7 @@ import {
   handleDeleteAdmin,
   handleAdminStats,
 } from "./routes/admin/admins";
-import {
-  handleListAuditLogs,
-  handleAuditLogStats,
-  handleRecentActivity,
-} from "./routes/admin/audit-logs";
+import { handleListAuditLogs, handleAuditLogStats, handleRecentActivity } from "./routes/admin/audit-logs";
 import { handleDashboardStats } from "./routes/admin/dashboard";
 import { handleUploadImage, handleDeleteImage } from "./routes/admin/upload";
 import {
@@ -90,35 +94,27 @@ import {
   handleDeleteHomepageContent,
 } from "./routes/admin/homepage";
 
-// Public routes
+// Public homepage routes
 import homepageRouter from "./routes/homepage";
 
-// Auth middleware
-import { authenticateAdmin, requireRole } from "./middleware.js";
-import { authenticateCustomer } from "./customer-middleware.js";
+// Middleware
+import { authenticateAdmin, requireRole } from "./middleware";
+import { authenticateCustomer } from "./customer-middleware";
 
-// Plugin system
+// Plugins
 import { pluginManager } from "./plugins/manager";
 
-// Setup file upload middleware
+// File Upload
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB max (for videos)
-  },
-  fileFilter: (req, file, cb) => {
-    const allowedMimes = [
-      "image/jpeg", "image/png", "image/gif", "image/webp",
-      "video/mp4", "video/webm", "video/quicktime"
-    ];
-    if (allowedMimes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error("Invalid file type. Only images and short videos are allowed"));
-    }
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const allowedMimes = ["image/jpeg", "image/png", "image/gif", "image/webp", "video/mp4", "video/webm", "video/quicktime"];
+    cb(null, allowedMimes.includes(file.mimetype));
   },
 });
 
+// Path helpers
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -126,49 +122,39 @@ export async function createServer() {
   const app = express();
 
   // Middleware
-  // ----------------------------------------------------
-  // 1. HARDENED CORS CONFIGURATION
-  // ----------------------------------------------------
   const allowedOrigins = [
-    "http://localhost:3000",  // Local Development - Server port
-    "http://localhost:5173",  // Vite Dev Server
-    "http://localhost:8080",  // Alternative local
-    process.env.FRONTEND_URL  // Production URL from env
-  ].filter(Boolean); // Remove undefined values
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:8080",
+    process.env.FRONTEND_URL,
+  ].filter(Boolean);
 
   app.use(cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1 && process.env.NODE_ENV === 'production') {
-        const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-        return callback(new Error(msg), false);
+      if (!allowedOrigins.includes(origin) && process.env.NODE_ENV === "production") {
+        return callback(new Error("CORS policy does not allow this origin"), false);
       }
-      return callback(null, true);
+      callback(null, true);
     },
-    credentials: true, // CRITICAL: Allows cookies/sessions to work
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   }));
 
   app.use(cookieParser());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  // Special middleware for Stripe webhook (before JSON parsing)
+  // Stripe webhook raw body
   app.use("/api/checkout/webhook", express.raw({ type: "application/json" }));
 
-  // Serve static files from public folder (including uploads)
+  // Serve static files
   app.use(express.static(path.join(__dirname, "..", "public")));
 
-  // Initialize plugin system
-  // await pluginManager.initializeAll();
+  // Routes
 
-  // Example API routes
-  app.get("/api/ping", (_req, res) => {
-    const ping = process.env.PING_MESSAGE ?? "ping";
-    res.json({ message: ping });
-  });
-
+  // Demo & Ping
+  app.get("/api/ping", (_req, res) => res.json({ message: process.env.PING_MESSAGE || "pong" }));
   app.get("/api/demo", handleDemo);
 
   // Product API (public)
@@ -188,45 +174,40 @@ export async function createServer() {
   // Contact
   app.post("/api/contact", handleContact);
 
-  // Stripe Checkout API (replaces the old handleCheckout)
+  // Stripe Checkout
   app.use("/api/checkout", checkoutRouter);
 
-  // ============================================
-  // CUSTOMER API ROUTES
-  // ============================================
+  // Customer Routes
 
-  // Customer Authentication (public endpoints)
+  // Auth
   app.post("/api/customer/auth/signup", handleCustomerSignup);
   app.post("/api/customer/auth/login", handleCustomerLogin);
 
-  // Customer Profile (protected)
+  // Profile
   app.get("/api/customer/profile", authenticateCustomer, handleGetCustomerProfile);
   app.put("/api/customer/profile", authenticateCustomer, handleUpdateProfile);
   app.post("/api/customer/change-password", authenticateCustomer, handleChangePassword);
 
-  // Customer Orders (protected)
-  app.get("/api/customer/orders", authenticateCustomer, handleGetCustomerOrders);
-  app.post("/api/customer/orders/create", handleCreateOrderFromCart);
+  // Orders (using router)
+  app.use("/api/customer/orders", ordersRouter);
 
-  // ============================================
-  // ADMIN API ROUTES (Protected)
-  // ============================================
+  // Admin Routes
 
-  // Admin Authentication (no protection needed for login/signup)
+  // Auth
   app.post("/api/admin/auth/login", handleAdminLogin);
   app.post("/api/admin/auth/create-admin", handleCreateAdmin);
   app.get("/api/admin/auth/profile", authenticateAdmin, handleGetProfile);
 
-  // Admin Dashboard (protected)
+  // Dashboard
   app.get("/api/admin/dashboard/stats", authenticateAdmin, handleDashboardStats);
 
-  // Admin Products (protected)
+  // Products
   app.get("/api/admin/products", authenticateAdmin, handleListAdminProducts);
   app.get("/api/admin/products/:id", authenticateAdmin, handleGetAdminProduct);
   app.post("/api/admin/products", authenticateAdmin, requireRole("admin", "editor"), handleCreateAdminProduct);
   app.put("/api/admin/products/:id", authenticateAdmin, requireRole("admin", "editor"), handleUpdateProduct);
   app.delete("/api/admin/products/:id", authenticateAdmin, requireRole("admin"), handleDeleteProduct);
-  
+
   // Bulk operations
   app.post("/api/admin/products/bulk/delete", authenticateAdmin, requireRole("admin"), handleBulkDeleteProducts);
   app.post("/api/admin/products/bulk/update-price", authenticateAdmin, requireRole("admin", "manager"), handleBulkUpdatePrice);
@@ -234,12 +215,11 @@ export async function createServer() {
   app.post("/api/admin/products/bulk/add-tags", authenticateAdmin, requireRole("admin", "manager"), handleBulkAddTags);
   app.get("/api/admin/products/export", authenticateAdmin, handleExportProducts);
 
-  // Admin Image Upload (protected)
+  // Upload
   app.post("/api/admin/upload", authenticateAdmin, upload.single("file"), handleUploadImage);
   app.delete("/api/admin/upload/:filename", authenticateAdmin, handleDeleteImage);
 
-  // Admin Orders (protected)
-  // NOTE: Stats route MUST come before :id route to avoid collision
+  // Orders
   app.get("/api/admin/orders", authenticateAdmin, handleListOrders);
   app.get("/api/admin/orders/stats/summary", authenticateAdmin, handleOrderStats);
   app.post("/api/admin/orders", authenticateAdmin, requireRole("admin", "manager"), handleCreateOrder);
@@ -247,12 +227,12 @@ export async function createServer() {
   app.put("/api/admin/orders/:id/status", authenticateAdmin, requireRole("admin", "manager"), handleUpdateOrderStatus);
   app.put("/api/admin/orders/:id/tracking", authenticateAdmin, requireRole("admin", "manager"), handleUpdateOrderTracking);
 
-  // Admin Customers (protected)
+  // Customers
   app.get("/api/admin/customers", authenticateAdmin, handleListCustomers);
   app.get("/api/admin/customers/stats/summary", authenticateAdmin, handleCustomerStats);
   app.get("/api/admin/customers/:id", authenticateAdmin, handleGetCustomer);
 
-  // Admin Settings (protected)
+  // Settings
   app.get("/api/admin/settings", authenticateAdmin, handleListSettings);
   app.get("/api/admin/settings/stats/summary", authenticateAdmin, handleSettingsStats);
   app.get("/api/admin/settings/:id", authenticateAdmin, handleGetSetting);
@@ -260,14 +240,14 @@ export async function createServer() {
   app.put("/api/admin/settings/:id", authenticateAdmin, requireRole("admin", "manager"), handleUpdateSetting);
   app.delete("/api/admin/settings/:id", authenticateAdmin, requireRole("admin"), handleDeleteSetting);
 
-  // Admin Inventory (protected)
+  // Inventory
   app.get("/api/admin/inventory/stats", authenticateAdmin, handleInventoryStats);
   app.get("/api/admin/inventory/low-stock", authenticateAdmin, handleGetLowStock);
   app.get("/api/admin/inventory/out-of-stock", authenticateAdmin, handleGetOutOfStock);
   app.get("/api/admin/inventory/check/:productId", authenticateAdmin, handleCheckStock);
   app.post("/api/admin/inventory/adjust", authenticateAdmin, requireRole("admin", "manager"), handleAdjustStock);
 
-  // Admin User Management (protected - admin only)
+  // Admin Users
   app.get("/api/admin/admins", authenticateAdmin, requireRole("admin"), handleListAdmins);
   app.get("/api/admin/admins/stats/summary", authenticateAdmin, requireRole("admin"), handleAdminStats);
   app.get("/api/admin/admins/:id", authenticateAdmin, requireRole("admin"), handleGetAdmin);
@@ -275,18 +255,18 @@ export async function createServer() {
   app.put("/api/admin/admins/:id", authenticateAdmin, requireRole("admin"), handleUpdateAdmin);
   app.delete("/api/admin/admins/:id", authenticateAdmin, requireRole("admin"), handleDeleteAdmin);
 
-  // Audit Logs (protected)
+  // Audit Logs
   app.get("/api/admin/audit-logs", authenticateAdmin, handleListAuditLogs);
   app.get("/api/admin/audit-logs/stats", authenticateAdmin, handleAuditLogStats);
   app.get("/api/admin/audit-logs/recent", authenticateAdmin, handleRecentActivity);
 
-  // Admin Homepage Content (protected)
+  // Homepage Content
   app.get("/api/admin/homepage", authenticateAdmin, handleListHomepageContent);
   app.post("/api/admin/homepage", authenticateAdmin, requireRole("admin", "editor"), handleCreateHomepageContent);
   app.put("/api/admin/homepage/:id", authenticateAdmin, requireRole("admin", "editor"), handleUpdateHomepageContent);
   app.delete("/api/admin/homepage/:id", authenticateAdmin, requireRole("admin"), handleDeleteHomepageContent);
 
-  // Public Homepage Content
+  // Public homepage
   app.use("/api/homepage", homepageRouter);
 
   return app;
