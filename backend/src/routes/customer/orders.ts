@@ -69,9 +69,8 @@ const handleCreateOrderFromCart = [
             subtotal,
             shippingCost,
             tax,
-            status: paymentMethod === "cod" ? "PENDING" : "AWAITING_PAYMENT",
-            paymentMethod,
-            shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : undefined,
+            status: paymentMethod === "cod" ? "pending" : "pending",
+            notes: shippingAddress ? JSON.stringify({ paymentMethod, shippingAddress }) : JSON.stringify({ paymentMethod }),
             items: {
               create: cart.items.map((item) => ({
                 product: { connect: { id: item.productId } },
